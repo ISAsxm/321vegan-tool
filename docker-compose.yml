@@ -1,0 +1,8 @@
+services:
+  321vegan_tool_frontend:
+    container_name: 321vegan_tool_front
+    build:
+      context: .
+      target: production
+    ports:
+      - "80:80"

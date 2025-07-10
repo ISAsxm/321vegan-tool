@@ -1,0 +1,14 @@
+node_modules/
+dist/
+npm-debug.log
+Dockerfile
+.dockerignore
+.git
+.gitignore
+.env
+README.md
+Makefile
+LICENSE
+CONTRIBUTING.md
+CODE_OF_CONDUCT.md
+TEAM.md

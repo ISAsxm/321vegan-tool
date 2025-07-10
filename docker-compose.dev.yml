@@ -1,0 +1,12 @@
+services:
+  321vegan_tool_frontend_dev:
+    container_name: 321vegan_tool_front_dev
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+    command: npm run dev
