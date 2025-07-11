@@ -21,7 +21,7 @@ export function useOffProduct() {
     retry: false,
     staleTime: Infinity,
     meta: {
-      errorMessage: `Produit ean #${productCode} inconnu dans Open Food Facts`,
+      errorMessage: `Ean ${productCode} inconnu dans Open Food Facts`,
     },
   });
 
