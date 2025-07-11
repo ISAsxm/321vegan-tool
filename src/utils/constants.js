@@ -19,7 +19,11 @@ export const PRODUCT_STATES = {
   CREATED: { color: "grey", label: "À vérifier", role: "user" },
   NOT_FOUND: { color: "silver", label: "Inconnu", role: "contributor" },
   NEED_CONTACT: { color: "yellow", label: "À contacter", role: "contributor" },
-  WAITING_REPLY: { color: "blue", label: "Contacté", role: "contributor" },
+  WAITING_BRAND_REPLY: {
+    color: "blue",
+    label: "Contacté",
+    role: "contributor",
+  },
   WAITING_PUBLISH: {
     color: "indigo",
     label: "À publier",
