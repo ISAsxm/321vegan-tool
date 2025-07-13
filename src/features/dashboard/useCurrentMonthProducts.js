@@ -7,7 +7,7 @@ import { productsKeys } from "@/features/products/queryKeyFactory";
 
 export function useCurrentMonthProducts() {
   // FILTERS
-  const filters = [{ field: "created_at", value: `ge__${beforeToday(29)}` }];
+  const filters = [{ field: "created_at__ge", value: `${beforeToday(29)}` }];
   // SORT
   const sortBy = "created_at-asc";
 

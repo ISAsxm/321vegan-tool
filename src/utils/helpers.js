@@ -93,8 +93,8 @@ export const buildQueryFilters = function (allowedFilters, searchParams) {
   return allowedFilters
     .map((f) => {
       const value = searchParams.get(f.field);
-      f.value = value ? `${f.operator || ""}${value}` : value;
-      return { field: f.field, value: f.value };
+      const fieldName = f.operator ? `${f.field}${f.operator}` : f.field;
+      return { field: fieldName, value: value };
     })
     .filter((f) => f.value !== null);
 };

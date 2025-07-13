@@ -9,7 +9,7 @@ import { getSearchCosmetics } from "@/services/apiCosmetics";
 import { cosmeticsKeys } from "./queryKeyFactory";
 
 const filterFields = [
-  { field: "name", operator: "contains__", value: null },
+  { field: "brand_name", operator: "__contains", value: null },
   { field: "is_vegan", value: null },
   { field: "is_cf", value: null },
 ];

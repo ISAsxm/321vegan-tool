@@ -9,11 +9,11 @@ import { getSearchProducts } from "@/services/apiProducts";
 import { productsKeys } from "./queryKeyFactory";
 
 const filterFields = [
-  { field: "ean", operator: "contains__", value: null },
-  { field: "name", operator: "contains__", value: null },
+  { field: "ean", operator: "__contains", value: null },
+  { field: "name", operator: "__contains", value: null },
   { field: "status", value: null },
   { field: "state", value: null },
-  { field: "brand", operator: "name___contains__", value: null },
+  { field: "brand", operator: "___name__contains", value: null },
 ];
 
 export function useSearchProducts() {
