@@ -11,7 +11,7 @@ import { cosmeticsKeys } from "./queryKeyFactory";
 const filterFields = [
   { field: "brand_name", operator: "__contains", value: null },
   { field: "is_vegan", value: null },
-  { field: "is_cf", value: null },
+  { field: "is_cruelty_free", value: null },
 ];
 
 export function useSearchCosmetics() {

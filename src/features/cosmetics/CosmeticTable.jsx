@@ -23,10 +23,16 @@ function CosmeticTable() {
 
               <div>
                 Nom
-                <SortBy.Sort sortByField="name" />
+                <SortBy.Sort sortByField="brand_name" />
                 <Filters.Filter>
-                  <Filters.Toggle id="filterName" filterField="name" />
-                  <Filters.Search id="filterName" filterField="name" />
+                  <Filters.Toggle
+                    id="filterBrandName"
+                    filterField="brand_name"
+                  />
+                  <Filters.Search
+                    id="filterBrandName"
+                    filterField="brand_name"
+                  />
                 </Filters.Filter>
               </div>
 
@@ -59,10 +65,10 @@ function CosmeticTable() {
               <div>
                 Cruelty free{" "}
                 <Filters.Filter>
-                  <Filters.Toggle id="filterCf" filterField="is_cf" />
+                  <Filters.Toggle id="filterCf" filterField="is_cruelty_free" />
                   <Filters.List
                     id="filterCf"
-                    filterField="is_cf"
+                    filterField="is_cruelty_free"
                     options={[
                       { value: "all", label: "Tous" },
                       { value: "1", label: "Oui" },

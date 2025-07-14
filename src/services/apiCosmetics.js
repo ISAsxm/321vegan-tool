@@ -1,49 +1,6 @@
-import { fromToday, buildURLSearchParams } from "@/utils/helpers";
+import { buildURLSearchParams } from "@/utils/helpers";
 import { API_URL } from "@/utils/constants";
 import axiosInstance from "@/services/axiosInstance";
-
-const COSMETICS = [
-  {
-    id: 1,
-    created_at: fromToday(-200, true),
-    updated_at: fromToday(-1, true),
-    name: "So bio etic",
-    is_vegan: false,
-    is_cf: true,
-  },
-  {
-    id: 2,
-    created_at: fromToday(-200, true),
-    updated_at: fromToday(-1, true),
-    name: "Avril",
-    is_vegan: false,
-    is_cf: true,
-  },
-  {
-    id: 3,
-    created_at: fromToday(-200, true),
-    updated_at: fromToday(-1, true),
-    name: "Energie fruit",
-    is_vegan: true,
-    is_cf: true,
-  },
-  {
-    id: 4,
-    created_at: fromToday(-20, true),
-    updated_at: fromToday(-10, true),
-    name: "Comme avant",
-    is_vegan: true,
-    is_cf: true,
-  },
-  {
-    id: 5,
-    created_at: fromToday(-10, true),
-    updated_at: fromToday(-5, true),
-    name: "Torriden",
-    is_vegan: false,
-    is_cf: false,
-  },
-];
 
 export async function getCosmetics() {
   try {
@@ -67,65 +24,115 @@ export async function getCosmetics() {
 }
 
 export async function getSearchCosmetics({ filters, sortBy, page, size }) {
-  const data = await Promise.resolve(COSMETICS);
-  const count = data.length;
-
-  const error = count > 0 ? false : true;
-  if (error) {
-    console.error(error);
-    throw new Error("Cosmetics could not be loaded");
+  try {
+    const params = buildURLSearchParams(filters, sortBy, page, size);
+    const res = await axiosInstance.get(
+      [`${API_URL}/cosmetics/search`, params].filter(Boolean).join("?")
+    );
+    const data = await res.data;
+    return { data: data.items, count: data.total };
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load searched cosmetics. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't load searched cosmetics. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't load searched cosmetics. Error: ${error.message}`
+      );
+    }
   }
-  const params = buildURLSearchParams(filters, sortBy, page, size);
-  console.log([`${API_URL}/cosmetics`, params].filter(Boolean).join("?"));
-
-  return { data, count };
 }
 
 export async function getCosmetic(id) {
-  const data = await Promise.resolve(
-    COSMETICS.filter((p) => p.id === Number(id))[0]
-  );
-  const error = data ? false : true;
-  if (error) {
-    console.error(error);
-    throw new Error("Cosmetic not found");
+  try {
+    const res = await axiosInstance.get(`${API_URL}/cosmetics/${id}`);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't find cosmetic #${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't find cosmetic #${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't find cosmetic #${id}. Error: ${error.message}`);
+    }
   }
-
-  return data;
 }
 
 export async function createCosmetic(cosmetic) {
-  const id = COSMETICS.length + 1;
-  const newCosmetic = { id: id, ...cosmetic };
-  const data = await Promise.resolve(newCosmetic);
-  const error = data ? false : true;
-  if (error) {
-    throw new Error(`Cosmetic # ${id} not created`);
+  try {
+    const res = await axiosInstance.post(`${API_URL}/cosmetics`, cosmetic);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't create cosmetic. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't create cosmetic. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't create cosmetic. Error: ${error.message}`);
+    }
   }
-
-  return data;
 }
 
 export async function updateCosmetic(id, cosmetic) {
-  console.log(id, cosmetic);
-  const data = await Promise.resolve({ id: id, ...cosmetic });
-  const error = data ? false : true;
-  if (error) {
-    throw new Error(`Cosmetic # ${id} not updated`);
+  try {
+    const res = await axiosInstance.put(`${API_URL}/cosmetics/${id}`, cosmetic);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't update cosmetic # ${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't update cosmetic # ${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't update cosmetic # ${id}. Error: ${error.message}`
+      );
+    }
   }
-
-  return data;
 }
 
 export async function deleteCosmetic(id) {
-  const data = await Promise.resolve(
-    `Cosmetic # ${id} was successfully deleted`
-  );
-
-  const error = data ? false : true;
-  if (error) {
-    throw new Error(`Cosmetic # ${id} not deleted`);
+  try {
+    const res = await axiosInstance.delete(`${API_URL}/cosmetics/${id}`);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't delete cosmetic # ${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't delete cosmetic # ${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't delete cosmetic # ${id}. Error: ${error.message}`
+      );
+    }
   }
-
-  return data;
 }

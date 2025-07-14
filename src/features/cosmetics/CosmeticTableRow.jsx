@@ -39,18 +39,18 @@ function CosmeticTableRow({ cosmetic }) {
   const { isDeleting, deleteCosmetic } = useDeleteCosmetic();
   const {
     id: cosmeticId,
-    name,
+    brand_name,
     created_at,
     updated_at,
     is_vegan: isVegan,
-    is_cf: isCrueltyFree,
+    is_cruelty_free: isCrueltyFree,
   } = cosmetic;
 
   return (
     <Table.Row>
       <Ref># {cosmeticId}</Ref>
 
-      <Stacked>{name}</Stacked>
+      <Stacked>{brand_name}</Stacked>
 
       <Stacked>
         <span>{formatDate(created_at)}</span>

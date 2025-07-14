@@ -19,15 +19,16 @@ function UpdateCosmeticForm({ cosmeticToUpdate, onCloseModal }) {
   const { field: isVeganField } = useController({
     name: "is_vegan",
     control,
-    defaultValue: false,
+    defaultValue: cosmeticToUpdate.is_vegan,
   });
   const { field: isCFField } = useController({
-    name: "is_cf",
+    name: "is_cruelty_free",
     control,
-    defaultValue: false,
+    defaultValue: cosmeticToUpdate.is_cruelty_free,
   });
 
   function onSubmit(data) {
+    console.log(data);
     updateCosmetic(
       { newData: data, id: updateId },
       {
@@ -44,11 +45,11 @@ function UpdateCosmeticForm({ cosmeticToUpdate, onCloseModal }) {
       onSubmit={handleSubmit(onSubmit)}
       type={onCloseModal ? "modal" : "regular"}
     >
-      <FormRow label="Nom de la marque" error={errors.name?.message}>
+      <FormRow label="Nom de la marque" error={errors.brand_name?.message}>
         <Input
           type="text"
-          id="name"
-          {...register("name")}
+          id="brand_name"
+          {...register("brand_name")}
           disabled={isUpdating}
           required
         />
@@ -66,9 +67,9 @@ function UpdateCosmeticForm({ cosmeticToUpdate, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Cruelty Free ?" error={errors.is_cf?.message}>
+      <FormRow label="Cruelty Free ?" error={errors.is_cruelty_free?.message}>
         <Checkbox
-          name="is_cf"
+          name="is_cruelty_free"
           onChange={isCFField.onChange}
           onBlur={isCFField.onBlur}
           checked={isCFField.value}
