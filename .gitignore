@@ -1,5 +1,6 @@
 # Secure
 .env
+.env.production
 
 # Logs
 logs
