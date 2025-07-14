@@ -123,7 +123,7 @@ Pull requests - patches, improvements, new features - are a fantastic help. Howe
    # Access the newly cloned directory
    cd <repo-name>
    # Assign the original repository to a remote called «upstream»
-   git remote add upstream https://github.com/llambrecht/321vegan-tool.git
+   git remote add upstream https://github.com/ISAsxm/321vegan-tool.git
    ```
 
 2. If you cloned some time ago, retrieve the latest changes from the main:
@@ -160,7 +160,7 @@ Pull requests - patches, improvements, new features - are a fantastic help. Howe
 1. Clone the repository and create a branch
 
    ```bash
-   git clone https://github.com/llambrecht/321vegan-tool.git
+   git clone https://github.com/ISAsxm/321vegan-tool.git
    cd <repo-name>
    git checkout -b <topic-branch-name>
    ```
@@ -240,7 +240,7 @@ If you are stuck at any step in the process, don't hesitate to contact us
 
 # Community
 
-The main project team can be found in the [Team](https://github.com/llambrecht/321vegan-tool/blob/main/TEAM.md).
+The main project team can be found in the [Team](https://github.com/ISAsxm/321vegan-tool/blob/main/TEAM.md).
 
 # Support this project!
 
@@ -250,4 +250,4 @@ Your help is invaluable, thank you from the bottom of our heart 💚!
 
 # Code of conduct
 
-All persons interacting in the 321Vegan project code bases, issue trackers, discussions and mailing lists are requested to follow the [321Vegan Community Code of Conduct](https://github.com/llambrecht/321vegan-tool/blob/main/CODE_OF_CONDUCT.md).
+All persons interacting in the 321Vegan project code bases, issue trackers, discussions and mailing lists are requested to follow the [321Vegan Community Code of Conduct](https://github.com/ISAsxm/321vegan-tool/blob/main/CODE_OF_CONDUCT.md).

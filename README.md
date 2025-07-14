@@ -74,17 +74,17 @@ Only the code developed by the 321 Vegan team and included in this repository is
 
 ---
 
-© 2025 Louis Lambrecht. Released under the [AGPL-3.0 License](https://github.com/llambrecht/321vegan-app/blob/main/LICENSE).
+© 2025 Louis Lambrecht. Released under the [AGPL-3.0 License](https://github.com/ISAsxm/321vegan-app/blob/main/LICENSE).
 
-[contributors-shield]: https://img.shields.io/github/contributors/llambrecht/321vegan-app.svg?style=for-the-badge
-[contributors-url]: https://github.com/llambrecht/321vegan-app/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/llambrecht/321vegan-app.svg?style=for-the-badge
-[forks-url]: https://github.com/llambrecht/321vegan-app/network/members
-[stars-shield]: https://img.shields.io/github/stars/llambrecht/321vegan-app.svg?style=for-the-badge
-[stars-url]: https://github.com/llambrecht/321vegan-app/stargazers
-[issues-shield]: https://img.shields.io/github/issues/llambrecht/321vegan-app.svg?style=for-the-badge
+[contributors-shield]: https://img.shields.io/github/contributors/ISAsxm/321vegan-app.svg?style=for-the-badge
+[contributors-url]: https://github.com/ISAsxm/321vegan-app/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/ISAsxm/321vegan-app.svg?style=for-the-badge
+[forks-url]: https://github.com/ISAsxm/321vegan-app/network/members
+[stars-shield]: https://img.shields.io/github/stars/ISAsxm/321vegan-app.svg?style=for-the-badge
+[stars-url]: https://github.com/ISAsxm/321vegan-app/stargazers
+[issues-shield]: https://img.shields.io/github/issues/ISAsxm/321vegan-app.svg?style=for-the-badge
 [issues-url]: https://github.com/llambrecht/321vegan-app/issues
-[license-shield]: https://img.shields.io/github/license/llambrecht/321vegan-app.svg?style=for-the-badge
-[license-url]: https://github.com/llambrecht/321vegan-app/blob/main/LICENSE.md
+[license-shield]: https://img.shields.io/github/license/ISAsxm/321vegan-app.svg?style=for-the-badge
+[license-url]: https://github.com/ISAsxm/321vegan-app/blob/main/LICENSE.md
 [linkedin-shield]: https://img.shields.io/badge/LinkedIn-Connect-blue?logo=linkedin&style=for-the-badge
 [linkedin-url]: https://www.linkedin.com/in/your-name/
