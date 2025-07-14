@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useController, useForm } from "react-hook-form";
+import { useController, useForm, useWatch } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
@@ -53,6 +53,15 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     defaultValue: checkedInValues.biodynamic,
   });
 
+  // Watch the status field to conditionally show problems field
+  const statusValue = useWatch({
+    control,
+    name: "status",
+  });
+
+  // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
+  const shouldShowProblemsField = statusValue === "MAYBE_VEGAN" || statusValue === "NON_VEGAN";
+
   // automatically update selected brand on OFFproduct data loaded
   useEffect(() => {
     if (productToCheckedIn.brand) return;
@@ -65,6 +74,10 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   }, [brands, productToCheckedIn, resetField]);
 
   function onSubmit(data) {
+    if (!shouldShowProblemsField) {
+      data.problem_description = null;
+    }
+    
     updateProduct(
       { newData: data, id: checkedId },
       {
@@ -157,13 +170,25 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         />
       </FormRow>
 
-      <FormRow label="Problèmes" error={errors.problem_description?.message}>
-        <Textarea
-          id="problem_description"
-          {...register("problem_description")}
-          disabled={isLoading}
-        />
-      </FormRow>
+      {shouldShowProblemsField && (
+        <FormRow 
+          label={
+            <div>
+              Problèmes
+              <div style={{ fontSize: '1.2rem', fontWeight: '400', color: 'var(--color-grey-500)', marginTop: '0.4rem' }}>
+                Raison pour laquelle le produit n'est pas vegan
+              </div>
+            </div>
+          } 
+          error={errors.problem_description?.message}
+        >
+          <Textarea
+            id="problem_description"
+            {...register("problem_description")}
+            disabled={isLoading}
+          />
+        </FormRow>
+      )}
 
       <FormRow label="Biodynamie ?" error={errors.biodynamic?.message}>
         <Checkbox

@@ -9,6 +9,7 @@ import { MdOutlineImageNotSupported } from "react-icons/md";
 import {
   HiOutlineBuildingOffice,
   HiOutlineListBullet,
+  HiTag,
   HiOutlineBeaker,
 } from "react-icons/hi2";
 
@@ -49,7 +50,7 @@ const OffDescriptionBox = styled.div`
   gap: 0.8rem;
 `;
 
-function OffDataBox({ imageSrc, ingredients, additives, brandName }) {
+function OffDataBox({ imageSrc, ingredients, additives, brandName, productName }) {
   return (
     <StyledOffDataBox>
       <OffImgFallbackBox $src={imageSrc}>
@@ -63,6 +64,14 @@ function OffDataBox({ imageSrc, ingredients, additives, brandName }) {
           type="horizontal"
         >
           {brandName || <NoDataItem>Non disponible</NoDataItem>}
+        </DataItem>
+
+        <DataItem
+          icon={< HiTag/>}
+          label="Nom"
+          type="horizontal"
+        >
+          {productName || <NoDataItem>Non disponible</NoDataItem>}
         </DataItem>
 
         <DataItem

@@ -46,10 +46,9 @@ function ProductRegister() {
   const {
     brands,
     product_name,
-    product_name_fr,
     image_url,
     ingredients_text: ingredients,
-    additives_tags: additives,
+    additives_tags: additives, 
   } = offProduct || {};
 
   const brandName =
@@ -111,6 +110,7 @@ function ProductRegister() {
             <OffDataBox
               imageSrc={image_url}
               ingredients={ingredients}
+              productName={product_name}
               additives={additives}
               brandName={brandName}
             />
@@ -121,7 +121,7 @@ function ProductRegister() {
           <RegisterProductForm
             productToCheckedIn={{
               ...product,
-              name: name || product_name_fr,
+              name: name || product_name,
               brandName: brandName,
             }}
             onClose={goBack}
