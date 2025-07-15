@@ -7,6 +7,7 @@ import {
   HiOutlineHome,
   HiOutlineUsers,
   HiOutlineBuildingOffice,
+  HiMiniGlobeAlt,
 } from "react-icons/hi2";
 import { PiHandSoap, PiPlant } from "react-icons/pi";
 
@@ -74,12 +75,14 @@ function MainNav() {
             <span>Produits</span>
           </StyledNavLink>
         </li>
+
         <li>
           <StyledNavLink to="/additives">
             <HiOutlineBeaker />
             <span>Additifs</span>
           </StyledNavLink>
         </li>
+
         <li>
           <StyledNavLink to="/cosmetics">
             <PiHandSoap />
@@ -93,12 +96,20 @@ function MainNav() {
           </StyledNavLink>
         </li>
         {!isLoading && user.role === "admin" && (
-          <li>
-            <StyledNavLink to="/users">
-              <HiOutlineUsers />
-              <span>Utilisateurices</span>
-            </StyledNavLink>
-          </li>
+          <>
+            <li>
+              <StyledNavLink to="/users">
+                <HiOutlineUsers />
+                <span>Utilisateurices</span>
+              </StyledNavLink>
+            </li>
+            <li>
+              <StyledNavLink to="/clients">
+                <HiMiniGlobeAlt />
+                <span>Clients API</span>
+              </StyledNavLink>
+            </li>
+          </>
         )}
       </NavList>
     </nav>
