@@ -20,6 +20,7 @@ import Additive from "@/pages/Additive";
 import Cosmetics from "@/pages/Cosmetics";
 import Brands from "@/pages/Brands";
 import Users from "@/pages/Users";
+import ApiClients from "@/pages/ApiClients";
 import Account from "@/pages/Account";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
@@ -99,6 +100,14 @@ function App() {
                   element={
                     <ProtectedRouteRole role="admin">
                       <Users />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="clients"
+                  element={
+                    <ProtectedRouteRole role="admin">
+                      <ApiClients />
                     </ProtectedRouteRole>
                   }
                 />
