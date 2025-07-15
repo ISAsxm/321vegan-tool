@@ -4,7 +4,7 @@ import axiosInstance from "./axiosInstance";
 
 export async function getUsers() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/users`);
+    const res = await axiosInstance.get(`${API_URL}/users/`);
     const data = await res.data;
     return { data: data, count: data?.length };
   } catch (error) {
@@ -68,7 +68,7 @@ export async function getUser(id) {
 
 export async function createUser(user) {
   try {
-    const res = await axiosInstance.post(`${API_URL}/users`, user);
+    const res = await axiosInstance.post(`${API_URL}/users/`, user);
     const data = await res.data;
     return data;
   } catch (error) {

@@ -9,7 +9,7 @@ import { buildQueryFilters } from "@/utils/helpers";
 import { getSearchUsers } from "@/services/apiUsers";
 
 const filterFields = [
-  { field: "nickname", operator: "contains__", value: null },
+  { field: "nickname", operator: "__contains", value: null },
   { field: "status", value: null },
   { field: "role", value: null },
   { field: "is_active", value: null },

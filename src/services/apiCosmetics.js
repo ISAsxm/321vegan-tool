@@ -4,7 +4,7 @@ import axiosInstance from "@/services/axiosInstance";
 
 export async function getCosmetics() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/cosmetics`);
+    const res = await axiosInstance.get(`${API_URL}/cosmetics/`);
     const data = await res.data;
     return { data: data, count: data?.length };
   } catch (error) {
@@ -72,7 +72,7 @@ export async function getCosmetic(id) {
 
 export async function createCosmetic(cosmetic) {
   try {
-    const res = await axiosInstance.post(`${API_URL}/cosmetics`, cosmetic);
+    const res = await axiosInstance.post(`${API_URL}/cosmetics/`, cosmetic);
     const data = await res.data;
     return data;
   } catch (error) {

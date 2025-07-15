@@ -78,7 +78,7 @@ const ADDITIVES = [
 
 export async function getAdditives() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/additives`);
+    const res = await axiosInstance.get(`${API_URL}/additives/`);
     const data = await res.data;
     return { data: data, count: data?.length };
   } catch (error) {

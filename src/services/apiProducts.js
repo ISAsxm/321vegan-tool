@@ -4,7 +4,7 @@ import axiosInstance from "./axiosInstance";
 
 export async function getProducts() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/products`);
+    const res = await axiosInstance.get(`${API_URL}/products/`);
     const data = res.data;
     return { data: data, count: data?.length };
   } catch (error) {
@@ -72,7 +72,7 @@ export async function getProduct(id) {
 
 export async function createProduct(product) {
   try {
-    const res = await axiosInstance.post(`${API_URL}/products`, product);
+    const res = await axiosInstance.post(`${API_URL}/products/`, product);
     const data = await res.data;
     return data;
   } catch (error) {

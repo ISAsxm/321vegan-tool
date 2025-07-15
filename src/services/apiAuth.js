@@ -47,7 +47,7 @@ export async function logout() {
 
 export async function getCurrentUser() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/me`);
+    const res = await axiosInstance.get(`${API_URL}/me/`);
     const data = await res.data;
     return data;
   } catch (error) {
@@ -72,7 +72,7 @@ export async function updateCurrentUser({ id, password, nickname, avatar }) {
   if (password) updateData = { password: password };
   if (nickname) updateData = { nickname: nickname };
   try {
-    const res = await axiosInstance.put(`${API_URL}/me`, updateData);
+    const res = await axiosInstance.put(`${API_URL}/me/`, updateData);
     const data = await res.data;
 
     return data;
@@ -84,7 +84,7 @@ export async function updateCurrentUser({ id, password, nickname, avatar }) {
     // console.log(fileName);
     // // 3. Update avatar in the user
     // updateData = { avatar: fileName };
-    // const res2 = await axios.put(`${API_URL}/me`, updateData);
+    // const res2 = await axios.put(`${API_URL}/me/`, updateData);
     // const data2 = await res2.data;
     // return data2;
   } catch (error) {

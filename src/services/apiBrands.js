@@ -4,7 +4,7 @@ import axiosInstance from "@/services/axiosInstance";
 
 export async function getBrands() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/brands`);
+    const res = await axiosInstance.get(`${API_URL}/brands/`);
     const data = await res.data;
     return { data: data, count: data?.length };
   } catch (error) {
@@ -68,7 +68,7 @@ export async function getBrand(id) {
 
 export async function createBrand(brand) {
   try {
-    const res = await axiosInstance.post(`${API_URL}/brands`, brand);
+    const res = await axiosInstance.post(`${API_URL}/brands/`, brand);
     const data = await res.data;
     return data;
   } catch (error) {
