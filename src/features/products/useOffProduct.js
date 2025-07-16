@@ -9,11 +9,11 @@ import { getProductData } from "@/services/apiOpenFoodFacts";
 export function useOffProduct() {
   const { productId } = useParams();
 
-  const { isLoading, product } = useProduct(productId);
+  const { isPending, product } = useProduct(productId);
 
   const productCode = product?.ean;
 
-  const { isLoading: isLoadingOff, data: offProduct } = useQuery({
+  const { isPending: isPendingOff, data: offProduct } = useQuery({
     queryKey: productsKeys.off(productId, productCode),
     queryFn: () => getProductData(productCode),
     // The query will not execute until the productCode exists
@@ -25,5 +25,5 @@ export function useOffProduct() {
     },
   });
 
-  return { isLoading, product, isLoadingOff, offProduct };
+  return { isPending, product, isPendingOff, offProduct };
 }

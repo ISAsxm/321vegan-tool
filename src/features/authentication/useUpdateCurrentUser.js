@@ -11,7 +11,7 @@ function transformUserRole(data) {
 export function useUpdateCurrentUser() {
   const queryClient = useQueryClient();
 
-  const { mutate: updateCurrentUser, isLoading: isUpdating } = useMutation({
+  const { mutate: updateCurrentUser, isPending: isUpdating } = useMutation({
     mutationFn: updateCurrentUserApi,
     onSuccess: (data) => {
       toast.success("Votre compte a bien été modifié");

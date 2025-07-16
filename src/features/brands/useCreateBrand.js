@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useCreateBrand() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isCreating, mutate: createBrand } = useMutation({
+  const { isPending: isCreating, mutate: createBrand } = useMutation({
     mutationFn: createBrandApi,
     onSuccess: () => {
       toast.success("La marque a bien été créée");

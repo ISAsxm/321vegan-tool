@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useDeleteProduct() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteProduct } = useMutation({
+  const { isPending: isDeleting, mutate: deleteProduct } = useMutation({
     mutationFn: deleteProductApi,
     onSuccess: () => {
       toast.success("Le produit a bien été supprimé");

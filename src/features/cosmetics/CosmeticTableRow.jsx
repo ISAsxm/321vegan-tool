@@ -35,7 +35,7 @@ const Stacked = styled.div`
 `;
 
 function CosmeticTableRow({ cosmetic }) {
-  const { isLoading: isLoadingRoles, userRoles } = useCurrentUser();
+  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
   const { isDeleting, deleteCosmetic } = useDeleteCosmetic();
   const {
     id: cosmeticId,
@@ -66,7 +66,7 @@ function CosmeticTableRow({ cosmetic }) {
 
       {isCrueltyFree ? <Tag type="green">Oui</Tag> : <Tag type="red">Non</Tag>}
 
-      {!isLoadingRoles && userRoles.includes("contributor") && (
+      {!isPendingRoles && userRoles.includes("contributor") && (
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={cosmeticId} />

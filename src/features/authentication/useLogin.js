@@ -9,7 +9,7 @@ export function useLogin() {
   const navigate = useNavigate();
   const { setToken } = useAuth();
 
-  const { mutate: login, isLoading } = useMutation({
+  const { mutate: login, isPending } = useMutation({
     mutationFn: ({ email, password }) => loginApi({ email, password }),
     onSuccess: (data) => {
       setToken(data.access_token);
@@ -23,5 +23,5 @@ export function useLogin() {
     },
   });
 
-  return { isLoading, login };
+  return { isPending, login };
 }

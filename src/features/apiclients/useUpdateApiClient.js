@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useUpdateApiClient() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isUpdating, mutate: updateApiClient } = useMutation({
+  const { isPending: isUpdating, mutate: updateApiClient } = useMutation({
     mutationFn: ({ id, newData }) => updateApiClientApi(id, newData),
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été modifié.e");

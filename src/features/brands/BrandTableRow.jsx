@@ -36,7 +36,7 @@ const Stacked = styled.div`
 `;
 
 function BrandTableRow({ brand }) {
-  const { isLoading: isLoadingRoles, userRoles } = useCurrentUser();
+  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
   const { isDeleting, deleteBrand } = useDeleteBrand();
   const { id: brandId, name, created_at, updated_at, parent } = brand;
 
@@ -60,7 +60,7 @@ function BrandTableRow({ brand }) {
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
 
-      {!isLoadingRoles && userRoles.includes("contributor") && (
+      {!isPendingRoles && userRoles.includes("contributor") && (
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={brandId} />

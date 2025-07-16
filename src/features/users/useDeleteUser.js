@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useDeleteUser() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteUser } = useMutation({
+  const { isPending: isDeleting, mutate: deleteUser } = useMutation({
     mutationFn: deleteUserApi,
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été supprimé.e");

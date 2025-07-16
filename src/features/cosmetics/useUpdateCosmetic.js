@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useUpdateCosmetic() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isUpdating, mutate: updateCosmetic } = useMutation({
+  const { isPending: isUpdating, mutate: updateCosmetic } = useMutation({
     mutationFn: ({ id, newData }) => updateCosmeticApi(id, newData),
     onSuccess: () => {
       toast.success("La marque de cosmétiques a bien été modifiée");

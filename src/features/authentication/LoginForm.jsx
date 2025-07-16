@@ -10,7 +10,7 @@ import Button from "@/ui/Button";
 import SpinnerMini from "@/ui/SpinnerMini";
 
 function LoginForm() {
-  const { isLoading, login } = useLogin();
+  const { isPending, login } = useLogin();
 
   const { register, formState, handleSubmit, reset } = useForm();
   const { errors } = formState;
@@ -37,7 +37,7 @@ function LoginForm() {
               message: "Adresse e-mail invalide",
             },
           })}
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </FormCol>
@@ -49,14 +49,14 @@ function LoginForm() {
           {...register("password", {
             required: "Ce champ est obligatoire",
           })}
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </FormCol>
 
       <FormCol>
-        <Button size="large" disabled={isLoading}>
-          {!isLoading ? "Me connecter" : <SpinnerMini />}
+        <Button size="large" disabled={isPending}>
+          {!isPending ? "Me connecter" : <SpinnerMini />}
         </Button>
       </FormCol>
     </Form>

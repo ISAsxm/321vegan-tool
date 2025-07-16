@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useCreateProduct() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isCreating, mutate: createProduct } = useMutation({
+  const { isPending: isCreating, mutate: createProduct } = useMutation({
     mutationFn: createProductApi,
     onSuccess: () => {
       toast.success("Le produit a bien été créé");

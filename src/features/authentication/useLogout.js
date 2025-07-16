@@ -9,7 +9,7 @@ export function useLogout() {
   const navigate = useNavigate();
   const { setToken } = useAuth();
 
-  const { isLoading, mutate: logout } = useMutation({
+  const { isPending, mutate: logout } = useMutation({
     mutationFn: logoutApi,
     onSuccess: () => {
       setToken();
@@ -23,5 +23,5 @@ export function useLogout() {
     },
   });
 
-  return { isLoading, logout };
+  return { isPending, logout };
 }

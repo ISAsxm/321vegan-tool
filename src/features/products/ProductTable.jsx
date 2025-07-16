@@ -10,9 +10,9 @@ import SortBy from "@/ui/SortBy";
 import ProductTableRow from "./ProductTableRow";
 
 function ProductTable() {
-  const { isLoading, products, count } = useSearchProducts();
+  const { isPending, products, count } = useSearchProducts();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Menus>

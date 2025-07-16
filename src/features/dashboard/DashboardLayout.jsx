@@ -17,9 +17,9 @@ const StyledDashboardLayout = styled.div`
 `;
 
 function DashboardLayout() {
-  const { isLoading, products } = useCurrentMonthProducts();
+  const { isPending, products } = useCurrentMonthProducts();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <StyledDashboardLayout>

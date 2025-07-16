@@ -36,9 +36,9 @@ const Avatar = styled.div`
 `;
 
 function UserAvatar() {
-  const { isLoading, user } = useCurrentUser();
+  const { isPending, user } = useCurrentUser();
 
-  if (isLoading) return null;
+  if (isPending) return null;
 
   return (
     <StyledUserAvatar>

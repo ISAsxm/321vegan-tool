@@ -9,7 +9,7 @@ export function useAdditive() {
   const { additiveId } = useParams();
 
   const {
-    isLoading,
+    isPending,
     data: additive,
     error,
   } = useQuery({
@@ -18,5 +18,5 @@ export function useAdditive() {
     retry: false,
   });
 
-  return { isLoading, error, additive };
+  return { isPending, error, additive };
 }

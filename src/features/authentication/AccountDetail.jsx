@@ -10,9 +10,9 @@ import { useCurrentUser } from "./useCurrentUser";
 import { HiOutlineUser } from "react-icons/hi2";
 
 function AccountDetail() {
-  const { isLoading, user } = useCurrentUser();
+  const { isPending, user } = useCurrentUser();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
   return (
     <>
       <Heading as="h1">

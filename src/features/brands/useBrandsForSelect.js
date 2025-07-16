@@ -12,7 +12,7 @@ function transformBrandsForSelect(data) {
 
 export function useBrandsForSelect() {
   const {
-    isLoading,
+    isPending,
     data: { data: brands, count } = {},
     error,
   } = useQuery({
@@ -20,5 +20,5 @@ export function useBrandsForSelect() {
     queryFn: getBrands,
     select: transformBrandsForSelect,
   });
-  return { isLoading, error, brands, count };
+  return { isPending, error, brands, count };
 }

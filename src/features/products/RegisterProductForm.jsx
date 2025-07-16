@@ -20,8 +20,8 @@ import Spinner from "@/ui/Spinner";
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const { isUpdating, updateProduct } = useUpdateProduct();
-  const { isLoading: isLoadingUser, userRoles } = useCurrentUser();
-  const { isLoading: brandsIsLoading, brands } = useBrandsForSelect();
+  const { isPending: isPendingUser, userRoles } = useCurrentUser();
+  const { isPending: brandsisPending, brands } = useBrandsForSelect();
   const { register, formState, handleSubmit, reset, control, resetField } =
     useForm({
       defaultValues: {
@@ -31,7 +31,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     });
   const { errors } = formState;
 
-  const isLoading = isLoadingUser || brandsIsLoading || isUpdating;
+  const isPending = isPendingUser || brandsisPending || isUpdating;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -60,7 +60,8 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   });
 
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
-  const shouldShowProblemsField = statusValue === "MAYBE_VEGAN" || statusValue === "NON_VEGAN";
+  const shouldShowProblemsField =
+    statusValue === "MAYBE_VEGAN" || statusValue === "NON_VEGAN";
 
   // automatically update selected brand on OFFproduct data loaded
   useEffect(() => {
@@ -77,7 +78,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     if (!shouldShowProblemsField) {
       data.problem_description = null;
     }
-    
+
     updateProduct(
       { newData: data, id: checkedId },
       {
@@ -89,7 +90,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     );
   }
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Form type={"regular"}>
@@ -101,7 +102,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           isSearchable={true}
           defaultValue={[stateField.value]}
           required={true}
-          disabled={isLoading}
+          disabled={isPending}
           options={Object.entries(PRODUCT_STATES).map(([key, o]) => {
             return {
               value: key,
@@ -120,7 +121,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           isSearchable={true}
           defaultValue={[statusField.value]}
           required={true}
-          disabled={isLoading}
+          disabled={isPending}
           options={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
@@ -135,7 +136,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           isSearchable={true}
           defaultValue={[brandField.value]}
           required={false}
-          disabled={isLoading}
+          disabled={isPending}
           options={brands || []}
           createComponent={
             <CreateBrandForm prefillName={productToCheckedIn.brandName} />
@@ -148,7 +149,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           type="text"
           id="ean"
           {...register("ean", { required: "Ce champ est obligatoire" })}
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </FormRow>
@@ -158,7 +159,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           type="text"
           id="name"
           {...register("name")}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -166,26 +167,33 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         <Textarea
           id="description"
           {...register("description")}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
       {shouldShowProblemsField && (
-        <FormRow 
+        <FormRow
           label={
             <div>
               Problèmes
-              <div style={{ fontSize: '1.2rem', fontWeight: '400', color: 'var(--color-grey-500)', marginTop: '0.4rem' }}>
+              <div
+                style={{
+                  fontSize: "1.2rem",
+                  fontWeight: "400",
+                  color: "var(--color-grey-500)",
+                  marginTop: "0.4rem",
+                }}
+              >
                 Raison pour laquelle le produit n'est pas vegan
               </div>
             </div>
-          } 
+          }
           error={errors.problem_description?.message}
         >
           <Textarea
             id="problem_description"
             {...register("problem_description")}
-            disabled={isLoading}
+            disabled={isPending}
           />
         </FormRow>
       )}
@@ -198,7 +206,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -207,11 +215,11 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           $variation="secondary"
           type="reset"
           onClick={() => onClose()}
-          disabled={isLoading}
+          disabled={isPending}
         >
           Annuler
         </Button>
-        <Button disabled={isLoading} onClick={handleSubmit(onSubmit)}>
+        <Button disabled={isPending} onClick={handleSubmit(onSubmit)}>
           Enregistrer
         </Button>
       </FormRow>

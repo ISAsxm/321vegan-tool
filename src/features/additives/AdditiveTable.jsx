@@ -12,9 +12,9 @@ import SortBy from "@/ui/SortBy";
 import AdditiveTableRow from "./AdditiveTableRow";
 
 function AdditiveTable() {
-  const { isLoading, additives, count } = useSearchAdditives();
+  const { isPending, additives, count } = useSearchAdditives();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Menus>

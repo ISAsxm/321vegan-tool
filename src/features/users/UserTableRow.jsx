@@ -81,9 +81,9 @@ function UserTableRow({ user }) {
     created_at,
   } = user;
   const { isDeleting, deleteUser } = useDeleteUser();
-  const { isLoading: isLoadingUser, user: currentUser } = useCurrentUser();
+  const { isPending: isPendingUser, user: currentUser } = useCurrentUser();
 
-  if (isLoadingUser) return null;
+  if (isPendingUser) return null;
 
   return (
     <Table.Row>

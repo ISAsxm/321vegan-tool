@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useDeleteAdditive() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteAdditive } = useMutation({
+  const { isPending: isDeleting, mutate: deleteAdditive } = useMutation({
     mutationFn: deleteAdditiveApi,
     onSuccess: () => {
       toast.success("L'additif a bien été supprimé");

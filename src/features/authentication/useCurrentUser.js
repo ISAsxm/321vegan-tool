@@ -9,14 +9,14 @@ function transformUserRole(data) {
 }
 
 export function useCurrentUser() {
-  const { isLoading, data: user } = useQuery({
+  const { isPending, data: user } = useQuery({
     queryKey: ["user"],
     queryFn: getCurrentUser,
     select: transformUserRole,
     retry: 0,
   });
   return {
-    isLoading,
+    isPending,
     user,
     userRoles: user?.roles,
   };

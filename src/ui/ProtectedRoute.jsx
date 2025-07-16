@@ -8,20 +8,20 @@ import Spinner from "./Spinner";
 function ProtectedRoute({ children }) {
   const navigate = useNavigate();
   // 1. Load the authenticated user
-  const { isLoading, user } = useCurrentUser();
+  const { isPending, user } = useCurrentUser();
 
   const isAuthenticated = user !== "undefined";
 
   // 2. If there is no authenticated user, redirect to login
   useEffect(
     function () {
-      if (!isAuthenticated && !isLoading) navigate("/login");
+      if (!isAuthenticated && !isPending) navigate("/login");
     },
-    [isLoading, isAuthenticated, navigate]
+    [isPending, isAuthenticated, navigate]
   );
 
   // 3. show spinner if loading
-  if (isLoading)
+  if (isPending)
     return (
       <FullPage>
         <Spinner />

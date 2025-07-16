@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useCreateAdditive() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isCreating, mutate: createAdditive } = useMutation({
+  const { isPending: isCreating, mutate: createAdditive } = useMutation({
     mutationFn: createAdditiveApi,
     onSuccess: () => {
       toast.success("L'additif a bien été créé");

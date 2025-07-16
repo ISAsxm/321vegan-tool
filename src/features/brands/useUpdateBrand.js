@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useUpdateBrand() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isUpdating, mutate: updateBrand } = useMutation({
+  const { isPending: isUpdating, mutate: updateBrand } = useMutation({
     mutationFn: ({ id, newData }) => updateBrandApi(id, newData),
     onSuccess: () => {
       toast.success("La marque a bien été modifiée");

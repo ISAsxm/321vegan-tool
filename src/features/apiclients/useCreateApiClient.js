@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useCreateApiClient() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isCreating, mutate: createApiClient } = useMutation({
+  const { isPending: isCreating, mutate: createApiClient } = useMutation({
     mutationFn: createApiClientApi,
     onSuccess: () => {
       toast.success("Le client API a bien été créé");

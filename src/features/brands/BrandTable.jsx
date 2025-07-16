@@ -9,9 +9,9 @@ import SortBy from "@/ui/SortBy";
 import BrandTableRow from "./BrandTableRow";
 
 function BrandTable() {
-  const { isLoading, brands, count } = useSearchBrands();
+  const { isPending, brands, count } = useSearchBrands();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Menus>

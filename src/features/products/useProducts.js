@@ -4,7 +4,7 @@ import { productsKeys } from "./queryKeyFactory";
 
 export function useProducts() {
   const {
-    isLoading,
+    isPending,
     data: { data: products, count } = {},
     error,
   } = useQuery({
@@ -12,5 +12,5 @@ export function useProducts() {
     queryFn: getProducts,
   });
 
-  return { isLoading, error, products, count };
+  return { isPending, error, products, count };
 }

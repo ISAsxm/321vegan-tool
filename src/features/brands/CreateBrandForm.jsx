@@ -11,7 +11,7 @@ import Spinner from "@/ui/Spinner";
 
 function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
   const { isCreating, createBrand } = useCreateBrand();
-  const { isLoading: brandIsLoading, brands } = useBrandsForSelect();
+  const { isPending: brandisPending, brands } = useBrandsForSelect();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       parent_id: null,
@@ -19,7 +19,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
     },
   });
   const { errors } = formState;
-  const isLoading = isCreating || brandIsLoading;
+  const isPending = isCreating || brandisPending;
 
   const { field: parentField } = useController({
     name: "parent_id",
@@ -36,7 +36,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
     });
   }
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
@@ -48,7 +48,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
           isSearchable={true}
           defaultValue={[]}
           required={false}
-          disabled={isLoading}
+          disabled={isPending}
           options={brands || []}
         />
       </FormRow>
@@ -58,7 +58,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
           type="text"
           id="name"
           {...register("name", { required: "Ce champ est obligatoire" })}
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </FormRow>
@@ -68,11 +68,11 @@ function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isLoading}
+          disabled={isPending}
         >
           Annuler
         </Button>
-        <Button disabled={isLoading} onClick={handleSubmit(onSubmit)}>
+        <Button disabled={isPending} onClick={handleSubmit(onSubmit)}>
           Créer
         </Button>
       </FormRow>

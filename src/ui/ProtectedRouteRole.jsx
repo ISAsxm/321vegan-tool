@@ -9,18 +9,18 @@ import Spinner from "./Spinner";
 function ProtectedRouteRole({ children, role = "user" }) {
   const navigate = useNavigate();
   // 1. Load the authenticated user roles
-  const { isLoading, userRoles } = useCurrentUser();
+  const { isPending, userRoles } = useCurrentUser();
   const hasAccess = userRoles?.includes(role);
   // 2. If user NOT has access, redirect to homepage
   useEffect(
     function () {
-      if (!hasAccess && !isLoading) navigate("/");
+      if (!hasAccess && !isPending) navigate("/");
     },
-    [isLoading, hasAccess, navigate]
+    [isPending, hasAccess, navigate]
   );
 
   // 3. show spinner if loading
-  if (isLoading)
+  if (isPending)
     return (
       <FullPage>
         <Spinner />

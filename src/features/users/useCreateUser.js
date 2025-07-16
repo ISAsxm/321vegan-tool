@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useCreateUser() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isCreating, mutate: createUser } = useMutation({
+  const { isPending: isCreating, mutate: createUser } = useMutation({
     mutationFn: createUserApi,
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été créé.e");

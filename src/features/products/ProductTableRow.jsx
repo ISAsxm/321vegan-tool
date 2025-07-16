@@ -51,7 +51,7 @@ function ProductTableRow({ product }) {
   } = product;
   const navigate = useNavigate();
   const { isDeleting, deleteProduct } = useDeleteProduct();
-  const { isLoading: isLoadingRoles, userRoles } = useCurrentUser();
+  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
 
   return (
     <Table.Row>
@@ -89,7 +89,7 @@ function ProductTableRow({ product }) {
             >
               Voir le détail
             </Menus.Button>
-            {!isLoadingRoles && (
+            {!isPendingRoles && (
               <>
                 {userRoles.includes("contributor") &&
                   product.state === "CREATED" && (

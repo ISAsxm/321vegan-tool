@@ -13,7 +13,7 @@ import Spinner from "@/ui/Spinner";
 
 function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = brandToUpdate;
-  const { isLoading: isLoadingBrands, brands } = useBrandsForSelect();
+  const { isPending: isPendingBrands, brands } = useBrandsForSelect();
   const { isUpdating, updateBrand } = useUpdateBrand();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
@@ -22,7 +22,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
     },
   });
   const { errors } = formState;
-  const isLoading = isUpdating || isLoadingBrands;
+  const isPending = isUpdating || isPendingBrands;
 
   const { field: parentField } = useController({
     name: "parent_id",
@@ -41,7 +41,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
     );
   }
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Form
@@ -56,7 +56,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           isSearchable={true}
           defaultValue={[parentField.value]}
           required={false}
-          disabled={isLoading}
+          disabled={isPending}
           options={
             brands?.map((b) => {
               return {
@@ -74,7 +74,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           type="text"
           id="name"
           {...register("name", { required: "Ce champ est obligatoire" })}
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </FormRow>
@@ -84,11 +84,11 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isLoading}
+          disabled={isPending}
         >
           Annuler
         </Button>
-        <Button disabled={isLoading}>Modifier</Button>
+        <Button disabled={isPending}>Modifier</Button>
       </FormRow>
     </Form>
   );

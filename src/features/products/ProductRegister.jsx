@@ -28,10 +28,10 @@ import {
 } from "react-icons/hi2";
 
 function ProductRegister() {
-  const { isLoading, product, isLoadingOff, offProduct } = useOffProduct();
+  const { isPending, product, isPendingOff, offProduct } = useOffProduct();
   const goBack = useGoBack();
 
-  if (isLoading || isLoadingOff) return <Spinner />;
+  if (isPending || isPendingOff) return <Spinner />;
 
   const {
     id: productId,
@@ -48,7 +48,7 @@ function ProductRegister() {
     product_name,
     image_url,
     ingredients_text: ingredients,
-    additives_tags: additives, 
+    additives_tags: additives,
   } = offProduct || {};
 
   const brandName =

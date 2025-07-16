@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useDeleteApiClient() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteApiClient } = useMutation({
+  const { isPending: isDeleting, mutate: deleteApiClient } = useMutation({
     mutationFn: deleteApiClientApi,
     onSuccess: () => {
       toast.success("Le client API a bien été supprimé");

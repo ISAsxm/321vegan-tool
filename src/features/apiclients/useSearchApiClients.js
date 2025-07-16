@@ -1,6 +1,5 @@
-import { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 
 import { apiclientsKeys } from "./queryKeyFactory";
 
@@ -15,7 +14,6 @@ const filterFields = [
 ];
 
 export function useSearchApiClients() {
-  const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
   // FILTERS
@@ -31,27 +29,14 @@ export function useSearchApiClients() {
     : Number(searchParams.get("size"));
 
   const {
-    isLoading,
+    isPending,
     data: { data: clients, count } = {},
     error,
-    isPreviousData,
   } = useQuery({
     queryKey: apiclientsKeys.list(filters, sortBy, page, size),
     queryFn: () => getSearchApiClients({ filters, sortBy, page, size }),
-    keepPreviousData: true,
+    placeholderData: keepPreviousData,
   });
 
-  // PRE-FETCHING
-  useEffect(() => {
-    const pageCount = Math.ceil(count / size);
-    if (!isPreviousData && page < pageCount) {
-      queryClient.prefetchQuery({
-        queryKey: apiclientsKeys.list(filters, sortBy, page + 1, size),
-        queryFn: () =>
-          getSearchApiClients({ filters, sortBy, page: page + 1, size }),
-      });
-    }
-  }, [count, filters, sortBy, page, size, isPreviousData, queryClient]);
-
-  return { isLoading, error, clients, count };
+  return { isPending, error, clients, count };
 }

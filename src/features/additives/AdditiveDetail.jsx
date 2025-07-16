@@ -65,11 +65,11 @@ const InfoBox = styled.div`
 function AdditiveDetail() {
   const navigate = useNavigate();
   const goBack = useGoBack();
-  const { isLoading, additive } = useAdditive();
+  const { isPending, additive } = useAdditive();
   const { isDeleting, deleteAdditive } = useDeleteAdditive();
-  const { isLoading: isLoadingRoles, userRoles } = useCurrentUser();
+  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   if (!additive) return <Empty message="Additif inconnu" />;
 
@@ -167,7 +167,7 @@ function AdditiveDetail() {
         </Section>
       </DataBox>
 
-      {!isLoadingRoles && userRoles.includes("contributor") && (
+      {!isPendingRoles && userRoles.includes("contributor") && (
         <Modal>
           <ButtonGroup>
             <Modal.Open opens="edit">

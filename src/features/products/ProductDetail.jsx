@@ -73,10 +73,10 @@ const InfoBox = styled.div`
 function ProductDetail() {
   const navigate = useNavigate();
   const goBack = useGoBack();
-  const { isLoading, product } = useProduct();
+  const { isPending, product } = useProduct();
   const { isUpdating: isPublishing, updateProduct } = useUpdateProduct();
   const { isDeleting, deleteProduct } = useDeleteProduct();
-  const { isLoading: isLoadingRoles, userRoles } = useCurrentUser();
+  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
 
   const isWorking = isPublishing || isDeleting;
 
@@ -87,7 +87,7 @@ function ProductDetail() {
     });
   }
 
-  if (isLoading || isLoadingRoles) return <Spinner />;
+  if (isPending || isPendingRoles) return <Spinner />;
   if (!product) return <Empty message="Produit inconnu" />;
 
   const {
@@ -201,7 +201,7 @@ function ProductDetail() {
         </Section>
       </DataBox>
 
-      {!isLoadingRoles && (
+      {!isPendingRoles && (
         <Modal>
           <ButtonGroup>
             {userRoles.includes("contributor") && state === "CREATED" && (

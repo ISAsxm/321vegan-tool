@@ -16,7 +16,7 @@ export function useCurrentMonthProducts() {
   const size = 100;
 
   const {
-    isLoading,
+    isPending,
     data: { data: products, count } = {},
     error,
   } = useQuery({
@@ -24,5 +24,5 @@ export function useCurrentMonthProducts() {
     queryFn: () => getSearchProducts({ filters, sortBy, page, size }),
   });
 
-  return { isLoading, error, products, count };
+  return { isPending, error, products, count };
 }

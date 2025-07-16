@@ -20,8 +20,8 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productToUpdate;
   const { isUpdating, updateProduct } = useUpdateProduct();
-  const { isLoading: brandsIsLoading, brands } = useBrandsForSelect();
-  const { isLoading: isLoadingUser, userRoles } = useCurrentUser();
+  const { isPending: brandsisPending, brands } = useBrandsForSelect();
+  const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       ...updateValues,
@@ -62,7 +62,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     );
   }
 
-  if (brandsIsLoading || isLoadingUser) return <Spinner />;
+  if (brandsisPending || isPendingUser) return <Spinner />;
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>

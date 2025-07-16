@@ -41,7 +41,7 @@ const Stacked = styled.div`
 function AdditiveTableRow({ additive }) {
   const navigate = useNavigate();
   const { isDeleting, deleteAdditive } = useDeleteAdditive();
-  const { isLoading: isLoadingRoles, userRoles } = useCurrentUser();
+  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
   const {
     id: additiveId,
     name,
@@ -84,7 +84,7 @@ function AdditiveTableRow({ additive }) {
               Voir le détail
             </Menus.Button>
 
-            {!isLoadingRoles && userRoles.includes("contributor") && (
+            {!isPendingRoles && userRoles.includes("contributor") && (
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>

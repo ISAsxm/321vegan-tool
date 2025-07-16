@@ -19,12 +19,12 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function CreateProductForm({ onCloseModal }) {
   const { isCreating, createProduct } = useCreateProduct();
-  const { isLoading: brandIsLoading, brands } = useBrandsForSelect();
-  const { isLoading: isLoadingUser, userRoles } = useCurrentUser();
+  const { isPending: brandisPending, brands } = useBrandsForSelect();
+  const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { register, formState, handleSubmit, reset, control } = useForm();
   const { errors } = formState;
 
-  const isLoading = isCreating || brandIsLoading || isLoadingUser;
+  const isPending = isCreating || brandisPending || isPendingUser;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -59,7 +59,7 @@ function CreateProductForm({ onCloseModal }) {
     });
   }
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
@@ -71,7 +71,7 @@ function CreateProductForm({ onCloseModal }) {
           isSearchable={true}
           defaultValue={[stateField.value]}
           required={true}
-          disabled={isLoading}
+          disabled={isPending}
           options={Object.entries(PRODUCT_STATES).map(([key, o]) => {
             return {
               value: key,
@@ -89,7 +89,7 @@ function CreateProductForm({ onCloseModal }) {
           isSearchable={true}
           defaultValue={[statusField.value]}
           required={true}
-          disabled={isLoading}
+          disabled={isPending}
           options={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
@@ -104,7 +104,7 @@ function CreateProductForm({ onCloseModal }) {
           isSearchable={true}
           defaultValue={[brandField.value]}
           required={false}
-          disabled={isLoading}
+          disabled={isPending}
           options={brands || []}
           createComponent={<CreateBrandForm />}
         />
@@ -115,7 +115,7 @@ function CreateProductForm({ onCloseModal }) {
           type="text"
           id="ean"
           {...register("ean", { required: "Ce champ est obligatoire" })}
-          disabled={isLoading}
+          disabled={isPending}
           required
         />
       </FormRow>
@@ -125,7 +125,7 @@ function CreateProductForm({ onCloseModal }) {
           type="text"
           id="name"
           {...register("name")}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -133,7 +133,7 @@ function CreateProductForm({ onCloseModal }) {
         <Textarea
           id="description"
           {...register("description")}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -141,7 +141,7 @@ function CreateProductForm({ onCloseModal }) {
         <Textarea
           id="problem_description"
           {...register("problem_description")}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -153,7 +153,7 @@ function CreateProductForm({ onCloseModal }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
-          disabled={isLoading}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -162,11 +162,11 @@ function CreateProductForm({ onCloseModal }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isLoading}
+          disabled={isPending}
         >
           Annuler
         </Button>
-        <Button disabled={isLoading} onClick={handleSubmit(onSubmit)}>
+        <Button disabled={isPending} onClick={handleSubmit(onSubmit)}>
           Créer
         </Button>
       </FormRow>

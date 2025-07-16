@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useUpdateAdditive() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isUpdating, mutate: updateAdditive } = useMutation({
+  const { isPending: isUpdating, mutate: updateAdditive } = useMutation({
     mutationFn: ({ id, newData }) => updateAdditiveApi(id, newData),
     onSuccess: () => {
       toast.success("L'additif a bien été modifié");

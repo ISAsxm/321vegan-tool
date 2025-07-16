@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useDeleteBrand() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isDeleting, mutate: deleteBrand } = useMutation({
+  const { isPending: isDeleting, mutate: deleteBrand } = useMutation({
     mutationFn: deleteBrandApi,
     onSuccess: () => {
       toast.success("La marque a bien été supprimée");

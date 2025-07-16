@@ -6,7 +6,7 @@ import toast from "react-hot-toast";
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
 
-  const { isLoading: isUpdating, mutate: updateProduct } = useMutation({
+  const { isPending: isUpdating, mutate: updateProduct } = useMutation({
     mutationFn: ({ id, newData }) => updateProductApi(id, newData),
     onSuccess: () => {
       toast.success("Le produit a bien été modifié");

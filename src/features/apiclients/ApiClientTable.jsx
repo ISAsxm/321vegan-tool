@@ -9,9 +9,9 @@ import SortBy from "@/ui/SortBy";
 import ApiClientTableRow from "./ApiClientTableRow";
 
 function ApiClientTable() {
-  const { isLoading, clients, count } = useSearchApiClients();
+  const { isPending, clients, count } = useSearchApiClients();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Menus>

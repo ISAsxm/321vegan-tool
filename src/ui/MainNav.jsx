@@ -58,7 +58,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
-  const { isLoading, user } = useCurrentUser();
+  const { isPending, user } = useCurrentUser();
 
   return (
     <nav>
@@ -95,7 +95,7 @@ function MainNav() {
             <span>Marques</span>
           </StyledNavLink>
         </li>
-        {!isLoading && user.role === "admin" && (
+        {!isPending && user.role === "admin" && (
           <>
             <li>
               <StyledNavLink to="/users">

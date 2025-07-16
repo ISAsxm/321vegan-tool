@@ -9,9 +9,9 @@ import SortBy from "@/ui/SortBy";
 import UserTableRow from "./UserTableRow";
 
 function UserTable() {
-  const { isLoading, users, count } = useSearchUsers();
+  const { isPending, users, count } = useSearchUsers();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Menus>

@@ -9,9 +9,9 @@ import SortBy from "@/ui/SortBy";
 import CosmeticTableRow from "./CosmeticTableRow";
 
 function CosmeticTable() {
-  const { isLoading, cosmetics, count } = useSearchCosmetics();
+  const { isPending, cosmetics, count } = useSearchCosmetics();
 
-  if (isLoading) return <Spinner />;
+  if (isPending) return <Spinner />;
 
   return (
     <Menus>

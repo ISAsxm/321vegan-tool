@@ -9,7 +9,7 @@ export function useProduct() {
   const { productId } = useParams();
 
   const {
-    isLoading,
+    isPending,
     data: product,
     error,
   } = useQuery({
@@ -18,5 +18,5 @@ export function useProduct() {
     retry: false,
   });
 
-  return { isLoading, error, product };
+  return { isPending, error, product };
 }
