@@ -95,7 +95,7 @@ function ProductTableRow({ product }) {
                   product.state === "CREATED" && (
                     <Menus.Button
                       icon={<HiDocumentCheck />}
-                      onClick={() => navigate(`/register/${productId}`)}
+                      onClick={() => window.open(`/register/${productId}`, '_blank')}
                     >
                       Vérifier
                     </Menus.Button>
