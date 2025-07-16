@@ -20,6 +20,9 @@ export function useOffProduct() {
     enabled: !!productCode,
     retry: false,
     staleTime: Infinity,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchOnMount: false,
     meta: {
       errorMessage: `Ean ${productCode} inconnu dans Open Food Facts`,
     },
