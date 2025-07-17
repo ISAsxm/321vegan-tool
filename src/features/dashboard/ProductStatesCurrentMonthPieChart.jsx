@@ -1,5 +1,5 @@
 import { useDarkMode } from "@/contexts/DarkModeContext";
-import { PRODUCT_STATUSES } from "@/utils/constants";
+import { PRODUCT_STATES } from "@/utils/constants";
 import Heading from "@/ui/Heading";
 
 import styled from "styled-components";
@@ -18,7 +18,7 @@ const StyledChartBox = styled.div`
   border-radius: var(--border-radius-md);
 
   padding: 2.4rem 3.2rem;
-  grid-column: 3 / span 2;
+  grid-column: 1 / span 2;
 
   & > *:first-child {
     margin-bottom: 1.6rem;
@@ -30,32 +30,34 @@ const StyledChartBox = styled.div`
 `;
 
 const LIGHT_COLORS = {
-  green: "var(--color-green-700)",
   yellow: "var(--color-yellow-700)",
-  red: "var(--color-red-700)",
+  blue: "var(--color-blue-700)",
   silver: "var(--color-silver-700)",
+  indigo: "var(--color-indigo-700)",
+  green: "var(--color-green-700)",
 };
 const DARK_COLORS = {
-  green: "var(--color-green-100)",
   yellow: "var(--color-yellow-100)",
-  red: "var(--color-red-700)",
+  blue: "var(--color-blue-100)",
   silver: "var(--color-grey-400)",
+  indigo: "var(--color-indigo-100)",
+  green: "var(--color-green-100)",
 };
 
-const STATUSES = Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
-  return { ...o, status: key, value: Number("0") };
+const STATES = Object.entries(PRODUCT_STATES).map(([key, o]) => {
+  return { ...o, state: key, value: Number("0") };
 });
 
-function ProductStatusesPieChart({ products }) {
+function ProductStatesCurrentMonthPieChart({ products }) {
   const { isDarkMode } = useDarkMode();
-  const data = STATUSES.map((s) => {
-    s.value = products.filter((p) => p.status === s.status).length;
+  const data = STATES.map((s) => {
+    s.value = products.filter((p) => p.state === s.state).length;
     return s;
   });
 
   return (
     <StyledChartBox>
-      <Heading as="h2">Statut des produits</Heading>
+      <Heading as="h2">État des produits</Heading>
       <ResponsiveContainer width="100%" height={240}>
         <PieChart>
           <Pie
@@ -104,4 +106,4 @@ function ProductStatusesPieChart({ products }) {
   );
 }
 
-export default ProductStatusesPieChart;
+export default ProductStatesCurrentMonthPieChart;

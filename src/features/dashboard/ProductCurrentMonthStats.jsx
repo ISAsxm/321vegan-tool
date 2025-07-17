@@ -5,9 +5,10 @@ import {
   HiOutlineCheck,
   HiOutlineChartBar,
   HiOutlinePaperAirplane,
+  HiOutlineSparkles,
 } from "react-icons/hi2";
 
-function ProductStats({ products }) {
+function ProductCurrentMonthStats({ products }) {
   // Stat widget 1
   const numToRegister = products.filter((p) => p.state === "CREATED").length;
   // Stat widget 2
@@ -26,20 +27,20 @@ function ProductStats({ products }) {
     <>
       <Stat
         title="À vérifier"
-        color="yellow"
+        color="silver"
         icon={<HiOutlineDocumentCheck />}
         value={numToRegister}
       />
       <Stat
         title="À contacter"
-        color="blue"
+        color="yellow"
         icon={<HiOutlinePaperAirplane />}
         value={numToContact}
       />
       <Stat
         title="À publier"
         color="indigo"
-        icon={<HiOutlineCheck />}
+        icon={<HiOutlineSparkles />}
         value={numToPublish}
       />
       <Stat
@@ -52,4 +53,4 @@ function ProductStats({ products }) {
   );
 }
 
-export default ProductStats;
+export default ProductCurrentMonthStats;

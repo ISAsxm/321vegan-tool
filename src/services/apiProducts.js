@@ -13,7 +13,7 @@ export async function countProducts(filters) {
       [`${API_URL}/products/count`, params.toString()].filter(Boolean).join("?")
     );
     const data = res.data;
-    return { count: data.total };
+    return data.total;
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;

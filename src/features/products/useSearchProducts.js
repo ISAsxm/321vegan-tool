@@ -8,7 +8,7 @@ import { getSearchProducts } from "@/services/apiProducts";
 import { productsKeys } from "./queryKeyFactory";
 
 const filterFields = [
-  { field: "ean", operator: "__contains", value: null },
+  { field: "ean", value: null },
   { field: "name", operator: "__contains", value: null },
   { field: "status", value: null },
   { field: "state", value: null },

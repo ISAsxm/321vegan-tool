@@ -16,7 +16,7 @@ export const USER_ROLES = {
 };
 
 export const PRODUCT_STATES = {
-  CREATED: { color: "grey", label: "À vérifier", role: "user" },
+  CREATED: { color: "silver", label: "À vérifier", role: "user" },
   NEED_CONTACT: { color: "yellow", label: "À contacter", role: "contributor" },
   WAITING_BRAND_REPLY: {
     color: "blue",

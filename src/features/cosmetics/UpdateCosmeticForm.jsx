@@ -28,7 +28,6 @@ function UpdateCosmeticForm({ cosmeticToUpdate, onCloseModal }) {
   });
 
   function onSubmit(data) {
-    console.log(data);
     updateCosmetic(
       { newData: data, id: updateId },
       {

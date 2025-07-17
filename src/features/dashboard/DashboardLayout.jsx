@@ -1,12 +1,15 @@
 import { useCurrentMonthProducts } from "./useCurrentMonthProducts";
 
 import Spinner from "@/ui/Spinner";
+import Divider from "@/ui/Divider";
+import Heading from "@/ui/Heading";
 
-import ProductStats from "./ProductStats";
-import AllTimeProductStats from "./AllTimeProductStats";
-import ProductsAreaChart from "./ProductsAreaChart";
-import ProductStatesPieChart from "./ProductStatesPieChart";
-import ProductStatusesPieChart from "./ProductStatusesPieChart";
+import ProductCurrentMonthStats from "./ProductCurrentMonthStats";
+import ProductStatesAllTimeStats from "./ProductStatesAllTimeStats";
+import ProductStatusesAllTimeStats from "./ProductStatusesAllTimeStats";
+import ProductCurrentMonthAreaChart from "./ProductCurrentMonthAreaChart";
+import ProductStatesCurrentMonthPieChart from "./ProductStatesCurrentMonthPieChart";
+import ProductStatusesCurrentMonthPieChart from "./ProductStatusesCurrentMonthPieChart";
 
 import styled from "styled-components";
 
@@ -16,19 +19,18 @@ const StyledDashboardLayout = styled.div`
   gap: 2.4rem;
 `;
 
+const StyledHeading = styled(Heading)`
+  grid-column: 1 / -1;
+`;
+
 const Section = styled.div`
   grid-column: 1 / -1;
   display: contents;
 `;
 
-const SectionTitle = styled.h2`
+const SectionDivider = styled(Divider)`
   grid-column: 1 / -1;
-  font-size: 2.4rem;
-  font-weight: 600;
-  color: var(--color-grey-700);
-  margin: 0;
-  padding: 1.6rem 0;
-  border-bottom: 1px solid var(--color-grey-200);
+  margin: 4rem 0 4rem 0;
 `;
 
 function DashboardLayout() {
@@ -39,23 +41,31 @@ function DashboardLayout() {
   return (
     <StyledDashboardLayout>
       <Section>
-        <SectionTitle>
+        <StyledHeading as="h2">
           Statistiques du mois actuel (100 derniers produits)
-        </SectionTitle>
+        </StyledHeading>
 
-        <ProductStats products={products} />
+        <ProductCurrentMonthStats products={products} />
 
-        <ProductStatesPieChart products={products} />
+        <ProductStatesCurrentMonthPieChart products={products} />
 
-        <ProductStatusesPieChart products={products} />
+        <ProductStatusesCurrentMonthPieChart products={products} />
 
-        <ProductsAreaChart products={products} />
+        <ProductCurrentMonthAreaChart products={products} />
       </Section>
 
-      <Section>
-        <SectionTitle>Statistiques tous temps</SectionTitle>
+      <SectionDivider />
 
-        <AllTimeProductStats />
+      <Section>
+        <StyledHeading as="h2">
+          Statistiques tous temps (tous les produits)
+        </StyledHeading>
+
+        <StyledHeading as="h3">États des produits</StyledHeading>
+        <ProductStatesAllTimeStats />
+
+        <StyledHeading as="h3">Statuts des produits</StyledHeading>
+        <ProductStatusesAllTimeStats />
       </Section>
     </StyledDashboardLayout>
   );

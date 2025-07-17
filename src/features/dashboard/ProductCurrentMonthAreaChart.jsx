@@ -36,7 +36,7 @@ const StyledProductsAreaChart = styled.div`
   }
 `;
 
-function ProductsAreaChart({ products }) {
+function ProductCurrentMonthAreaChart({ products }) {
   const { isDarkMode } = useDarkMode();
 
   const allDates = eachDayOfInterval({
@@ -121,4 +121,4 @@ function ProductsAreaChart({ products }) {
   );
 }
 
-export default ProductsAreaChart;
+export default ProductCurrentMonthAreaChart;
