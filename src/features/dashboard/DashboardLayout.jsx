@@ -5,6 +5,7 @@ import Divider from "@/ui/Divider";
 import Heading from "@/ui/Heading";
 
 import ProductCurrentMonthStats from "./ProductCurrentMonthStats";
+import ErrorReportsStats from "./ErrorReportsStats";
 import ProductStatesAllTimeStats from "./ProductStatesAllTimeStats";
 import ProductStatusesAllTimeStats from "./ProductStatusesAllTimeStats";
 import ProductCurrentMonthAreaChart from "./ProductCurrentMonthAreaChart";
@@ -60,6 +61,8 @@ function DashboardLayout() {
         <StyledHeading as="h2">
           Statistiques tous temps (tous les produits)
         </StyledHeading>
+
+        <ErrorReportsStats />
 
         <StyledHeading as="h3">États des produits</StyledHeading>
         <ProductStatesAllTimeStats />

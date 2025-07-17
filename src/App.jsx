@@ -21,6 +21,7 @@ import Cosmetics from "@/pages/Cosmetics";
 import Brands from "@/pages/Brands";
 import Users from "@/pages/Users";
 import ApiClients from "@/pages/ApiClients";
+import ErrorReports from "@/pages/ErrorReports";
 import Account from "@/pages/Account";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
@@ -95,6 +96,14 @@ function App() {
                 <Route path="additives/:additiveId" element={<Additive />} />
                 <Route path="cosmetics" element={<Cosmetics />} />
                 <Route path="brands" element={<Brands />} />
+                <Route
+                  path="error-reports"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <ErrorReports />
+                    </ProtectedRouteRole>
+                  }
+                />
                 <Route
                   path="users"
                   element={

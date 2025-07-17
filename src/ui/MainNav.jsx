@@ -8,6 +8,7 @@ import {
   HiOutlineUsers,
   HiOutlineBuildingOffice,
   HiMiniGlobeAlt,
+  HiOutlineExclamationTriangle,
 } from "react-icons/hi2";
 import { PiHandSoap, PiPlant } from "react-icons/pi";
 
@@ -75,7 +76,12 @@ function MainNav() {
             <span>Produits</span>
           </StyledNavLink>
         </li>
-
+        <li>
+          <StyledNavLink to="/error-reports">
+            <HiOutlineExclamationTriangle />
+            <span>Erreurs signalées</span>
+          </StyledNavLink>
+        </li>
         <li>
           <StyledNavLink to="/additives">
             <HiOutlineBeaker />
