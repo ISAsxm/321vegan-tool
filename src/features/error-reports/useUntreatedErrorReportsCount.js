@@ -1,13 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { buildQueryFilters } from "@/utils/helpers";
 import { countErrorReports } from "@/services/apiErrorReports";
 
 import { errorReportsKeys } from "./queryKeyFactory";
 
 export function useUntreatedErrorReportsCount() {
-  const filterFields = [{ field: "handled", value: false }];
-  const filters = buildQueryFilters(filterFields, new URLSearchParams());
+  // Filter for untreated error reports (handled = false)
+  const filters = [{ field: "handled", value: false }];
 
   const {
     isPending,
