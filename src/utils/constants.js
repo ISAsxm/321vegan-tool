@@ -45,10 +45,6 @@ export const ADDITIVES_STATUSES = {
   U: { color: "silver", label: "Inconnu" },
 };
 
-export const ERROR_REPORT_STATUSES = {
-  true: { color: "green", label: "Traité" },
-  false: { color: "yellow", label: "Non traité" },
-};
 /** Used to highlight ingredients in product detail view */
 export const NON_VEGAN_INGREDIENTS = [
   "egg",

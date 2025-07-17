@@ -76,7 +76,7 @@ function MainNav() {
             <span>Produits</span>
           </StyledNavLink>
         </li>
-        {!isPending && user.role === "contributor" && (
+        {!isPending && user.roles.includes("contributor") && (
           <li>
             <StyledNavLink to="/error-reports">
               <HiOutlineExclamationTriangle />

@@ -1,3 +1,5 @@
+import LoaderDots from "@/ui/LoaderDots";
+
 import styled from "styled-components";
 
 const StyledStat = styled.div`
@@ -45,12 +47,12 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
-function Stat({ icon, title, value, color }) {
+function Stat({ icon, title, value, color, isPending }) {
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>
       <Title>{title}</Title>
-      <Value>{value}</Value>
+      {isPending ? <LoaderDots /> : <Value>{value}</Value>}
     </StyledStat>
   );
 }

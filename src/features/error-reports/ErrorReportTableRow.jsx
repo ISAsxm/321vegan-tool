@@ -1,16 +1,19 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
+import { useProductByEan } from "@/features/products/useProductByEan";
 
 import { useUpdateErrorReport } from "./useUpdateErrorReport";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-import { useProductByEan } from "@/features/products/useProductByEan";
 
 import Table from "@/ui/Table";
 import Tag from "@/ui/Tag";
-import Button from "@/ui/Button";
+import ButtonText from "@/ui/ButtonText";
+import LoaderDots from "@/ui/LoaderDots";
+import Modal from "@/ui/Modal";
+import ConfirmAction from "@/ui/ConfirmAction";
 
 import { HiCheck, HiXMark } from "react-icons/hi2";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const Ref = styled.div`
   font-weight: 600;
@@ -39,10 +42,38 @@ const Description = styled.div`
   white-space: nowrap;
 `;
 
-const StatusColumn = styled.div`
+const ActionButton = styled.button`
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  justify-content: center;
+  padding: 0.6rem;
+  border: none;
+  border-radius: var(--border-radius-sm);
+  transition: all 0.2s;
+
+  & svg {
+    width: 2.2rem;
+    height: 2.2rem;
+  }
+
+  ${(props) =>
+    props.$variation === "danger"
+      ? css`
+          color: var(--color-red-100);
+          background-color: var(--color-red-700);
+
+          &:hover {
+            background-color: var(--color-red-800);
+          }
+        `
+      : css`
+          color: var(--color-green-100);
+          background-color: var(--color-green-700);
+
+          &:hover {
+            background-color: var(--color-green-800);
+          }
+        `}
 `;
 
 function ErrorReportTableRow({ errorReport }) {
@@ -55,24 +86,13 @@ function ErrorReportTableRow({ errorReport }) {
     created_at,
     updated_at,
   } = errorReport;
-  const navigate = useNavigate();
+
   const { isUpdating, updateErrorReport } = useUpdateErrorReport();
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
-  const { product } = useProductByEan(ean);
+  const { isPending: isPendingProduct, product } = useProductByEan(ean);
 
   const statusInfo = handled
     ? { color: "green", label: "Traité" }
     : { color: "yellow", label: "Non traité" };
-
-  function handleViewProduct() {
-    if (product) {
-      // Navigate directly to product detail if found
-      window.open(`/products/${product.id}`, "_blank");
-    } else {
-      // Navigate to products search page with EAN filter
-      navigate(`/products?ean=${ean}`);
-    }
-  }
 
   function handleToggleStatus() {
     updateErrorReport({
@@ -81,19 +101,27 @@ function ErrorReportTableRow({ errorReport }) {
     });
   }
 
-  if (isPendingRoles) return null;
-
   return (
     <Table.Row>
       <Ref>
-        <Button
-          variation="ghost"
-          size="small"
-          onClick={handleViewProduct}
-          title="Voir le produit avec cet EAN"
-        >
-          {ean}
-        </Button>
+        {isPendingProduct ? (
+          <LoaderDots />
+        ) : product ? (
+          <ButtonText as={Link} to={`/products/${product.id}`} target="_blank">
+            {ean}
+          </ButtonText>
+        ) : (
+          <ButtonText
+            as={Link}
+            to={{
+              pathname: `/products`,
+              search: `?ean=${ean}`,
+            }}
+            target="_blank"
+          >
+            {ean}
+          </ButtonText>
+        )}
       </Ref>
 
       <Description title={comment}>{comment}</Description>
@@ -112,23 +140,35 @@ function ErrorReportTableRow({ errorReport }) {
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
 
-      <StatusColumn>
-        <Tag type={statusInfo.color}>{statusInfo.label}</Tag>
-        {userRoles.includes("contributor") && (
-          <Button
-            size="small"
+      <Tag type={statusInfo.color}>{statusInfo.label}</Tag>
+
+      <Modal>
+        <Modal.Open opens="handle">
+          <ActionButton
             $variation={handled ? "danger" : "confirm"}
-            onClick={handleToggleStatus}
             disabled={isUpdating}
             title={
               handled ? "Marquer comme non traité" : "Marquer comme traité"
             }
-            style={{ minWidth: "auto", padding: "0.4rem" }}
           >
             {handled ? <HiXMark /> : <HiCheck />}
-          </Button>
-        )}
-      </StatusColumn>
+          </ActionButton>
+        </Modal.Open>
+
+        <Modal.Window name="handle">
+          <ConfirmAction
+            variation={handled ? "delete" : "confirm"}
+            title={
+              handled ? "Marquer comme non traité" : "Marquer comme traité"
+            }
+            message={`Êtes-vous sûr de vouloir ${
+              handled ? "marquer comme non traité" : "marquer comme traité"
+            } ce signalement d'erreur ?`}
+            onConfirm={() => handleToggleStatus()}
+            disabled={isUpdating}
+          />
+        </Modal.Window>
+      </Modal>
     </Table.Row>
   );
 }
