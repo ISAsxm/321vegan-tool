@@ -16,12 +16,7 @@ const StyledDashboardLayout = styled.div`
   gap: 2.4rem;
 `;
 
-const CurrentMonthSection = styled.div`
-  grid-column: 1 / -1;
-  display: contents;
-`;
-
-const AllTimeSection = styled.div`
+const Section = styled.div`
   grid-column: 1 / -1;
   display: contents;
 `;
@@ -43,9 +38,11 @@ function DashboardLayout() {
 
   return (
     <StyledDashboardLayout>
-      <CurrentMonthSection>
-        <SectionTitle>Statistiques du mois actuel (100 derniers produits)</SectionTitle>
-        
+      <Section>
+        <SectionTitle>
+          Statistiques du mois actuel (100 derniers produits)
+        </SectionTitle>
+
         <ProductStats products={products} />
 
         <ProductStatesPieChart products={products} />
@@ -53,14 +50,13 @@ function DashboardLayout() {
         <ProductStatusesPieChart products={products} />
 
         <ProductsAreaChart products={products} />
-      </CurrentMonthSection>
+      </Section>
 
-      <AllTimeSection>
+      <Section>
         <SectionTitle>Statistiques tous temps</SectionTitle>
 
         <AllTimeProductStats />
-      </AllTimeSection>
-
+      </Section>
     </StyledDashboardLayout>
   );
 }

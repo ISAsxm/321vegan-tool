@@ -11,4 +11,6 @@ export const productsKeys = {
   details: () => [...productsKeys.all, "detail"],
   detail: (id) => [...productsKeys.details(), id],
   off: (id, code) => [...productsKeys.details(), id, code],
+  counts: () => [...productsKeys.all, "count"],
+  count: (filters) => [...productsKeys.counts(), filters],
 };

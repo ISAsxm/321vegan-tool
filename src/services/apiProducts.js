@@ -2,6 +2,34 @@ import { buildURLSearchParams } from "@/utils/helpers";
 import { API_URL } from "@/utils/constants";
 import axiosInstance from "./axiosInstance";
 
+export async function countProducts(filters) {
+  try {
+    const params = new URLSearchParams();
+    // FILTER
+    if (filters) {
+      filters.map((f) => params.append(f.field, f.value));
+    }
+    const res = await axiosInstance.get(
+      [`${API_URL}/products/count`, params.toString()].filter(Boolean).join("?")
+    );
+    const data = res.data;
+    return { count: data.total };
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load products. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't load products. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't load products. Error: ${error.message}`);
+    }
+  }
+}
+
 export async function getProducts() {
   try {
     const res = await axiosInstance.get(`${API_URL}/products/`);

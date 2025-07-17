@@ -95,17 +95,18 @@ function ProductTableRow({ product }) {
                   product.state === "CREATED" && (
                     <Menus.Button
                       icon={<HiDocumentCheck />}
-                      onClick={() => window.open(`/register/${productId}`, '_blank')}
+                      onClick={() =>
+                        window.open(`/register/${productId}`, "_blank")
+                      }
                     >
                       Vérifier
                     </Menus.Button>
                   )}
-                {userRoles.includes("contributor") &&
-                  product.state !== "CREATED" && (
-                    <Modal.Open opens="edit">
-                      <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
-                    </Modal.Open>
-                  )}
+                {userRoles.includes("contributor") && (
+                  <Modal.Open opens="edit">
+                    <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
+                  </Modal.Open>
+                )}
                 {userRoles.includes("admin") && (
                   <Modal.Open opens="delete">
                     <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
