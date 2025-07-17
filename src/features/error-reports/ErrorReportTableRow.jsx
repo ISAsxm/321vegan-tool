@@ -9,7 +9,7 @@ import Table from "@/ui/Table";
 import Tag from "@/ui/Tag";
 import Button from "@/ui/Button";
 
-import { HiOutlineQrCode, HiCheck, HiXMark } from "react-icons/hi2";
+import { HiCheck, HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 
 const Ref = styled.div`
@@ -59,7 +59,7 @@ function ErrorReportTableRow({ errorReport }) {
   const { isUpdating, updateErrorReport } = useUpdateErrorReport();
   const { isPending: isPendingRoles, userRoles } = useCurrentUser();
   const { product } = useProductByEan(ean);
-  
+
   const statusInfo = handled
     ? { color: "green", label: "Traité" }
     : { color: "yellow", label: "Non traité" };
@@ -67,7 +67,7 @@ function ErrorReportTableRow({ errorReport }) {
   function handleViewProduct() {
     if (product) {
       // Navigate directly to product detail if found
-    window.open(`/products/${product.id}`, "_blank");
+      window.open(`/products/${product.id}`, "_blank");
     } else {
       // Navigate to products search page with EAN filter
       navigate(`/products?ean=${ean}`);
@@ -77,7 +77,7 @@ function ErrorReportTableRow({ errorReport }) {
   function handleToggleStatus() {
     updateErrorReport({
       id: errorReportId,
-      newData: { ...errorReport, handled: !handled }
+      newData: { ...errorReport, handled: !handled },
     });
   }
 
@@ -86,9 +86,9 @@ function ErrorReportTableRow({ errorReport }) {
   return (
     <Table.Row>
       <Ref>
-        <Button 
-          variation="ghost" 
-          size="small" 
+        <Button
+          variation="ghost"
+          size="small"
           onClick={handleViewProduct}
           title="Voir le produit avec cet EAN"
         >
@@ -96,9 +96,7 @@ function ErrorReportTableRow({ errorReport }) {
         </Button>
       </Ref>
 
-      <Description title={comment}>
-        {comment}
-      </Description>
+      <Description title={comment}>{comment}</Description>
 
       <Stacked>
         <span>{contact}</span>
@@ -115,23 +113,22 @@ function ErrorReportTableRow({ errorReport }) {
       </Stacked>
 
       <StatusColumn>
-        <Tag type={statusInfo.color}>
-          {statusInfo.label}
-        </Tag>
+        <Tag type={statusInfo.color}>{statusInfo.label}</Tag>
         {userRoles.includes("contributor") && (
           <Button
             size="small"
             $variation={handled ? "danger" : "confirm"}
             onClick={handleToggleStatus}
             disabled={isUpdating}
-            title={handled ? "Marquer comme non traité" : "Marquer comme traité"}
-            style={{ minWidth: 'auto', padding: '0.4rem' }}
+            title={
+              handled ? "Marquer comme non traité" : "Marquer comme traité"
+            }
+            style={{ minWidth: "auto", padding: "0.4rem" }}
           >
             {handled ? <HiXMark /> : <HiCheck />}
           </Button>
         )}
       </StatusColumn>
-
     </Table.Row>
   );
 }

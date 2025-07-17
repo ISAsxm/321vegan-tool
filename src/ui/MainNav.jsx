@@ -76,12 +76,14 @@ function MainNav() {
             <span>Produits</span>
           </StyledNavLink>
         </li>
-        <li>
-          <StyledNavLink to="/error-reports">
-            <HiOutlineExclamationTriangle />
-            <span>Erreurs signalées</span>
-          </StyledNavLink>
-        </li>
+        {!isPending && user.role === "contributor" && (
+          <li>
+            <StyledNavLink to="/error-reports">
+              <HiOutlineExclamationTriangle />
+              <span>Erreurs signalées</span>
+            </StyledNavLink>
+          </li>
+        )}
         <li>
           <StyledNavLink to="/additives">
             <HiOutlineBeaker />
