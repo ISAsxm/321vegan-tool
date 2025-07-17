@@ -15,12 +15,10 @@ function CosmeticTable() {
 
   return (
     <Menus>
-      <Table columns="0.6fr 1.4fr 1.4fr 1.4fr 1fr 1fr 3.2rem">
+      <Table columns="2fr 1.4fr 1.4fr 1fr 1fr 1.4fr 3.2rem">
         <Filters>
           <SortBy>
             <Table.Header>
-              <div>Id</div>
-
               <div>
                 Nom
                 <SortBy.Sort sortByField="brand_name" />
@@ -77,6 +75,8 @@ function CosmeticTable() {
                   />
                 </Filters.Filter>
               </div>
+
+              <div>Description</div>
 
               <div></div>
             </Table.Header>

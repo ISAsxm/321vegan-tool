@@ -5,6 +5,7 @@ import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
+import Textarea from "@/ui/Textarea";
 import Checkbox from "@/ui/Checkbox";
 
 function CreateCosmeticForm({ onCloseModal }) {
@@ -23,10 +24,13 @@ function CreateCosmeticForm({ onCloseModal }) {
     defaultValue: false,
   });
 
-  function onSubmit({ brand_name, is_vegan, is_cruelty_free }) {
-    createCosmetic({ brand_name, is_vegan, is_cruelty_free });
-    reset();
-    onCloseModal?.();
+  function onSubmit(data) {
+    createCosmetic(data, {
+      onSuccess: () => {
+        reset();
+        onCloseModal?.();
+      },
+    });
   }
 
   return (
@@ -41,6 +45,14 @@ function CreateCosmeticForm({ onCloseModal }) {
           {...register("brand_name")}
           disabled={isCreating}
           required
+        />
+      </FormRow>
+
+      <FormRow label="Description" error={errors.description?.message}>
+        <Textarea
+          id="description"
+          {...register("description")}
+          disabled={isCreating}
         />
       </FormRow>
 

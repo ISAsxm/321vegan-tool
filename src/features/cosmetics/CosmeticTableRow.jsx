@@ -13,12 +13,6 @@ import UpdateCosmeticForm from "./UpdateCosmeticForm";
 import { HiPencil, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
 
-const Ref = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-grey-600);
-`;
-
 const Stacked = styled.div`
   display: flex;
   flex-direction: column;
@@ -39,17 +33,16 @@ function CosmeticTableRow({ cosmetic }) {
   const { isDeleting, deleteCosmetic } = useDeleteCosmetic();
   const {
     id: cosmeticId,
-    brand_name,
     created_at,
     updated_at,
+    brand_name,
+    description,
     is_vegan: isVegan,
     is_cruelty_free: isCrueltyFree,
   } = cosmetic;
 
   return (
     <Table.Row>
-      <Ref># {cosmeticId}</Ref>
-
       <Stacked>{brand_name}</Stacked>
 
       <Stacked>
@@ -65,6 +58,8 @@ function CosmeticTableRow({ cosmetic }) {
       {isVegan ? <Tag type="green">Oui</Tag> : <Tag type="red">Non</Tag>}
 
       {isCrueltyFree ? <Tag type="green">Oui</Tag> : <Tag type="red">Non</Tag>}
+
+      <Stacked>{description}</Stacked>
 
       {!isPendingRoles && userRoles.includes("contributor") && (
         <Modal>
