@@ -9,7 +9,7 @@ import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Spinner from "@/ui/Spinner";
 
-function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
+function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
   const { isCreating, createBrand } = useCreateBrand();
   const { isPending: brandisPending, brands } = useBrandsForSelect();
   const { register, formState, handleSubmit, reset, control } = useForm({
@@ -31,7 +31,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onSuccessAction }) {
       onSuccess: (data) => {
         reset();
         onCloseModal?.();
-        onSuccessAction?.(data);
+        onCreateOption?.({ value: data.id, label: data.name });
       },
     });
   }

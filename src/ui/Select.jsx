@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { cloneElement, useEffect, useRef, useState } from "react";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 
@@ -21,7 +21,7 @@ const SelectContainer = styled.div`
   border-radius: var(--border-radius-sm);
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-sm);
-  
+
   cursor: pointer;
   position: relative;
 
@@ -337,7 +337,9 @@ const Select = ({
             </SelectAddAction>
           </Modal.Open>
           <Modal.Window name={`create-options-${name}`}>
-            {createComponent}
+            {cloneElement(createComponent, {
+              onCreateOption: handleSelectOption,
+            })}
           </Modal.Window>
         </Modal>
       )}
