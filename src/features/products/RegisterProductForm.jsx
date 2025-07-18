@@ -173,21 +173,8 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
       {shouldShowProblemsField && (
         <FormRow
-          label={
-            <div>
-              Problèmes
-              <div
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: "400",
-                  color: "var(--color-grey-500)",
-                  marginTop: "0.4rem",
-                }}
-              >
-                Raison pour laquelle le produit n'est pas vegan
-              </div>
-            </div>
-          }
+          label="Problèmes"
+          hint="Raison pour laquelle le produit n'est pas vegan"
           error={errors.problem_description?.message}
         >
           <Textarea
