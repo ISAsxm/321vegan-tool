@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Highlighter from "react-highlight-words";
 
 import { NON_VEGAN_INGREDIENTS, NON_VEGAN_E_NUMBERS } from "@/utils/constants";
@@ -48,9 +49,19 @@ const OffDescriptionBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+
+  & div span:first-of-type {
+    width: 12rem;
+  }
 `;
 
-function OffDataBox({ imageSrc, ingredients, additives, brandName, productName }) {
+const OffDataBox = memo(function OffDataBox({
+  imageSrc,
+  ingredients,
+  additives,
+  brandName,
+  productName,
+}) {
   return (
     <StyledOffDataBox>
       <OffImgFallbackBox $src={imageSrc}>
@@ -66,11 +77,7 @@ function OffDataBox({ imageSrc, ingredients, additives, brandName, productName }
           {brandName || <NoDataItem>Non disponible</NoDataItem>}
         </DataItem>
 
-        <DataItem
-          icon={< HiTag/>}
-          label="Nom"
-          type="horizontal"
-        >
+        <DataItem icon={<HiTag />} label="Nom" type="horizontal">
           {productName || <NoDataItem>Non disponible</NoDataItem>}
         </DataItem>
 
@@ -106,6 +113,6 @@ function OffDataBox({ imageSrc, ingredients, additives, brandName, productName }
       </OffDescriptionBox>
     </StyledOffDataBox>
   );
-}
+});
 
 export default OffDataBox;

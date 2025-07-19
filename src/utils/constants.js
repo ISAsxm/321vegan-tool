@@ -103,6 +103,7 @@ export const NON_VEGAN_INGREDIENTS = [
   "additifs",
   "natural flavour",
   "arôme naturel",
+  "arômes naturels",
   "vitamin d",
   "vitamine d",
 ];
