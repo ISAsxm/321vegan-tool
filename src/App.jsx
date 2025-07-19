@@ -85,7 +85,7 @@ function App() {
                 <Route path="products" element={<Products />} />
                 <Route path="products/:productId" element={<Product />} />
                 <Route
-                  path="register/:productId"
+                  path="register/:productEan"
                   element={
                     <ProtectedRouteRole role="contributor">
                       <Register />

@@ -1,10 +1,13 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { isToday } from "date-fns";
 
 import { useGoBack } from "@/hooks/useGoBack";
 import { formatDate } from "@/utils/helpers";
 import { PRODUCT_STATUSES } from "@/utils/constants";
+import { getProductData } from "@/services/apiOpenFoodFacts";
 
-import { useOffProduct } from "./useOffProduct";
+import { useProductByEan } from "./useProductByEan";
 
 import Row from "@/ui/Row";
 import Heading from "@/ui/Heading";
@@ -28,20 +31,32 @@ import {
 } from "react-icons/hi2";
 
 function ProductRegister() {
-  const { isPending, product, isPendingOff, offProduct } = useOffProduct();
+  const { productEan } = useParams();
+  const { isPending, product } = useProductByEan(productEan);
+  const [isPendingOff, setIsPendingOff] = useState(false);
+  const [errorOff, setErrorOff] = useState("");
+  const [offProduct, setOffProduct] = useState({});
   const goBack = useGoBack();
+
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        setIsPendingOff(true);
+        const data = await getProductData(productEan);
+        if (data) setOffProduct(data);
+      } catch (error) {
+        console.error(error);
+        setErrorOff(`Ean ${productEan} inconnu dans Open Food Facts`);
+      } finally {
+        setIsPendingOff(false);
+      }
+    };
+    fetchProductData();
+  }, [productEan]);
 
   if (isPending || isPendingOff) return <Spinner />;
 
-  const {
-    id: productId,
-    created_at,
-    ean,
-    name,
-    brand,
-    status,
-    state,
-  } = product;
+  const { created_at, ean, name, status, state } = product;
 
   const {
     brands,
@@ -51,13 +66,12 @@ function ProductRegister() {
     additives_tags: additives,
   } = offProduct || {};
 
-  const brandName =
-    brand?.name || brands || product_name?.split(" - ")[1] || "";
+  const offBrandName = brands || product_name?.split(" - ")[1] || "";
 
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Vérification du produit #{productId}</Heading>
+        <Heading as="h1">Vérification du produit #{productEan}</Heading>
         <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
       </Row>
 
@@ -95,6 +109,7 @@ function ProductRegister() {
               as="a"
               href={`http://www.google.com/search?q=${ean}`}
               target="_blank"
+              rel="noreferrer"
             >
               <HiMagnifyingGlass />
               Rechercher sur Google
@@ -107,13 +122,17 @@ function ProductRegister() {
             icon={<HiOutlineInformationCircle />}
             label="Informations OpenFoodFacts"
           >
-            <OffDataBox
-              imageSrc={image_url}
-              ingredients={ingredients}
-              productName={product_name}
-              additives={additives}
-              brandName={brandName}
-            />
+            {errorOff ? (
+              errorOff
+            ) : (
+              <OffDataBox
+                imageSrc={image_url}
+                ingredients={ingredients}
+                productName={product_name}
+                additives={additives}
+                brandName={offBrandName}
+              />
+            )}
           </DataItem>
         </Section>
 
@@ -122,7 +141,7 @@ function ProductRegister() {
             productToCheckedIn={{
               ...product,
               name: name || product_name,
-              brandName: brandName,
+              brandName: offBrandName,
             }}
             onClose={goBack}
           />

@@ -98,6 +98,29 @@ export async function getProduct(id) {
   }
 }
 
+export async function getProductByEan(ean) {
+  try {
+    const res = await axiosInstance.get(`${API_URL}/products/ean/${ean}`);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't find product by ean #${ean}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't find product by ean #${ean}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't find product by ean #${ean}. Error: ${error.message}`
+      );
+    }
+  }
+}
+
 export async function createProduct(product) {
   try {
     const res = await axiosInstance.post(`${API_URL}/products/`, product);

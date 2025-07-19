@@ -201,80 +201,69 @@ function ProductDetail() {
         </Section>
       </DataBox>
 
-      {!isPendingRoles && (
-        <Modal>
-          <ButtonGroup>
-            {userRoles.includes("contributor") && state === "CREATED" && (
-              <Button
-                $variation="info"
-                onClick={() => navigate(`/register/${productId}`)}
-              >
-                Vérifier
-              </Button>
-            )}
-
-            {userRoles.includes("contributor") && (
-              <>
-                {product.state !== "CREATED" && (
-                  <Modal.Open opens="edit">
-                    <Button $variation="warning">Éditer</Button>
-                  </Modal.Open>
-                )}
-              </>
-            )}
-
-            {userRoles.includes("admin") && (
-              <>
-                {state === "WAITING_PUBLISH" && (
-                  <Modal.Open opens="publish">
-                    <Button $variation="info" disabled={isWorking}>
-                      Publier
-                    </Button>
-                  </Modal.Open>
-                )}
-
-                <Modal.Open opens="delete">
-                  <Button $variation="danger" disabled={isWorking}>
-                    Supprimer
-                  </Button>
-                </Modal.Open>
-              </>
-            )}
-
-            <Button $variation="secondary" onClick={goBack}>
-              Retour
+      <Modal>
+        <ButtonGroup>
+          {userRoles.includes("contributor") && state === "CREATED" && (
+            <Button
+              $variation="info"
+              onClick={() => navigate(`/register/${ean}`)}
+            >
+              Vérifier
             </Button>
-          </ButtonGroup>
+          )}
+          {userRoles.includes("admin") && state === "WAITING_PUBLISH" && (
+            <Modal.Open opens="publish">
+              <Button $variation="info" disabled={isWorking}>
+                Publier
+              </Button>
+            </Modal.Open>
+          )}
 
-          <Modal.Window name="edit">
-            <UpdateProductForm productToUpdate={product} />
-          </Modal.Window>
+          {userRoles.includes("contributor") && (
+            <Modal.Open opens="edit">
+              <Button $variation="warning">Éditer</Button>
+            </Modal.Open>
+          )}
+          {userRoles.includes("admin") && (
+            <Modal.Open opens="delete">
+              <Button $variation="danger" disabled={isWorking}>
+                Supprimer
+              </Button>
+            </Modal.Open>
+          )}
+          <Button $variation="secondary" onClick={goBack}>
+            Retour
+          </Button>
+        </ButtonGroup>
 
-          <Modal.Window name="publish">
-            <ConfirmAction
-              variation="confirm"
-              title="Publier un produit"
-              message="Êtes-vous sûr de vouloir publier ce produit ?"
-              onConfirm={() => publish()}
-              disabled={isWorking}
-            />
-          </Modal.Window>
+        <Modal.Window name="edit">
+          <UpdateProductForm productToUpdate={product} />
+        </Modal.Window>
 
-          <Modal.Window name="delete">
-            <ConfirmAction
-              variation="delete"
-              title="Supprimer un produit"
-              message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement ce produit ?"
-              onConfirm={() =>
-                deleteProduct(productId, {
-                  onSettled: () => navigate(-1),
-                })
-              }
-              disabled={isWorking}
-            />
-          </Modal.Window>
-        </Modal>
-      )}
+        <Modal.Window name="publish">
+          <ConfirmAction
+            variation="confirm"
+            title="Publier un produit"
+            message="Êtes-vous sûr de vouloir publier ce produit ?"
+            onConfirm={() => publish()}
+            disabled={isWorking}
+          />
+        </Modal.Window>
+
+        <Modal.Window name="delete">
+          <ConfirmAction
+            variation="delete"
+            title="Supprimer un produit"
+            message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement ce produit ?"
+            onConfirm={() =>
+              deleteProduct(productId, {
+                onSettled: () => navigate(-1),
+              })
+            }
+            disabled={isWorking}
+          />
+        </Modal.Window>
+      </Modal>
     </>
   );
 }
