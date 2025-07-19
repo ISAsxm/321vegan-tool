@@ -55,12 +55,11 @@ function FormRow({ label, hint, error, children }) {
   return (
     <StyledFormRow>
       {label && (
-        <Label htmlFor={children.props.id}>
-          {label}
+        <div>
+          <Label htmlFor={children.props.id}>{label}</Label>
           {hint && <Hint>{hint}</Hint>}
-        </Label>
+        </div>
       )}
-
       {children}
       {error && <Error>{error}</Error>}
     </StyledFormRow>

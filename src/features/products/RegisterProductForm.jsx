@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useController, useForm, useWatch } from "react-hook-form";
+import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
@@ -22,13 +22,20 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { isUpdating, updateProduct } = useUpdateProduct();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { isPending: brandsisPending, brands } = useBrandsForSelect();
-  const { register, formState, handleSubmit, reset, control, resetField } =
-    useForm({
-      defaultValues: {
-        ...checkedInValues,
-        brand_id: productToCheckedIn.brand?.id || null,
-      },
-    });
+  const {
+    register,
+    formState,
+    handleSubmit,
+    reset,
+    control,
+    resetField,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      ...checkedInValues,
+      brand_id: productToCheckedIn.brand?.id || null,
+    },
+  });
   const { errors } = formState;
 
   const isPending = isPendingUser || brandsisPending || isUpdating;
@@ -53,15 +60,10 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     defaultValue: checkedInValues.biodynamic,
   });
 
-  // Watch the status field to conditionally show problems field
-  const statusValue = useWatch({
-    control,
-    name: "status",
-  });
-
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
-  const shouldShowProblemsField =
-    statusValue === "MAYBE_VEGAN" || statusValue === "NON_VEGAN";
+  const shouldShowProblemsField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
+    getValues().status
+  );
 
   // automatically update selected brand on OFFproduct data loaded
   useEffect(() => {
@@ -179,8 +181,15 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         >
           <Textarea
             id="problem_description"
-            {...register("problem_description")}
+            {...register("problem_description", {
+              validate: (value) => {
+                ["MAYBE_VEGAN", "NON_VEGAN"].includes(getValues().status) &&
+                  !value &&
+                  "Ce champ est obligatoire";
+              },
+            })}
             disabled={isPending}
+            required
           />
         </FormRow>
       )}
