@@ -8,11 +8,12 @@ export function useUpdateProduct() {
 
   const { isPending: isUpdating, mutate: updateProduct } = useMutation({
     mutationFn: ({ id, newData }) => updateProductApi(id, newData),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Le produit a bien été modifié");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: productsKeys.all,
       });
+      return data; // Pass the response data through
     },
     onError: (err) => toast.error(err.message),
   });

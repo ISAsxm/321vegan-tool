@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
+import styled from "styled-components";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
@@ -16,6 +17,29 @@ import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
+import ColoredButton from "@/ui/ColoredButton";
+
+const ButtonRow = styled.div`
+  display: grid;
+  align-items: center;
+  grid-template-columns: 24rem 1fr;
+  gap: 2.4rem;
+  padding: 1.2rem 0;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-grey-100);
+  }
+`;
+
+const ButtonLabel = styled.label`
+  font-weight: 500;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+`;
 
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
@@ -84,8 +108,11 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     updateProduct(
       { newData: data, id: checkedId },
       {
-        onSuccess: (data) => {
-          reset(data);
+        onSuccess: (responseData) => {
+          // Only reset with the response data if it exists and has the expected structure
+          if (responseData && typeof responseData === 'object') {
+            reset(responseData);
+          }
           onClose?.();
         },
       }
@@ -96,39 +123,45 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   return (
     <Form type={"regular"}>
-      <FormRow label="État" error={errors.state?.message}>
-        <Select
-          name="state"
-          onChange={stateField.onChange}
-          isMulti={false}
-          isSearchable={true}
-          defaultValue={[stateField.value]}
-          required={true}
-          disabled={isPending}
-          options={Object.entries(PRODUCT_STATES).map(([key, o]) => {
-            return {
-              value: key,
-              label: o.label,
-              disabled: userRoles.includes(o.role) ? false : true,
-            };
-          })}
-        />
-      </FormRow>
+      <ButtonRow>
+        <ButtonLabel>État</ButtonLabel>
+        <ButtonContainer>
+          {Object.entries(PRODUCT_STATES)
+            .filter(([key, o]) => userRoles.includes(o.role))
+            .map(([key, o]) => (
+              <ColoredButton
+                key={key}
+                type="button"
+                $color={o.color}
+                $isSelected={stateField.value === key}
+                onClick={() => stateField.onChange(key)}
+                disabled={isPending}
+                title={`Changer l'état à "${o.label}"`}
+              >
+                {o.label}
+              </ColoredButton>
+            ))}
+        </ButtonContainer>
+      </ButtonRow>
 
-      <FormRow label="Statut" error={errors.status?.message}>
-        <Select
-          name="status"
-          onChange={statusField.onChange}
-          isMulti={false}
-          isSearchable={true}
-          defaultValue={[statusField.value]}
-          required={true}
-          disabled={isPending}
-          options={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
-            return { value: key, label: o.label };
-          })}
-        />
-      </FormRow>
+      <ButtonRow>
+        <ButtonLabel>Statut</ButtonLabel>
+        <ButtonContainer>
+          {Object.entries(PRODUCT_STATUSES).map(([key, o]) => (
+            <ColoredButton
+              key={key}
+              type="button"
+              $color={o.color}
+              $isSelected={statusField.value === key}
+              onClick={() => statusField.onChange(key)}
+              disabled={isPending}
+              title={`Changer le statut à "${o.label}"`}
+            >
+              {o.label}
+            </ColoredButton>
+          ))}
+        </ButtonContainer>
+      </ButtonRow>
 
       <FormRow label="Marque" error={errors.brand_id?.message}>
         <Select
