@@ -1,7 +1,7 @@
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
+import { getBrandsForSelect } from "@/services/apiBrands";
 import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
 import { useUpdateProduct } from "./useUpdateProduct";
@@ -12,6 +12,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
+import SelectRelationship from "@/ui/SelectRelationship";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 
@@ -20,7 +21,6 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productToUpdate;
   const { isUpdating, updateProduct } = useUpdateProduct();
-  const { isPending: brandsisPending, brands } = useBrandsForSelect();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
@@ -33,6 +33,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { field: brandField } = useController({
     name: "brand_id",
     control,
+    defaultValue: productToUpdate.brand?.id || null,
   });
   const { field: stateField } = useController({
     name: "state",
@@ -62,7 +63,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     );
   }
 
-  if (brandsisPending || isPendingUser) return <Spinner />;
+  if (isPendingUser) return <Spinner />;
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
@@ -99,19 +100,26 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
         />
       </FormRow>
       <FormRow label="Marque" error={errors.brand_id?.message}>
-        <div>
-          <Select
-            name="brand_id"
-            onChange={brandField.onChange}
-            isMulti={false}
-            isSearchable={true}
-            defaultValue={[brandField.value]}
-            required={false}
-            disabled={isUpdating}
-            options={brands || []}
-            createComponent={<CreateBrandForm />}
-          />
-        </div>
+        <SelectRelationship
+          name="brand_id"
+          onChange={brandField.onChange}
+          isMulti={false}
+          defaultOptions={
+            productToUpdate.brand
+              ? [
+                  {
+                    value: productToUpdate.brand.id,
+                    label: productToUpdate.brand.name,
+                  },
+                ]
+              : []
+          }
+          defaultValue={[brandField.value]}
+          getOptions={getBrandsForSelect}
+          required={false}
+          disabled={isUpdating}
+          createComponent={<CreateBrandForm />}
+        />
       </FormRow>
 
       <FormRow label="EAN" error={errors.ean?.message}>

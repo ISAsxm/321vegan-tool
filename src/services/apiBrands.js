@@ -45,6 +45,38 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
   }
 }
 
+export async function getBrandsForSelect(searchName) {
+  try {
+    const filters = searchName
+      ? [{ field: "name__contains", value: searchName }]
+      : [];
+    const sortBy = "name-asc";
+    const page = 1;
+    const size = 100;
+    const params = buildURLSearchParams(filters, sortBy, page, size);
+    const res = await axiosInstance.get(
+      [`${API_URL}/brands/search`, params].filter(Boolean).join("?")
+    );
+    const data = await res.data;
+    return {
+      data: data.items.map((item) => ({ value: item.id, label: item.name })),
+    };
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load searched brands. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't load searched brands. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't load searched brands. Error: ${error.message}`);
+    }
+  }
+}
+
 export async function getBrand(id) {
   try {
     const res = await axiosInstance.get(`${API_URL}/brands/${id}`);

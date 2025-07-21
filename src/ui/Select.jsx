@@ -14,7 +14,7 @@ import { GiCheckMark } from "react-icons/gi";
 
 import styled, { css } from "styled-components";
 
-const SelectContainer = styled.div`
+export const SelectContainer = styled.div`
   font-size: 1.4rem;
   font-weight: 500;
   border: 1px solid var(--color-grey-300);
@@ -26,7 +26,7 @@ const SelectContainer = styled.div`
   position: relative;
 
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: stretch;
   width: 100%;
 
@@ -39,7 +39,7 @@ const SelectContainer = styled.div`
     `}
 `;
 
-const SelectToggle = styled.div`
+export const SelectToggle = styled.div`
   user-select: none;
   font-size: 1.4rem;
   font-weight: 500;
@@ -61,12 +61,12 @@ const SelectToggle = styled.div`
   }
 `;
 
-const SelectedContent = styled.div`
+export const SelectedContent = styled.div`
   color: ${(props) =>
     props.$isPlaceholder ? "var(--color-grey-300)" : "inherit"};
 `;
 
-const SelectAddAction = styled.span`
+export const SelectAddAction = styled.span`
   display: inline-flex;
   align-items: center;
   font-size: 1.4rem;
@@ -90,7 +90,7 @@ const SelectAddAction = styled.span`
   }
 `;
 
-const SelectPicker = styled.div`
+export const SelectPicker = styled.div`
   border: 1px solid var(--color-grey-300);
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-sm);
@@ -123,7 +123,7 @@ const SelectPicker = styled.div`
   }
 `;
 
-const SelectOption = styled.div`
+export const SelectOption = styled.div`
   font-size: 1.4rem;
   padding: 0.8rem 1.2rem;
   cursor: pointer;
@@ -163,7 +163,7 @@ const SelectOption = styled.div`
     `}
 `;
 
-const SearchBox = styled.div`
+export const SearchBox = styled.div`
   padding: 0.6rem 0.8rem;
   input {
     padding: 0.8rem 1.2rem;
@@ -175,13 +175,13 @@ const SearchBox = styled.div`
   }
 `;
 
-const MultiValuesContainer = styled.div`
+export const MultiValuesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 `;
 
-const MultiValuesItem = styled.div`
+export const MultiValuesItem = styled.div`
   border-radius: var(--border-radius-sm);
   background-color: var(--color-grey-200);
   color: var(--color-grey-500);
@@ -194,7 +194,7 @@ const MultiValuesItem = styled.div`
   gap: 0.4rem;
 `;
 
-const EmptyOptions = styled.div`
+export const EmptyOptions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;

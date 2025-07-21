@@ -1,10 +1,10 @@
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
 import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
 import { useCreateProduct } from "./useCreateProduct";
+import { getBrandsForSelect } from "@/services/apiBrands";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
@@ -12,6 +12,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
+import SelectRelationship from "@/ui/SelectRelationship";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 
@@ -19,12 +20,11 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function CreateProductForm({ onCloseModal }) {
   const { isCreating, createProduct } = useCreateProduct();
-  const { isPending: brandisPending, brands } = useBrandsForSelect();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { register, formState, handleSubmit, reset, control } = useForm();
   const { errors } = formState;
 
-  const isPending = isCreating || brandisPending || isPendingUser;
+  const isPending = isCreating || isPendingUser;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -85,7 +85,7 @@ function CreateProductForm({ onCloseModal }) {
         <Select
           name="status"
           onChange={statusField.onChange}
-          isMulti={false}
+          isMulti={true}
           isSearchable={true}
           defaultValue={[statusField.value]}
           required={true}
@@ -97,15 +97,13 @@ function CreateProductForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="Marque" error={errors.brand_id?.message}>
-        <Select
+        <SelectRelationship
           name="brand_id"
           onChange={brandField.onChange}
-          isMulti={false}
-          isSearchable={true}
-          defaultValue={[brandField.value]}
+          isMulti={true}
+          getOptions={getBrandsForSelect}
           required={false}
           disabled={isPending}
-          options={brands || []}
           createComponent={<CreateBrandForm />}
         />
       </FormRow>
