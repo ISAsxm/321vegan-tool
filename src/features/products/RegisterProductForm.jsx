@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
-import styled from "styled-components";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
@@ -9,6 +8,7 @@ import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 import { useUpdateProduct } from "./useUpdateProduct";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
+import ButtonGroup from "@/ui/ButtonGroup";
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
@@ -19,33 +19,11 @@ import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 import ColoredButton from "@/ui/ColoredButton";
 
-const ButtonRow = styled.div`
-  display: grid;
-  align-items: center;
-  grid-template-columns: 24rem 1fr;
-  gap: 2.4rem;
-  padding: 1.2rem 0;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
-
-const ButtonLabel = styled.label`
-  font-weight: 500;
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 0.8rem;
-  flex-wrap: wrap;
-`;
-
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const { isUpdating, updateProduct } = useUpdateProduct();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
-  const { isPending: brandsisPending, brands } = useBrandsForSelect();
+  const { isPending: isPendingBrands, brands } = useBrandsForSelect();
   const {
     register,
     formState,
@@ -62,7 +40,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   });
   const { errors } = formState;
 
-  const isPending = isPendingUser || brandsisPending || isUpdating;
+  const isPending = isPendingUser || isPendingBrands || isUpdating;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -105,7 +83,10 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
   useEffect(() => {
-    if (stateField.value === "NEED_CONTACT" && statusField.value !== "MAYBE_VEGAN") {
+    if (
+      stateField.value === "NEED_CONTACT" &&
+      statusField.value !== "MAYBE_VEGAN"
+    ) {
       statusField.onChange("MAYBE_VEGAN");
     }
   }, [stateField.value, statusField]);
@@ -114,15 +95,11 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     if (!shouldShowProblemsField) {
       data.problem_description = null;
     }
-
     updateProduct(
       { newData: data, id: checkedId },
       {
-        onSuccess: (responseData) => {
-          // Only reset with the response data if it exists and has the expected structure
-          if (responseData && typeof responseData === 'object') {
-            reset(responseData);
-          }
+        onSuccess: () => {
+          reset();
           onClose?.();
         },
       }
@@ -133,35 +110,31 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   return (
     <Form type={"regular"}>
-      <ButtonRow>
-        <ButtonLabel>État</ButtonLabel>
-        <ButtonContainer>
-          {Object.entries(PRODUCT_STATES)
-            .filter(([key, o]) => userRoles.includes(o.role))
-            .map(([key, o]) => (
-              <ColoredButton
-                key={key}
-                type="button"
-                $color={o.color}
-                $isSelected={stateField.value === key}
-                onClick={() => stateField.onChange(key)}
-                disabled={isPending}
-                title={`Changer l'état à "${o.label}"`}
-              >
-                {o.label}
-              </ColoredButton>
-            ))}
-        </ButtonContainer>
-      </ButtonRow>
+      <FormRow label="État" error={errors.state?.message}>
+        <ButtonGroup id="state" className="required">
+          {Object.entries(PRODUCT_STATES).map(([key, o]) => (
+            <ColoredButton
+              key={key}
+              type="button"
+              color={o.color}
+              $isSelected={stateField.value === key}
+              onClick={() => stateField.onChange(key)}
+              disabled={isPending || !userRoles.includes(o.role)}
+              title={`Changer l'état à "${o.label}"`}
+            >
+              {o.label}
+            </ColoredButton>
+          ))}
+        </ButtonGroup>
+      </FormRow>
 
-      <ButtonRow>
-        <ButtonLabel>Statut</ButtonLabel>
-        <ButtonContainer>
+      <FormRow label="Statut" error={errors.status?.message}>
+        <ButtonGroup id="status" className="required">
           {Object.entries(PRODUCT_STATUSES).map(([key, o]) => (
             <ColoredButton
               key={key}
               type="button"
-              $color={o.color}
+              color={o.color}
               $isSelected={statusField.value === key}
               onClick={() => !isStatusLocked && statusField.onChange(key)}
               disabled={isPending || isStatusLocked}
@@ -174,8 +147,8 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
               {o.label}
             </ColoredButton>
           ))}
-        </ButtonContainer>
-      </ButtonRow>
+        </ButtonGroup>
+      </FormRow>
 
       <FormRow label="Marque" error={errors.brand_id?.message}>
         <Select

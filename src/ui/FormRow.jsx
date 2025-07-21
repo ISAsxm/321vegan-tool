@@ -20,7 +20,7 @@ const StyledFormRow = styled.div`
     border-bottom: 1px solid var(--color-grey-100);
   }
 
-  &:has(button):not(:has(select, input, textarea)) {
+  &:has(button:not([type="button"])):not(:has(select, input, textarea)) {
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;

@@ -202,7 +202,7 @@ function ProductDetail() {
       </DataBox>
 
       <Modal>
-        <ButtonGroup>
+        <ButtonGroup $variation="end">
           {userRoles.includes("contributor") && state === "CREATED" && (
             <Button
               $variation="info"

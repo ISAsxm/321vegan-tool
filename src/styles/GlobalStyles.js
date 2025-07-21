@@ -50,37 +50,6 @@ const GlobalStyles = createGlobalStyle`
 
     --image-grayscale: 10%;
     --image-opacity: 90%;
-
-    /* Colored button styles */
-    --button-silver-unselected-color: var(--color-grey-600);
-    --button-silver-unselected-bg: var(--color-grey-0);
-    --button-silver-unselected-border: var(--color-grey-200);
-    --button-silver-unselected-hover: var(--color-grey-50);
-
-    --button-yellow-unselected-color: var(--color-yellow-700);
-    --button-yellow-unselected-bg: var(--color-yellow-100);
-    --button-yellow-unselected-border: var(--color-yellow-700);
-    --button-yellow-unselected-hover: var(--color-yellow-100);
-
-    --button-blue-unselected-color: var(--color-blue-700);
-    --button-blue-unselected-bg: var(--color-blue-100);
-    --button-blue-unselected-border: var(--color-blue-700);
-    --button-blue-unselected-hover: var(--color-blue-100);
-
-    --button-indigo-unselected-color: var(--color-indigo-700);
-    --button-indigo-unselected-bg: var(--color-indigo-100);
-    --button-indigo-unselected-border: var(--color-indigo-700);
-    --button-indigo-unselected-hover: var(--color-indigo-100);
-
-    --button-green-unselected-color: var(--color-green-700);
-    --button-green-unselected-bg: var(--color-green-100);
-    --button-green-unselected-border: var(--color-green-700);
-    --button-green-unselected-hover: var(--color-green-100);
-
-    --button-red-unselected-color: var(--color-red-700);
-    --button-red-unselected-bg: var(--color-red-100);
-    --button-red-unselected-border: var(--color-red-700);
-    --button-red-unselected-hover: var(--color-red-100);
   }
 
 
@@ -129,37 +98,6 @@ const GlobalStyles = createGlobalStyle`
 
     --image-grayscale: 0;
     --image-opacity: 100%;
-
-    /* Colored button styles - dark mode */
-    --button-silver-unselected-color: var(--color-grey-300);
-    --button-silver-unselected-bg: var(--color-grey-800);
-    --button-silver-unselected-border: var(--color-grey-600);
-    --button-silver-unselected-hover: var(--color-grey-700);
-
-    --button-yellow-unselected-color: var(--color-yellow-100);
-    --button-yellow-unselected-bg: var(--color-yellow-800);
-    --button-yellow-unselected-border: var(--color-yellow-100);
-    --button-yellow-unselected-hover: var(--color-yellow-800);
-
-    --button-blue-unselected-color: var(--color-blue-100);
-    --button-blue-unselected-bg: var(--color-blue-800);
-    --button-blue-unselected-border: var(--color-blue-100);
-    --button-blue-unselected-hover: var(--color-blue-800);
-
-    --button-indigo-unselected-color: var(--color-indigo-100);
-    --button-indigo-unselected-bg: var(--color-indigo-800);
-    --button-indigo-unselected-border: var(--color-indigo-100);
-    --button-indigo-unselected-hover: var(--color-indigo-800);
-
-    --button-green-unselected-color: var(--color-green-100);
-    --button-green-unselected-bg: var(--color-green-800);
-    --button-green-unselected-border: var(--color-green-100);
-    --button-green-unselected-hover: var(--color-green-800);
-
-    --button-red-unselected-color: var(--color-red-100);
-    --button-red-unselected-bg: var(--color-red-800);
-    --button-red-unselected-border: var(--color-red-100);
-    --button-red-unselected-hover: var(--color-red-800);
   }
 
 

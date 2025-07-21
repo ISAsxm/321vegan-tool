@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 
 const sizes = {
   small: css`
-    font-size: 1.0rem;
+    font-size: 1rem;
     padding: 0.3rem 0.6rem;
   `,
   medium: css`
@@ -11,28 +11,28 @@ const sizes = {
   `,
   large: css`
     font-size: 1.4rem;
-    padding: 0.6rem 1.0rem;
+    padding: 0.6rem 1rem;
   `,
 };
 
 const selectedCheckmark = css`
   &::after {
-    content: '✓';
+    content: "✓";
     position: absolute;
     top: -4px;
     right: -4px;
-    background-color: var(--color-brand-600);
-    color: var(--color-grey-0);
     border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    font-size: 10px;
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1rem;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    border: 2px solid var(--color-grey-0);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-sm);
+    color: var(--color-brand-50);
+    background-color: var(--color-brand-700);
+    border: 2px solid var(--color-brand-600);
   }
 `;
 
@@ -51,13 +51,20 @@ const ColoredButton = styled.button`
   transition: all 0.2s;
   position: relative;
 
-  color: var(--button-${(props) => props.$color}-unselected-color);
-  background-color: var(--button-${(props) => props.$color}-unselected-bg);
-  border: 1px solid var(--button-${(props) => props.$color}-unselected-border);
-  
+  color: var(--color-${(props) => props.color}-100);
+  background-color: var(--color-${(props) => props.color}-700);
+
   &:hover {
-    background-color: var(--button-${(props) => props.$color}-unselected-hover);
+    color: var(--color-${(props) => props.color}-700);
+    background-color: var(--color-${(props) => props.color}-100);
   }
+
+  ${(props) =>
+    props.color &&
+    ["silver", "grey"].includes(props.color) &&
+    css`
+      border: 0.5px solid var(--color-${props.color}-700);
+    `}
 
   ${(props) => sizes[props.$size || "medium"]}
   ${(props) => props.$isSelected && selectedCheckmark}

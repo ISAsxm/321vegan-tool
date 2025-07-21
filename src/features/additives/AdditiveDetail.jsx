@@ -169,7 +169,7 @@ function AdditiveDetail() {
 
       {!isPendingRoles && userRoles.includes("contributor") && (
         <Modal>
-          <ButtonGroup>
+          <ButtonGroup $variation="end">
             <Modal.Open opens="edit">
               <Button $variation="warning">Éditer</Button>
             </Modal.Open>
