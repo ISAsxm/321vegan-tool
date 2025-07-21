@@ -119,7 +119,8 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
           type="text"
           id="ean"
           {...register("ean", { required: "Ce champ est obligatoire" })}
-          disabled={isUpdating}
+          disabled={true}
+          readOnly={true}
           required
         />
       </FormRow>
