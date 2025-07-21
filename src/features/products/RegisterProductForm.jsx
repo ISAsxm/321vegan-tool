@@ -89,6 +89,9 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     getValues().status
   );
 
+  // Check if status should be locked when state is NEED_CONTACT
+  const isStatusLocked = stateField.value === "NEED_CONTACT";
+
   // automatically update selected brand on OFFproduct data loaded
   useEffect(() => {
     if (productToCheckedIn.brand) return;
@@ -99,6 +102,13 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     )[0]?.id;
     if (selectedBrand) resetField("brand_id", { defaultValue: selectedBrand });
   }, [brands, productToCheckedIn, resetField]);
+
+  // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
+  useEffect(() => {
+    if (stateField.value === "NEED_CONTACT" && statusField.value !== "MAYBE_VEGAN") {
+      statusField.onChange("MAYBE_VEGAN");
+    }
+  }, [stateField.value, statusField]);
 
   function onSubmit(data) {
     if (!shouldShowProblemsField) {
@@ -153,9 +163,13 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
               type="button"
               $color={o.color}
               $isSelected={statusField.value === key}
-              onClick={() => statusField.onChange(key)}
-              disabled={isPending}
-              title={`Changer le statut à "${o.label}"`}
+              onClick={() => !isStatusLocked && statusField.onChange(key)}
+              disabled={isPending || isStatusLocked}
+              title={
+                isStatusLocked
+                  ? `Le statut est verrouillé sur "Maybe vegan" pour l'état "À contacter"`
+                  : `Changer le statut à "${o.label}"`
+              }
             >
               {o.label}
             </ColoredButton>
@@ -184,7 +198,8 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           type="text"
           id="ean"
           {...register("ean", { required: "Ce champ est obligatoire" })}
-          disabled={isPending}
+          disabled={true}
+          readOnly={true}
           required
         />
       </FormRow>

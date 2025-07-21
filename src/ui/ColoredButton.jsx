@@ -15,27 +15,6 @@ const sizes = {
   `,
 };
 
-const getColorStyles = (color, isSelected) => {
-  const state = isSelected ? 'selected' : 'unselected';
-  
-  return css`
-    color: var(--button-${color}-${state}-color);
-    background-color: var(--button-${color}-${state}-bg);
-    border: ${isSelected ? '2px' : '1px'} solid var(--button-${color}-${state}-border);
-    
-    ${isSelected && css`
-      box-shadow: var(--button-${color}-${state}-shadow), 0 0 0 2px rgba(var(--color-${color}-700-rgb), 0.2);
-      font-weight: 700;
-      transform: translateY(-1px);
-    `}
-    
-    &:hover {
-      background-color: var(--button-${color}-${state}-hover);
-      ${!isSelected && css`transform: translateY(-1px);`}
-    }
-  `;
-};
-
 const selectedCheckmark = css`
   &::after {
     content: '✓';
@@ -72,8 +51,15 @@ const ColoredButton = styled.button`
   transition: all 0.2s;
   position: relative;
 
+  color: var(--button-${(props) => props.$color}-unselected-color);
+  background-color: var(--button-${(props) => props.$color}-unselected-bg);
+  border: 1px solid var(--button-${(props) => props.$color}-unselected-border);
+  
+  &:hover {
+    background-color: var(--button-${(props) => props.$color}-unselected-hover);
+  }
+
   ${(props) => sizes[props.$size || "medium"]}
-  ${(props) => getColorStyles(props.$color, props.$isSelected)}
   ${(props) => props.$isSelected && selectedCheckmark}
 
   &:disabled {
