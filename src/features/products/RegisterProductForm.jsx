@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
+import { getBrandsForSelect } from "@/services/apiBrands";
 import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
 import { useUpdateProduct } from "./useUpdateProduct";
@@ -23,28 +23,22 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const { isUpdating, updateProduct } = useUpdateProduct();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
-  const { isPending: isPendingBrands, brands } = useBrandsForSelect();
-  const {
-    register,
-    formState,
-    handleSubmit,
-    reset,
-    control,
-    resetField,
-    getValues,
-  } = useForm({
-    defaultValues: {
-      ...checkedInValues,
-      brand_id: productToCheckedIn.brand?.id || null,
-    },
-  });
+
+  const { register, formState, handleSubmit, reset, control, getValues } =
+    useForm({
+      defaultValues: {
+        ...checkedInValues,
+        brand_id: productToCheckedIn.brand?.id || null,
+      },
+    });
   const { errors } = formState;
 
-  const isPending = isPendingUser || isPendingBrands || isUpdating;
+  const isPending = isPendingUser || isUpdating;
 
   const { field: brandField } = useController({
     name: "brand_id",
     control,
+    defaultValue: productToCheckedIn.brand?.id || null,
   });
   const { field: stateField } = useController({
     name: "state",
@@ -69,17 +63,6 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   // Check if status should be locked when state is NEED_CONTACT
   const isStatusLocked = stateField.value === "NEED_CONTACT";
-
-  // automatically update selected brand on OFFproduct data loaded
-  useEffect(() => {
-    if (productToCheckedIn.brand) return;
-    const selectedBrand = brands?.filter((b) =>
-      productToCheckedIn.brandName
-        ?.toLowerCase()
-        ?.includes(b.name?.toLowerCase())
-    )[0]?.id;
-    if (selectedBrand) resetField("brand_id", { defaultValue: selectedBrand });
-  }, [brands, productToCheckedIn, resetField]);
 
   // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
   useEffect(() => {
@@ -154,12 +137,19 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         <Select
           name="brand_id"
           onChange={brandField.onChange}
-          isMulti={false}
-          isSearchable={true}
+          getOptions={getBrandsForSelect}
+          defaultOptions={
+            productToCheckedIn.brand
+              ? [
+                  {
+                    value: productToCheckedIn.brand.id,
+                    label: productToCheckedIn.brand.name,
+                  },
+                ]
+              : []
+          }
           defaultValue={[brandField.value]}
-          required={false}
-          disabled={isPending}
-          options={brands || []}
+          disabled={isUpdating}
           createComponent={
             <CreateBrandForm prefillName={productToCheckedIn.brandName} />
           }

@@ -108,7 +108,7 @@ function Pagination({ count }) {
         <Select
           onChange={handlePageSize}
           name="pageSizeSelect"
-          options={[5, 10, 20, 30, 50].reduce((acc, o) => {
+          defaultOptions={[5, 10, 20, 30, 50].reduce((acc, o) => {
             acc.push({ value: o, label: o });
             return acc;
           }, [])}

@@ -1,7 +1,7 @@
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
+import { getBrandsForSelect } from "@/services/apiBrands";
 import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
 import { useUpdateProduct } from "./useUpdateProduct";
@@ -20,7 +20,6 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productToUpdate;
   const { isUpdating, updateProduct } = useUpdateProduct();
-  const { isPending: brandsisPending, brands } = useBrandsForSelect();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
@@ -33,6 +32,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { field: brandField } = useController({
     name: "brand_id",
     control,
+    defaultValue: productToUpdate.brand?.id || null,
   });
   const { field: stateField } = useController({
     name: "state",
@@ -62,7 +62,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     );
   }
 
-  if (brandsisPending || isPendingUser) return <Spinner />;
+  if (isPendingUser) return <Spinner />;
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
@@ -70,48 +70,53 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
         <Select
           name="state"
           onChange={stateField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[stateField.value]}
-          required={true}
-          disabled={isUpdating}
-          options={Object.entries(PRODUCT_STATES).map(([key, o]) => {
+          defaultOptions={Object.entries(PRODUCT_STATES).map(([key, o]) => {
             return {
               value: key,
               label: o.label,
               disabled: userRoles.includes(o.role) ? false : true,
             };
           })}
+          required={true}
+          disabled={isUpdating}
         />
       </FormRow>
       <FormRow label="Statut" error={errors.status?.message}>
         <Select
           name="status"
           onChange={statusField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[statusField.value]}
-          required={true}
-          disabled={isUpdating}
-          options={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
+          defaultOptions={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
+          required={true}
+          disabled={isUpdating}
         />
       </FormRow>
       <FormRow label="Marque" error={errors.brand_id?.message}>
-        <div>
-          <Select
-            name="brand_id"
-            onChange={brandField.onChange}
-            isMulti={false}
-            isSearchable={true}
-            defaultValue={[brandField.value]}
-            required={false}
-            disabled={isUpdating}
-            options={brands || []}
-            createComponent={<CreateBrandForm />}
-          />
-        </div>
+        <Select
+          name="brand_id"
+          onChange={brandField.onChange}
+          isMulti={false}
+          defaultOptions={
+            productToUpdate.brand
+              ? [
+                  {
+                    value: productToUpdate.brand.id,
+                    label: productToUpdate.brand.name,
+                  },
+                ]
+              : []
+          }
+          defaultValue={[brandField.value]}
+          getOptions={getBrandsForSelect}
+          required={false}
+          disabled={isUpdating}
+          createComponent={<CreateBrandForm />}
+        />
       </FormRow>
 
       <FormRow label="EAN" error={errors.ean?.message}>

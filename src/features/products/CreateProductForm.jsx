@@ -1,10 +1,10 @@
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-import { useBrandsForSelect } from "@/features/brands/useBrandsForSelect";
 import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
 import { useCreateProduct } from "./useCreateProduct";
+import { getBrandsForSelect } from "@/services/apiBrands";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
@@ -19,12 +19,11 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function CreateProductForm({ onCloseModal }) {
   const { isCreating, createProduct } = useCreateProduct();
-  const { isPending: brandisPending, brands } = useBrandsForSelect();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
   const { register, formState, handleSubmit, reset, control } = useForm();
   const { errors } = formState;
 
-  const isPending = isCreating || brandisPending || isPendingUser;
+  const isPending = isCreating || isPendingUser;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -67,32 +66,30 @@ function CreateProductForm({ onCloseModal }) {
         <Select
           name="state"
           onChange={stateField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[stateField.value]}
-          required={true}
-          disabled={isPending}
-          options={Object.entries(PRODUCT_STATES).map(([key, o]) => {
+          defaultOptions={Object.entries(PRODUCT_STATES).map(([key, o]) => {
             return {
               value: key,
               label: o.label,
               disabled: userRoles.includes(o.role) ? false : true,
             };
           })}
+          required={true}
+          disabled={isPending}
         />
       </FormRow>
       <FormRow label="Statut" error={errors.status?.message}>
         <Select
           name="status"
           onChange={statusField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[statusField.value]}
-          required={true}
-          disabled={isPending}
-          options={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
+          defaultOptions={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
+          required={true}
+          disabled={isPending}
         />
       </FormRow>
 
@@ -100,12 +97,8 @@ function CreateProductForm({ onCloseModal }) {
         <Select
           name="brand_id"
           onChange={brandField.onChange}
-          isMulti={false}
-          isSearchable={true}
-          defaultValue={[brandField.value]}
-          required={false}
+          getOptions={getBrandsForSelect}
           disabled={isPending}
-          options={brands || []}
           createComponent={<CreateBrandForm />}
         />
       </FormRow>

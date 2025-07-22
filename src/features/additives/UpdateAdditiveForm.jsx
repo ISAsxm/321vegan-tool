@@ -75,7 +75,7 @@ function UpdateAdditiveForm({ additiveToUpdate, onCloseModal }) {
           defaultValue={[statusField.value]}
           required={true}
           disabled={isUpdating}
-          options={Object.entries(ADDITIVES_STATUSES).map(([key, o]) => {
+          defaultOptions={Object.entries(ADDITIVES_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
         />

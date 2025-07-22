@@ -1,8 +1,10 @@
 import { cloneElement, useEffect, useRef, useState } from "react";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import Modal from "@/ui/Modal";
+import LoaderDots from "./LoaderDots";
 
 import {
   HiChevronUp,
@@ -14,7 +16,7 @@ import { GiCheckMark } from "react-icons/gi";
 
 import styled, { css } from "styled-components";
 
-const SelectContainer = styled.div`
+export const SelectContainer = styled.div`
   font-size: 1.4rem;
   font-weight: 500;
   border: 1px solid var(--color-grey-300);
@@ -26,7 +28,7 @@ const SelectContainer = styled.div`
   position: relative;
 
   display: flex;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   align-items: stretch;
   width: 100%;
 
@@ -39,7 +41,7 @@ const SelectContainer = styled.div`
     `}
 `;
 
-const SelectToggle = styled.div`
+export const SelectToggle = styled.div`
   user-select: none;
   font-size: 1.4rem;
   font-weight: 500;
@@ -61,12 +63,12 @@ const SelectToggle = styled.div`
   }
 `;
 
-const SelectedContent = styled.div`
+export const SelectedContent = styled.div`
   color: ${(props) =>
     props.$isPlaceholder ? "var(--color-grey-300)" : "inherit"};
 `;
 
-const SelectAddAction = styled.span`
+export const SelectAddAction = styled.span`
   display: inline-flex;
   align-items: center;
   font-size: 1.4rem;
@@ -90,7 +92,7 @@ const SelectAddAction = styled.span`
   }
 `;
 
-const SelectPicker = styled.div`
+export const SelectPicker = styled.div`
   border: 1px solid var(--color-grey-300);
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-sm);
@@ -123,7 +125,7 @@ const SelectPicker = styled.div`
   }
 `;
 
-const SelectOption = styled.div`
+export const SelectOption = styled.div`
   font-size: 1.4rem;
   padding: 0.8rem 1.2rem;
   cursor: pointer;
@@ -163,25 +165,31 @@ const SelectOption = styled.div`
     `}
 `;
 
-const SearchBox = styled.div`
+export const SearchBox = styled.div`
   padding: 0.6rem 0.8rem;
-  input {
+  & input {
     padding: 0.8rem 1.2rem;
     border: 1px solid var(--color-grey-300);
     background-color: var(--color-grey-0);
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow-sm);
     width: 100%;
+
+    &::placeholder {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-grey-300);
+    }
   }
 `;
 
-const MultiValuesContainer = styled.div`
+export const MultiValuesContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 `;
 
-const MultiValuesItem = styled.div`
+export const MultiValuesItem = styled.div`
   border-radius: var(--border-radius-sm);
   background-color: var(--color-grey-200);
   color: var(--color-grey-500);
@@ -194,7 +202,7 @@ const MultiValuesItem = styled.div`
   gap: 0.4rem;
 `;
 
-const EmptyOptions = styled.div`
+export const EmptyOptions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -207,54 +215,53 @@ const EmptyOptions = styled.div`
 
 const Select = ({
   name,
-  options,
   onChange,
+  createComponent,
+  getOptions,
+  defaultOptions = [],
+  defaultValue = [],
   required = false,
   disabled = false,
-  defaultValue = [],
   placeHolder = "Sélectionnez",
-  isMulti = false,
   isSearchable = false,
+  isMulti = false,
   align = "left",
-  createComponent,
 }) => {
+  const debounce = useDebounce(1000);
   const [showPicker, setShowPicker] = useState(false);
+  const [isPendingOptions, setIsPendingOptions] = useState(false);
+  const [options, setOptions] = useState(defaultOptions);
+  const [searchValue, setSearchValue] = useState("");
   const [selectedValue, setSelectedValue] = useState(
     isMulti
       ? [...options.filter((opt) => defaultValue.includes(opt.value))]
       : options.find((opt) => opt.value === defaultValue[0])
   );
-  const [searchValue, setSearchValue] = useState("");
   const searchRef = useRef();
   const inputRef = useClickOutside(() => setShowPicker(false), false);
 
-  useEffect(() => {
-    setSearchValue("");
-    if (showPicker && searchRef.current) {
-      searchRef.current.focus();
-    }
-  }, [showPicker]);
-
-  function getDisplayValue() {
-    if (!selectedValue || selectedValue.length === 0) {
-      return placeHolder;
-    }
-    if (isMulti) {
-      return (
-        <MultiValuesContainer>
-          {selectedValue.map((o, i) => (
-            <MultiValuesItem key={`${o.value}-${i}`}>
-              {o.label}
-              <HiXMark onClick={(e) => handleUnselectMultiOption(e, o)} />
-            </MultiValuesItem>
-          ))}
-        </MultiValuesContainer>
-      );
-    }
-    return selectedValue.label;
+  function addOption(opts) {
+    setOptions((options) =>
+      [...new Set([...options, ...opts])].filter(
+        (value, index, self) =>
+          index === self.findIndex((opt) => opt.value === value.value)
+      )
+    );
   }
 
-  function removeOption(option) {
+  function removeOption() {
+    setOptions(
+      isMulti
+        ? selectedValue.length > 0
+          ? selectedValue
+          : []
+        : selectedValue
+        ? [selectedValue]
+        : []
+    );
+  }
+
+  function unselectOption(option) {
     if (option.disabled) return;
     return selectedValue.filter((o) => o.value !== option.value);
   }
@@ -269,17 +276,29 @@ const Select = ({
     return selectedValue.value === option.value;
   }
 
-  function getOptions() {
-    if (!searchValue) {
-      return options;
+  function getChoices() {
+    if (!getOptions) {
+      if (!searchValue) {
+        return options;
+      }
+      return options.filter(
+        (o) => o.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
+      );
     }
-    return options.filter(
-      (o) => o.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
-    );
+
+    if (isMulti) {
+      return selectedValue.length > 0
+        ? [...new Set([...options, ...selectedValue])]
+        : options;
+    }
+    return selectedValue
+      ? [...new Set([...options, ...[selectedValue]])]
+      : options;
   }
 
   function handleToggle() {
     if (disabled) return;
+    if (getOptions) removeOption();
     setShowPicker(!showPicker);
   }
 
@@ -289,7 +308,7 @@ const Select = ({
 
     if (isMulti) {
       if (selectedValue.findIndex((o) => o.value === option.value) >= 0) {
-        newValue = removeOption(option);
+        newValue = unselectOption(option);
       } else {
         newValue = [...selectedValue, option];
       }
@@ -300,18 +319,48 @@ const Select = ({
     onChange(isMulti ? newValue.map((o) => o.value) : option.value);
   }
 
-  function handleUnselectMultiOption(e, option) {
-    e.stopPropagation();
-    const newValue = removeOption(option);
+  function handleUnselectMultiOption(option) {
+    const newValue = unselectOption(option);
     setSelectedValue(newValue);
     onChange(isMulti ? newValue.map((o) => o.value) : option.value);
   }
 
-  function handleSearch(e) {
-    setSearchValue(e.target.value);
+  function handleCreateOption(option) {
+    addOption([option]);
+    handleSelectOption(option);
   }
 
-  const choices = getOptions();
+  const fetchOptions = async (inputValue) => {
+    try {
+      setIsPendingOptions(true);
+      const data = await getOptions(inputValue);
+      if (data) addOption(data.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsPendingOptions(false);
+    }
+  };
+
+  function handleSearch(e) {
+    const inputSearch = e.target.value.trim();
+    setSearchValue(inputSearch);
+    if (getOptions) {
+      if (!inputSearch) return;
+      debounce(() => {
+        fetchOptions(inputSearch);
+      });
+    }
+  }
+
+  useEffect(() => {
+    setSearchValue("");
+    if (showPicker && searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [showPicker]);
+
+  const choices = getChoices();
 
   return (
     <SelectContainer
@@ -325,7 +374,26 @@ const Select = ({
             !selectedValue || selectedValue.length === 0 ? true : false
           }
         >
-          {getDisplayValue()}
+          {!selectedValue || selectedValue.length === 0 ? (
+            placeHolder
+          ) : isMulti ? (
+            <MultiValuesContainer>
+              {selectedValue.map((o, i) => (
+                <MultiValuesItem
+                  key={`${o.value}-${i}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleUnselectMultiOption(o);
+                  }}
+                >
+                  {o.label}
+                  <HiXMark />
+                </MultiValuesItem>
+              ))}
+            </MultiValuesContainer>
+          ) : (
+            selectedValue.label
+          )}
         </SelectedContent>
         {showPicker ? <HiChevronUp /> : <HiChevronDown />}
       </SelectToggle>
@@ -338,7 +406,7 @@ const Select = ({
           </Modal.Open>
           <Modal.Window name={`create-options-${name}`}>
             {cloneElement(createComponent, {
-              onCreateOption: handleSelectOption,
+              onCreateOption: handleCreateOption,
             })}
           </Modal.Window>
         </Modal>
@@ -346,14 +414,21 @@ const Select = ({
 
       {showPicker && (
         <SelectPicker $align={align}>
-          {options.length > 0 && isSearchable && (
+          {(!!getOptions || isSearchable) && (
             <SearchBox>
               <input
+                id={`${name}-search`}
                 onChange={handleSearch}
                 value={searchValue}
                 ref={searchRef}
+                placeholder={!getOptions ? "Filtrer..." : "Rechercher..."}
               />
             </SearchBox>
+          )}
+          {isPendingOptions && (
+            <EmptyOptions>
+              <LoaderDots />
+            </EmptyOptions>
           )}
           {choices.length > 0 ? (
             choices.map((option) => (

@@ -52,14 +52,13 @@ function UpdateUserForm({ userToUpdate, onCloseModal }) {
         <Select
           name="role"
           onChange={roleField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[roleField.value]}
-          required={true}
-          disabled={isUpdating}
-          options={Object.entries(USER_ROLES).map(([key, o]) => {
+          defaultOptions={Object.entries(USER_ROLES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
+          required={true}
+          disabled={isUpdating}
         />
       </FormRow>
 

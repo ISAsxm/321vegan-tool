@@ -65,7 +65,7 @@ function CreateAdditiveForm({ onCloseModal }) {
           defaultValue={[]}
           required={true}
           disabled={isCreating}
-          options={Object.entries(ADDITIVES_STATUSES).map(([key, o]) => {
+          defaultOptions={Object.entries(ADDITIVES_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
         />
