@@ -12,7 +12,6 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
-import SelectRelationship from "@/ui/SelectRelationship";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 
@@ -71,36 +70,34 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
         <Select
           name="state"
           onChange={stateField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[stateField.value]}
-          required={true}
-          disabled={isUpdating}
-          options={Object.entries(PRODUCT_STATES).map(([key, o]) => {
+          defaultOptions={Object.entries(PRODUCT_STATES).map(([key, o]) => {
             return {
               value: key,
               label: o.label,
               disabled: userRoles.includes(o.role) ? false : true,
             };
           })}
+          required={true}
+          disabled={isUpdating}
         />
       </FormRow>
       <FormRow label="Statut" error={errors.status?.message}>
         <Select
           name="status"
           onChange={statusField.onChange}
-          isMulti={false}
           isSearchable={true}
           defaultValue={[statusField.value]}
-          required={true}
-          disabled={isUpdating}
-          options={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
+          defaultOptions={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
+          required={true}
+          disabled={isUpdating}
         />
       </FormRow>
       <FormRow label="Marque" error={errors.brand_id?.message}>
-        <SelectRelationship
+        <Select
           name="brand_id"
           onChange={brandField.onChange}
           isMulti={false}

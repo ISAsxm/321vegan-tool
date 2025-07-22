@@ -1,6 +1,6 @@
 import { useController, useForm } from "react-hook-form";
-import { useBrandsForSelect } from "./useBrandsForSelect";
 import { useCreateBrand } from "./useCreateBrand";
+import { getBrandsForSelect } from "@/services/apiBrands";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
@@ -11,7 +11,6 @@ import Spinner from "@/ui/Spinner";
 
 function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
   const { isCreating, createBrand } = useCreateBrand();
-  const { isPending: brandisPending, brands } = useBrandsForSelect();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       parent_id: null,
@@ -19,7 +18,6 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
     },
   });
   const { errors } = formState;
-  const isPending = isCreating || brandisPending;
 
   const { field: parentField } = useController({
     name: "parent_id",
@@ -36,7 +34,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
     });
   }
 
-  if (isPending) return <Spinner />;
+  if (isCreating) return <Spinner />;
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
@@ -44,12 +42,9 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
         <Select
           name="parent_id"
           onChange={parentField.onChange}
-          isMulti={false}
           isSearchable={true}
-          defaultValue={[]}
-          required={false}
-          disabled={isPending}
-          options={brands || []}
+          disabled={isCreating}
+          getOptions={getBrandsForSelect}
         />
       </FormRow>
 
@@ -58,7 +53,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
           type="text"
           id="name"
           {...register("name", { required: "Ce champ est obligatoire" })}
-          disabled={isPending}
+          disabled={isCreating}
           required
         />
       </FormRow>
@@ -68,11 +63,11 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isPending}
+          disabled={isCreating}
         >
           Annuler
         </Button>
-        <Button disabled={isPending} onClick={handleSubmit(onSubmit)}>
+        <Button disabled={isCreating} onClick={handleSubmit(onSubmit)}>
           Créer
         </Button>
       </FormRow>

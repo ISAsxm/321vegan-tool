@@ -1,8 +1,10 @@
 import { cloneElement, useEffect, useRef, useState } from "react";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import Modal from "@/ui/Modal";
+import LoaderDots from "./LoaderDots";
 
 import {
   HiChevronUp,
@@ -165,13 +167,19 @@ export const SelectOption = styled.div`
 
 export const SearchBox = styled.div`
   padding: 0.6rem 0.8rem;
-  input {
+  & input {
     padding: 0.8rem 1.2rem;
     border: 1px solid var(--color-grey-300);
     background-color: var(--color-grey-0);
     border-radius: var(--border-radius-sm);
     box-shadow: var(--shadow-sm);
     width: 100%;
+
+    &::placeholder {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--color-grey-300);
+    }
   }
 `;
 
@@ -207,54 +215,53 @@ export const EmptyOptions = styled.div`
 
 const Select = ({
   name,
-  options,
   onChange,
+  createComponent,
+  getOptions,
+  defaultOptions = [],
+  defaultValue = [],
   required = false,
   disabled = false,
-  defaultValue = [],
   placeHolder = "Sélectionnez",
-  isMulti = false,
   isSearchable = false,
+  isMulti = false,
   align = "left",
-  createComponent,
 }) => {
+  const debounce = useDebounce(1000);
   const [showPicker, setShowPicker] = useState(false);
+  const [isPendingOptions, setIsPendingOptions] = useState(false);
+  const [options, setOptions] = useState(defaultOptions);
+  const [searchValue, setSearchValue] = useState("");
   const [selectedValue, setSelectedValue] = useState(
     isMulti
       ? [...options.filter((opt) => defaultValue.includes(opt.value))]
       : options.find((opt) => opt.value === defaultValue[0])
   );
-  const [searchValue, setSearchValue] = useState("");
   const searchRef = useRef();
   const inputRef = useClickOutside(() => setShowPicker(false), false);
 
-  useEffect(() => {
-    setSearchValue("");
-    if (showPicker && searchRef.current) {
-      searchRef.current.focus();
-    }
-  }, [showPicker]);
-
-  function getDisplayValue() {
-    if (!selectedValue || selectedValue.length === 0) {
-      return placeHolder;
-    }
-    if (isMulti) {
-      return (
-        <MultiValuesContainer>
-          {selectedValue.map((o, i) => (
-            <MultiValuesItem key={`${o.value}-${i}`}>
-              {o.label}
-              <HiXMark onClick={(e) => handleUnselectMultiOption(e, o)} />
-            </MultiValuesItem>
-          ))}
-        </MultiValuesContainer>
-      );
-    }
-    return selectedValue.label;
+  function addOption(opts) {
+    setOptions((options) =>
+      [...new Set([...options, ...opts])].filter(
+        (value, index, self) =>
+          index === self.findIndex((opt) => opt.value === value.value)
+      )
+    );
   }
 
-  function removeOption(option) {
+  function removeOption() {
+    setOptions(
+      isMulti
+        ? selectedValue.length > 0
+          ? selectedValue
+          : []
+        : selectedValue
+        ? [selectedValue]
+        : []
+    );
+  }
+
+  function unselectOption(option) {
     if (option.disabled) return;
     return selectedValue.filter((o) => o.value !== option.value);
   }
@@ -269,17 +276,29 @@ const Select = ({
     return selectedValue.value === option.value;
   }
 
-  function getOptions() {
-    if (!searchValue) {
-      return options;
+  function getChoices() {
+    if (!getOptions) {
+      if (!searchValue) {
+        return options;
+      }
+      return options.filter(
+        (o) => o.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
+      );
     }
-    return options.filter(
-      (o) => o.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
-    );
+
+    if (isMulti) {
+      return selectedValue.length > 0
+        ? [...new Set([...options, ...selectedValue])]
+        : options;
+    }
+    return selectedValue
+      ? [...new Set([...options, ...[selectedValue]])]
+      : options;
   }
 
   function handleToggle() {
     if (disabled) return;
+    if (getOptions) removeOption();
     setShowPicker(!showPicker);
   }
 
@@ -289,7 +308,7 @@ const Select = ({
 
     if (isMulti) {
       if (selectedValue.findIndex((o) => o.value === option.value) >= 0) {
-        newValue = removeOption(option);
+        newValue = unselectOption(option);
       } else {
         newValue = [...selectedValue, option];
       }
@@ -300,18 +319,48 @@ const Select = ({
     onChange(isMulti ? newValue.map((o) => o.value) : option.value);
   }
 
-  function handleUnselectMultiOption(e, option) {
-    e.stopPropagation();
-    const newValue = removeOption(option);
+  function handleUnselectMultiOption(option) {
+    const newValue = unselectOption(option);
     setSelectedValue(newValue);
     onChange(isMulti ? newValue.map((o) => o.value) : option.value);
   }
 
-  function handleSearch(e) {
-    setSearchValue(e.target.value);
+  function handleCreateOption(option) {
+    addOption([option]);
+    handleSelectOption(option);
   }
 
-  const choices = getOptions();
+  const fetchOptions = async (inputValue) => {
+    try {
+      setIsPendingOptions(true);
+      const data = await getOptions(inputValue);
+      if (data) addOption(data.data);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsPendingOptions(false);
+    }
+  };
+
+  function handleSearch(e) {
+    const inputSearch = e.target.value.trim();
+    setSearchValue(inputSearch);
+    if (getOptions) {
+      if (!inputSearch) return;
+      debounce(() => {
+        fetchOptions(inputSearch);
+      });
+    }
+  }
+
+  useEffect(() => {
+    setSearchValue("");
+    if (showPicker && searchRef.current) {
+      searchRef.current.focus();
+    }
+  }, [showPicker]);
+
+  const choices = getChoices();
 
   return (
     <SelectContainer
@@ -325,7 +374,26 @@ const Select = ({
             !selectedValue || selectedValue.length === 0 ? true : false
           }
         >
-          {getDisplayValue()}
+          {!selectedValue || selectedValue.length === 0 ? (
+            placeHolder
+          ) : isMulti ? (
+            <MultiValuesContainer>
+              {selectedValue.map((o, i) => (
+                <MultiValuesItem
+                  key={`${o.value}-${i}`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleUnselectMultiOption(o);
+                  }}
+                >
+                  {o.label}
+                  <HiXMark />
+                </MultiValuesItem>
+              ))}
+            </MultiValuesContainer>
+          ) : (
+            selectedValue.label
+          )}
         </SelectedContent>
         {showPicker ? <HiChevronUp /> : <HiChevronDown />}
       </SelectToggle>
@@ -338,7 +406,7 @@ const Select = ({
           </Modal.Open>
           <Modal.Window name={`create-options-${name}`}>
             {cloneElement(createComponent, {
-              onCreateOption: handleSelectOption,
+              onCreateOption: handleCreateOption,
             })}
           </Modal.Window>
         </Modal>
@@ -346,14 +414,21 @@ const Select = ({
 
       {showPicker && (
         <SelectPicker $align={align}>
-          {options.length > 0 && isSearchable && (
+          {(!!getOptions || isSearchable) && (
             <SearchBox>
               <input
+                id={`${name}-search`}
                 onChange={handleSearch}
                 value={searchValue}
                 ref={searchRef}
+                placeholder={!getOptions ? "Filtrer..." : "Rechercher..."}
               />
             </SearchBox>
+          )}
+          {isPendingOptions && (
+            <EmptyOptions>
+              <LoaderDots />
+            </EmptyOptions>
           )}
           {choices.length > 0 ? (
             choices.map((option) => (

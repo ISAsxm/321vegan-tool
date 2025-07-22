@@ -1,6 +1,6 @@
 import { useController, useForm } from "react-hook-form";
 
-import { useBrandsForSelect } from "./useBrandsForSelect";
+import { getBrandsForSelect } from "@/services/apiBrands";
 import { useUpdateBrand } from "./useUpdateBrand";
 
 import Button from "@/ui/Button";
@@ -13,7 +13,6 @@ import Spinner from "@/ui/Spinner";
 
 function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = brandToUpdate;
-  const { isPending: isPendingBrands, brands } = useBrandsForSelect();
   const { isUpdating, updateBrand } = useUpdateBrand();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
@@ -22,7 +21,6 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
     },
   });
   const { errors } = formState;
-  const isPending = isUpdating || isPendingBrands;
 
   const { field: parentField } = useController({
     name: "parent_id",
@@ -41,7 +39,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
     );
   }
 
-  if (isPending) return <Spinner />;
+  if (isUpdating) return <Spinner />;
 
   return (
     <Form
@@ -52,20 +50,19 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         <Select
           name="parent_id"
           onChange={parentField.onChange}
-          isMulti={false}
-          isSearchable={true}
+          getOptions={getBrandsForSelect}
           defaultValue={[parentField.value]}
-          required={false}
-          disabled={isPending}
-          options={
-            brands?.map((b) => {
-              return {
-                value: b.value,
-                label: b.label,
-                disabled: b.value === updateId ? true : false,
-              };
-            }) || []
+          defaultOptions={
+            brandToUpdate.parent
+              ? [
+                  {
+                    value: brandToUpdate.parent.id,
+                    label: brandToUpdate.parent.name,
+                  },
+                ]
+              : []
           }
+          disabled={isUpdating}
         />
       </FormRow>
 
@@ -74,7 +71,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           type="text"
           id="name"
           {...register("name", { required: "Ce champ est obligatoire" })}
-          disabled={isPending}
+          disabled={isUpdating}
           required
         />
       </FormRow>
@@ -84,11 +81,11 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isPending}
+          disabled={isUpdating}
         >
           Annuler
         </Button>
-        <Button disabled={isPending}>Modifier</Button>
+        <Button disabled={isUpdating}>Modifier</Button>
       </FormRow>
     </Form>
   );
