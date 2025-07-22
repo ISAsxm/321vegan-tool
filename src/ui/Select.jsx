@@ -344,7 +344,7 @@ const Select = ({
 
   function handleSearch(e) {
     const inputSearch = e.target.value.trim();
-    setSearchValue(inputSearch);
+    setSearchValue(e.target.value);
     if (getOptions) {
       if (!inputSearch) return;
       debounce(() => {
