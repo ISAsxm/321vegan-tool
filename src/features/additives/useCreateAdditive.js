@@ -10,7 +10,7 @@ export function useCreateAdditive() {
     mutationFn: createAdditiveApi,
     onSuccess: () => {
       toast.success("L'additif a bien été créé");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: additivesKeys.all,
       });
     },

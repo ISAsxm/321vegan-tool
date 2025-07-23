@@ -20,8 +20,12 @@ const StyledForm = styled.form`
   font-size: 1.4rem;
 `;
 
-function Form({ children, type = "regular" }) {
-  return <StyledForm type={type}>{children}</StyledForm>;
+function Form({ children, type = "regular", onSubmit }) {
+  return (
+    <StyledForm type={type} onSubmit={onSubmit}>
+      {children}
+    </StyledForm>
+  );
 }
 
 export default Form;

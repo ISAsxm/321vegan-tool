@@ -10,7 +10,7 @@ export function useCreateCosmetic() {
     mutationFn: createCosmeticApi,
     onSuccess: () => {
       toast.success("La marque de cosmétiques a bien été créée");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: cosmeticsKeys.lists(),
       });
     },

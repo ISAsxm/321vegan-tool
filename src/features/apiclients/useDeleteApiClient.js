@@ -10,7 +10,7 @@ export function useDeleteApiClient() {
     mutationFn: deleteApiClientApi,
     onSuccess: () => {
       toast.success("Le client API a bien été supprimé");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: apiclientsKeys.all,
       });
     },

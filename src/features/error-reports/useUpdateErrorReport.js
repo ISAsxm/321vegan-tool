@@ -10,7 +10,7 @@ export function useUpdateErrorReport() {
     mutationFn: ({ id, newData }) => updateErrorReportApi(id, newData),
     onSuccess: () => {
       toast.success("Le rapport d'erreur a bien été modifié");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: errorReportsKeys.all,
       });
     },

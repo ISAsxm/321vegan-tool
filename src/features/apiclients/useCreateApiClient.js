@@ -10,7 +10,7 @@ export function useCreateApiClient() {
     mutationFn: createApiClientApi,
     onSuccess: () => {
       toast.success("Le client API a bien été créé");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: apiclientsKeys.all,
       });
     },

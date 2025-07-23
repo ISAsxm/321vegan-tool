@@ -10,7 +10,7 @@ export function useCreateUser() {
     mutationFn: createUserApi,
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été créé.e");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: usersKeys.all,
       });
     },

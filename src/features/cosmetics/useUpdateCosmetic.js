@@ -10,7 +10,7 @@ export function useUpdateCosmetic() {
     mutationFn: ({ id, newData }) => updateCosmeticApi(id, newData),
     onSuccess: () => {
       toast.success("La marque de cosmétiques a bien été modifiée");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: cosmeticsKeys.lists(),
       });
     },

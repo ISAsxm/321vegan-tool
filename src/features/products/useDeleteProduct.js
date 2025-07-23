@@ -10,7 +10,8 @@ export function useDeleteProduct() {
     mutationFn: deleteProductApi,
     onSuccess: () => {
       toast.success("Le produit a bien été supprimé");
-      return queryClient.invalidateQueries({
+      queryClient.removeQueries(productsKeys.detail);
+      queryClient.invalidateQueries({
         queryKey: productsKeys.all,
       });
     },

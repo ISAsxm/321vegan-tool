@@ -10,7 +10,7 @@ export function useUpdateBrand() {
     mutationFn: ({ id, newData }) => updateBrandApi(id, newData),
     onSuccess: () => {
       toast.success("La marque a bien été modifiée");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: brandsKeys.all,
       });
     },

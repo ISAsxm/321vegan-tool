@@ -10,7 +10,7 @@ export function useCreateProduct() {
     mutationFn: createProductApi,
     onSuccess: () => {
       toast.success("Le produit a bien été créé");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: productsKeys.all,
       });
     },

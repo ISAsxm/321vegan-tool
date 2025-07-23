@@ -220,16 +220,17 @@ function ProductDetail() {
           )}
 
           {userRoles.includes("contributor") && (
-            <Modal.Open opens="edit">
-              <Button $variation="warning">Éditer</Button>
-            </Modal.Open>
-          )}
-          {userRoles.includes("admin") && (
-            <Modal.Open opens="delete">
-              <Button $variation="danger" disabled={isWorking}>
-                Supprimer
-              </Button>
-            </Modal.Open>
+            <>
+              <Modal.Open opens="edit">
+                <Button $variation="warning">Éditer</Button>
+              </Modal.Open>
+
+              <Modal.Open opens="delete">
+                <Button $variation="danger" disabled={isWorking}>
+                  Supprimer
+                </Button>
+              </Modal.Open>
+            </>
           )}
           <Button $variation="secondary" onClick={goBack}>
             Retour

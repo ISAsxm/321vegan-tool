@@ -10,7 +10,8 @@ export function useDeleteAdditive() {
     mutationFn: deleteAdditiveApi,
     onSuccess: () => {
       toast.success("L'additif a bien été supprimé");
-      return queryClient.invalidateQueries({
+      queryClient.removeQueries(additivesKeys.detail);
+      queryClient.invalidateQueries({
         queryKey: additivesKeys.all,
       });
     },

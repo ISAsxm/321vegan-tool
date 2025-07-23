@@ -10,7 +10,7 @@ export function useUpdateApiClient() {
     mutationFn: ({ id, newData }) => updateApiClientApi(id, newData),
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été modifié.e");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: apiclientsKeys.all,
       });
     },

@@ -10,7 +10,7 @@ export function useCreateBrand() {
     mutationFn: createBrandApi,
     onSuccess: () => {
       toast.success("La marque a bien été créée");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: brandsKeys.all,
       });
     },

@@ -6,6 +6,7 @@ import { getBrandsForSelect } from "@/services/apiBrands";
 import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
 import { useUpdateProduct } from "./useUpdateProduct";
+import { useDeleteProduct } from "./useDeleteProduct";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 import ButtonGroup from "@/ui/ButtonGroup";
@@ -16,12 +17,15 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
+import Modal from "@/ui/Modal";
+import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
 import ColoredButton from "@/ui/ColoredButton";
 
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const { isUpdating, updateProduct } = useUpdateProduct();
+  const { isDeleting, deleteProduct } = useDeleteProduct();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
 
   const { register, formState, handleSubmit, reset, control, getValues } =
@@ -33,7 +37,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     });
   const { errors } = formState;
 
-  const isPending = isPendingUser || isUpdating;
+  const isPending = isPendingUser || isUpdating || isDeleting;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -226,6 +230,28 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         >
           Annuler
         </Button>
+        {userRoles.includes("contributor") && (
+          <Modal>
+            <Modal.Open opens="delete">
+              <Button $variation="danger" disabled={isPending} type="button">
+                Supprimer
+              </Button>
+            </Modal.Open>
+            <Modal.Window name="delete">
+              <ConfirmAction
+                variation="delete"
+                title="Supprimer un produit"
+                message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement ce produit ?"
+                onConfirm={() =>
+                  deleteProduct(checkedId, {
+                    onSettled: () => onClose(),
+                  })
+                }
+                disabled={isPending}
+              />
+            </Modal.Window>
+          </Modal>
+        )}
         <Button disabled={isPending} onClick={handleSubmit(onSubmit)}>
           Enregistrer
         </Button>

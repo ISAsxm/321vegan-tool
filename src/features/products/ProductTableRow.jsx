@@ -89,27 +89,22 @@ function ProductTableRow({ product }) {
             >
               Voir le détail
             </Menus.Button>
-            {!isPendingRoles && (
+            {!isPendingRoles && userRoles.includes("contributor") && (
               <>
-                {userRoles.includes("contributor") &&
-                  product.state === "CREATED" && (
-                    <Menus.Button
-                      icon={<HiDocumentCheck />}
-                      onClick={() => navigate(`/register/${ean}`)}
-                    >
-                      Vérifier
-                    </Menus.Button>
-                  )}
-                {userRoles.includes("contributor") && (
-                  <Modal.Open opens="edit">
-                    <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
-                  </Modal.Open>
+                {product.state === "CREATED" && (
+                  <Menus.Button
+                    icon={<HiDocumentCheck />}
+                    onClick={() => navigate(`/register/${ean}`)}
+                  >
+                    Vérifier
+                  </Menus.Button>
                 )}
-                {userRoles.includes("admin") && (
-                  <Modal.Open opens="delete">
-                    <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
-                  </Modal.Open>
-                )}
+                <Modal.Open opens="edit">
+                  <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
+                </Modal.Open>
+                <Modal.Open opens="delete">
+                  <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
+                </Modal.Open>
               </>
             )}
           </Menus.List>

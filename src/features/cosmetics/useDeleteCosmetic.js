@@ -10,7 +10,8 @@ export function useDeleteCosmetic() {
     mutationFn: deleteCosmeticApi,
     onSuccess: () => {
       toast.success("La marque de cosmétiques a bien été supprimée");
-      return queryClient.invalidateQueries({
+      queryClient.removeQueries(cosmeticsKeys.detail);
+      queryClient.invalidateQueries({
         queryKey: cosmeticsKeys.lists(),
       });
     },

@@ -65,7 +65,9 @@ function UpdatePasswordForm({ user }) {
         <Button onClick={reset} type="reset" $variation="secondary">
           Annuler
         </Button>
-        <Button disabled={isUpdating}>Modifier</Button>
+        <Button disabled={isUpdating} type="submit">
+          Modifier
+        </Button>
       </FormRow>
     </Form>
   );

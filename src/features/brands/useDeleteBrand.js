@@ -10,7 +10,8 @@ export function useDeleteBrand() {
     mutationFn: deleteBrandApi,
     onSuccess: () => {
       toast.success("La marque a bien été supprimée");
-      return queryClient.invalidateQueries({
+      queryClient.removeQueries(brandsKeys.detail);
+      queryClient.invalidateQueries({
         queryKey: brandsKeys.all,
       });
     },

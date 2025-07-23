@@ -10,7 +10,7 @@ export function useUpdateAdditive() {
     mutationFn: ({ id, newData }) => updateAdditiveApi(id, newData),
     onSuccess: () => {
       toast.success("L'additif a bien été modifié");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: additivesKeys.all,
       });
     },

@@ -10,7 +10,7 @@ export function useDeleteUser() {
     mutationFn: deleteUserApi,
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été supprimé.e");
-      return queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: usersKeys.all,
       });
     },
