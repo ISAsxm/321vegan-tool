@@ -49,6 +49,7 @@ export const ADDITIVES_STATUSES = {
 export const NON_VEGAN_INGREDIENTS = [
   "egg",
   "oeuf",
+  "œuf",
   "milk",
   "lait",
   "lactose",
@@ -68,6 +69,9 @@ export const NON_VEGAN_INGREDIENTS = [
   "gélatine",
   "fish",
   "poisson",
+  "anchovies",
+  "anchovy",
+  "anchois",
   "meet",
   "viande",
   "beef",
