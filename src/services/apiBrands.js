@@ -2,6 +2,17 @@ import { buildURLSearchParams } from "@/utils/helpers";
 import { API_URL } from "@/utils/constants";
 import axiosInstance from "@/services/axiosInstance";
 
+function sortByInputFirst(input, data) {
+  const [first, others] = data.reduce(
+    ([a, b], c) =>
+      c.label.toLowerCase().indexOf(input.toLowerCase()) == 0
+        ? [[...a, c], b]
+        : [a, [...b, c]],
+    [[], []]
+  );
+  return first.concat(others);
+}
+
 export async function getBrands() {
   try {
     const res = await axiosInstance.get(`${API_URL}/brands/`);
@@ -59,7 +70,10 @@ export async function getBrandsForSelect(searchName) {
     );
     const data = await res.data;
     return {
-      data: data.items.map((item) => ({ value: item.id, label: item.name })),
+      data: sortByInputFirst(
+        searchName,
+        data.items.map((item) => ({ value: item.id, label: item.name }))
+      ),
     };
   } catch (error) {
     if (error.response) {
