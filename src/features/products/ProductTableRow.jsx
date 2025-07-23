@@ -75,9 +75,20 @@ function ProductTableRow({ product }) {
         {PRODUCT_STATUSES[status].label}
       </Tag>
 
-      <Tag type={PRODUCT_STATES[state].color}>
-        {PRODUCT_STATES[state].label}
-      </Tag>
+      {state === "CREATED" &&
+      !isPendingRoles &&
+      userRoles.includes("contributor") ? (
+        <Tag
+          type={PRODUCT_STATES[state].color}
+          onClick={() => navigate(`/register/${ean}`)}
+        >
+          {PRODUCT_STATES[state].label}
+        </Tag>
+      ) : (
+        <Tag type={PRODUCT_STATES[state].color}>
+          {PRODUCT_STATES[state].label}
+        </Tag>
+      )}
 
       <Modal>
         <Menus.Menu>
@@ -91,7 +102,7 @@ function ProductTableRow({ product }) {
             </Menus.Button>
             {!isPendingRoles && userRoles.includes("contributor") && (
               <>
-                {product.state === "CREATED" && (
+                {state === "CREATED" && (
                   <Menus.Button
                     icon={<HiDocumentCheck />}
                     onClick={() => navigate(`/register/${ean}`)}
