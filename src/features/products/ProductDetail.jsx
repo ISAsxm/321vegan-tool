@@ -203,7 +203,7 @@ function ProductDetail() {
 
       <Modal>
         <ButtonGroup $variation="end">
-          {userRoles.includes("contributor") && state === "CREATED" && (
+          {userRoles.includes("contributor") && (
             <Button
               $variation="info"
               onClick={() => navigate(`/register/${ean}`)}
@@ -213,7 +213,7 @@ function ProductDetail() {
           )}
           {userRoles.includes("admin") && state === "WAITING_PUBLISH" && (
             <Modal.Open opens="publish">
-              <Button $variation="info" disabled={isWorking}>
+              <Button $variation="confirm" disabled={isWorking}>
                 Publier
               </Button>
             </Modal.Open>
@@ -222,7 +222,7 @@ function ProductDetail() {
           {userRoles.includes("contributor") && (
             <>
               <Modal.Open opens="edit">
-                <Button $variation="warning">Éditer</Button>
+                <Button $variation="accent">Éditer</Button>
               </Modal.Open>
 
               <Modal.Open opens="delete">

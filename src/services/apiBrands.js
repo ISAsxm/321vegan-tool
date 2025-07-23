@@ -59,7 +59,7 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
 export async function getBrandsForSelect(searchName) {
   try {
     const filters = searchName
-      ? [{ field: "name__contains", value: searchName }]
+      ? [{ field: "name__ilike", value: searchName }]
       : [];
     const sortBy = "name-asc";
     const page = 1;

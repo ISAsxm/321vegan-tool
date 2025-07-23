@@ -171,7 +171,7 @@ function AdditiveDetail() {
         <Modal>
           <ButtonGroup $variation="end">
             <Modal.Open opens="edit">
-              <Button $variation="warning">Éditer</Button>
+              <Button $variation="accent">Éditer</Button>
             </Modal.Open>
 
             {userRoles.includes("admin") && (

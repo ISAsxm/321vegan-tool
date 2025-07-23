@@ -30,6 +30,10 @@ const GlobalStyles = createGlobalStyle`
     --color-yellow-700: #fcc704;
     --color-yellow-800: #ca7904;
 
+    --color-orange-100: #fff7ed;
+    --color-orange-700: #ffb86a;
+    --color-orange-800: #fe9439;
+
     --color-silver-100: #e5e7eb;
     --color-silver-700: #374151;
     --color-silver-800: #333b47;
@@ -77,6 +81,10 @@ const GlobalStyles = createGlobalStyle`
     --color-yellow-100: #d9903e;
     --color-yellow-700: #fef9c3;
     --color-yellow-800: #fffdc5;
+
+    --color-orange-100: #fe9439;
+    --color-orange-700: #ffedd4;
+    --color-orange-800: #fff7ed;
 
     --color-silver-100: #374151;
     --color-silver-700: #f3f4f6;
