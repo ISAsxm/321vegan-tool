@@ -14,7 +14,9 @@ export function useCreateBrand() {
         queryKey: brandsKeys.all,
       });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) => {
+      toast.error(err.message);
+    },
   });
 
   return { isCreating, createBrand };

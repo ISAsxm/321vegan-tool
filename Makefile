@@ -16,6 +16,9 @@ install:  ## Build and run Docker Compose services
 up:  ## Run Docker Compose services
 	docker compose -f docker-compose.dev.yml up
 
+stop:  ## Run Docker Compose services
+	docker compose -f docker-compose.dev.yml stop
+
 down:  ## Shutdown Docker Compose services
 	docker compose -f docker-compose.dev.yml down
 

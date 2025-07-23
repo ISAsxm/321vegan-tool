@@ -74,6 +74,8 @@ export async function createUser(user) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`L'utilisateurice existe déjà.`);
       throw new Error(
         `Couldn't create user. Response status: ${error.response.status}`
       );
@@ -93,6 +95,8 @@ export async function updateUser(id, user) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`L'utilisateurice existe déjà.`);
       throw new Error(
         `Couldn't update user # ${id}. Response status: ${error.response.status}`
       );

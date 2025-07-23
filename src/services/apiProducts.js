@@ -129,6 +129,8 @@ export async function createProduct(product) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Ce produit existe déjà.`);
       throw new Error(
         `Couldn't create product. Response status: ${error.response.status}`
       );
@@ -150,6 +152,8 @@ export async function updateProduct(id, product) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Ce produit existe déjà.`);
       throw new Error(
         `Couldn't update product # ${id}. Response status: ${error.response.status}`
       );

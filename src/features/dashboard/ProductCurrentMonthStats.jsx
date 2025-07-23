@@ -2,7 +2,6 @@ import Stat from "./Stat";
 
 import {
   HiOutlineDocumentCheck,
-  HiOutlineCheck,
   HiOutlineChartBar,
   HiOutlinePaperAirplane,
   HiOutlineSparkles,

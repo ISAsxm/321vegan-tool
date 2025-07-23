@@ -90,6 +90,8 @@ export async function updateCurrentUser({ id, password, nickname, avatar }) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Ce pseudo existe déjà.`);
       throw new Error(
         `Couldn't update current user. Response status: ${error.response.status}`
       );

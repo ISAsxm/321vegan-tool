@@ -80,6 +80,8 @@ export async function createApiClient(apiclient) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Ce client API existe déjà.`);
       throw new Error(
         `Couldn't create apiclient. Response status: ${error.response.status}`
       );
@@ -104,6 +106,8 @@ export async function updateApiClient(id, apiclient) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Ce client API existe déjà.`);
       throw new Error(
         `Couldn't update apiclient # ${id}. Response status: ${error.response.status}`
       );

@@ -120,6 +120,8 @@ export async function createBrand(brand) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Cette marque existe déjà.`);
       throw new Error(
         `Couldn't create brand. Response status: ${error.response.status}`
       );
@@ -139,6 +141,8 @@ export async function updateBrand(id, brand) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Cette marque existe déjà.`);
       throw new Error(
         `Couldn't update brand # ${id}. Response status: ${error.response.status}`
       );

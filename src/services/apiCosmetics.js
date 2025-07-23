@@ -78,6 +78,8 @@ export async function createCosmetic(cosmetic) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Cette marque de cosmétique existe déjà.`);
       throw new Error(
         `Couldn't create cosmetic. Response status: ${error.response.status}`
       );
@@ -99,6 +101,8 @@ export async function updateCosmetic(id, cosmetic) {
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
+      if (error.response.status === 409)
+        throw new Error(`Cette marque de cosmétique existe déjà.`);
       throw new Error(
         `Couldn't update cosmetic # ${id}. Response status: ${error.response.status}`
       );
