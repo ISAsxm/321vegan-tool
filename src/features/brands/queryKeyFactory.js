@@ -10,5 +10,4 @@ export const brandsKeys = {
   ],
   details: () => [...brandsKeys.all, "detail"],
   detail: (id) => [...brandsKeys.details(), id],
-  select: () => [...brandsKeys.all, "select"],
 };

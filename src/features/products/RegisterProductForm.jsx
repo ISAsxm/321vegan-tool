@@ -9,7 +9,6 @@ import { useUpdateProduct } from "./useUpdateProduct";
 import { useDeleteProduct } from "./useDeleteProduct";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
-import ButtonGroup from "@/ui/ButtonGroup";
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
@@ -20,7 +19,7 @@ import Checkbox from "@/ui/Checkbox";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
-import ColoredButton from "@/ui/ColoredButton";
+import Radios from "@/ui/Radios";
 
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
@@ -28,7 +27,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { isDeleting, deleteProduct } = useDeleteProduct();
   const { isPending: isPendingUser, userRoles } = useCurrentUser();
 
-  const { register, formState, handleSubmit, reset, control, getValues } =
+  const { register, formState, handleSubmit, reset, control, watch, setValue } =
     useForm({
       defaultValues: {
         ...checkedInValues,
@@ -42,7 +41,6 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { field: brandField } = useController({
     name: "brand_id",
     control,
-    defaultValue: productToCheckedIn.brand?.id || null,
   });
   const { field: stateField } = useController({
     name: "state",
@@ -59,24 +57,21 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     control,
     defaultValue: checkedInValues.biodynamic,
   });
+  const watchFields = watch(["state", "status"]);
 
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
   const shouldShowProblemsField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
-    getValues().status
+    watchFields[1]
   );
-
   // Check if status should be locked when state is NEED_CONTACT
-  const isStatusLocked = stateField.value === "NEED_CONTACT";
+  const isStatusLocked = watchFields[0] === "NEED_CONTACT";
 
   // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
   useEffect(() => {
-    if (
-      stateField.value === "NEED_CONTACT" &&
-      statusField.value !== "MAYBE_VEGAN"
-    ) {
-      statusField.onChange("MAYBE_VEGAN");
+    if (watchFields[0] === "NEED_CONTACT" && watchFields[1] !== "MAYBE_VEGAN") {
+      setValue("status", "MAYBE_VEGAN");
     }
-  }, [stateField.value, statusField]);
+  }, [watchFields, setValue]);
 
   function onSubmit(data) {
     if (!shouldShowProblemsField) {
@@ -98,43 +93,43 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   return (
     <Form type={"regular"}>
       <FormRow label="État" error={errors.state?.message}>
-        <ButtonGroup id="state" className="required">
+        <Radios
+          id="state"
+          onChange={stateField.onChange}
+          defaultValue={watchFields[0]}
+          required={true}
+        >
           {Object.entries(PRODUCT_STATES).map(([key, o]) => (
-            <ColoredButton
+            <Radios.RadioButton
               key={key}
-              type="button"
+              value={key}
               color={o.color}
-              $isSelected={stateField.value === key}
-              onClick={() => stateField.onChange(key)}
               disabled={isPending || !userRoles.includes(o.role)}
-              title={`Changer l'état à "${o.label}"`}
             >
               {o.label}
-            </ColoredButton>
+            </Radios.RadioButton>
           ))}
-        </ButtonGroup>
+        </Radios>
       </FormRow>
 
       <FormRow label="Statut" error={errors.status?.message}>
-        <ButtonGroup id="status" className="required">
+        <Radios
+          id="status"
+          onChange={statusField.onChange}
+          defaultValue={watchFields[1]}
+          required={true}
+        >
           {Object.entries(PRODUCT_STATUSES).map(([key, o]) => (
-            <ColoredButton
+            <Radios.RadioButton
               key={key}
-              type="button"
+              value={key}
               color={o.color}
-              $isSelected={statusField.value === key}
-              onClick={() => !isStatusLocked && statusField.onChange(key)}
-              disabled={isPending || isStatusLocked}
-              title={
-                isStatusLocked
-                  ? `Le statut est verrouillé sur "Maybe vegan" pour l'état "À contacter"`
-                  : `Changer le statut à "${o.label}"`
-              }
+              disabled={isPending || (isStatusLocked && key !== "MAYBE_VEGAN")}
             >
               {o.label}
-            </ColoredButton>
+            </Radios.RadioButton>
           ))}
-        </ButtonGroup>
+        </Radios>
       </FormRow>
 
       <FormRow label="Marque" error={errors.brand_id?.message}>
@@ -197,11 +192,10 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           <Textarea
             id="problem_description"
             {...register("problem_description", {
-              validate: (value) => {
-                ["MAYBE_VEGAN", "NON_VEGAN"].includes(getValues().status) &&
-                  !value &&
-                  "Ce champ est obligatoire";
-              },
+              required:
+                "Ce champ est obligatoire lorsque le status est 'MAYBE VEGAN' ou 'NON VEGAN'",
+              validate: (value) =>
+                shouldShowProblemsField && !value ? false : true,
             })}
             disabled={isPending}
             required

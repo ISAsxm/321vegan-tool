@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+const Label = styled.label`
+  font-weight: 500;
+`;
+
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
@@ -26,17 +30,17 @@ const StyledFormRow = styled.div`
     gap: 1.2rem;
   }
 
-  &:has(input[required]) label::after,
-  &:has(select[required]) label::after,
-  &:has(textarea[required]) label::after,
-  &:has(.required) label::after {
+  &:has(input[required])
+    ${Label}::after,
+    &:has(select[required])
+    ${Label}::after,
+    &:has(textarea[required])
+    ${Label}::after,
+    &:has(.required)
+    ${Label}::after {
     content: "*";
     color: var(--color-red-700);
   }
-`;
-
-const Label = styled.label`
-  font-weight: 500;
 `;
 
 const Hint = styled.div`

@@ -89,7 +89,7 @@ const OffDataBox = memo(function OffDataBox({
           {ingredients ? (
             <Highlighter
               highlightClassName="highlightClass"
-              searchWords={NON_VEGAN_INGREDIENTS}
+              searchWords={[...NON_VEGAN_INGREDIENTS, ...NON_VEGAN_E_NUMBERS]}
               autoEscape={true}
               textToHighlight={ingredients}
             />
