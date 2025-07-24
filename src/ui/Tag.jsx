@@ -17,6 +17,12 @@ const Tag = styled.span`
     css`
       border: 0.5px solid var(--color-${props.type}-700);
     `}
+
+  ${(props) =>
+    props.onClick &&
+    css`
+      cursor: pointer;
+    `}
 `;
 
 export default Tag;
