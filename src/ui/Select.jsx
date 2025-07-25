@@ -15,6 +15,7 @@ import {
 import { GiCheckMark } from "react-icons/gi";
 
 import styled, { css } from "styled-components";
+import Input from "./Input";
 
 export const SelectContainer = styled.div`
   font-size: 1.4rem;
@@ -168,18 +169,7 @@ export const SelectOption = styled.div`
 export const SearchBox = styled.div`
   padding: 0.6rem 0.8rem;
   & input {
-    padding: 0.8rem 1.2rem;
-    border: 1px solid var(--color-grey-300);
-    background-color: var(--color-grey-0);
-    border-radius: var(--border-radius-sm);
-    box-shadow: var(--shadow-sm);
     width: 100%;
-
-    &::placeholder {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--color-grey-300);
-    }
   }
 `;
 
@@ -417,7 +407,8 @@ const Select = ({
         <SelectPicker $align={align}>
           {(!!getOptions || isSearchable) && (
             <SearchBox>
-              <input
+              <Input
+                type="search"
                 id={`${name}-search`}
                 onChange={handleSearch}
                 value={searchValue}

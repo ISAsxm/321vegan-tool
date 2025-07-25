@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useClickOutside } from "@/hooks/useClickOutside";
+import { useDebounce } from "@/hooks/useDebounce";
 
 import Input from "@/ui/Input";
 import ButtonIcon from "@/ui/ButtonIcon";
@@ -65,7 +66,7 @@ const StyledListItem = styled.li`
   text-align: left;
   background: none;
   border: none;
-  padding: 1rem 2rem;
+  padding: 0.6rem 0.8rem;
   font-size: 1.2rem;
   transition: all 0.2s;
 
@@ -177,28 +178,31 @@ function List({ id, filterField, options }) {
 function Search({ id, filterField }) {
   const { openId, position, close, searchParams, setSearchParams } =
     useContext(FiltersContext);
+  const debounce = useDebounce(1000);
   const ref = useClickOutside(close, false);
   const searchRef = useRef();
   const [currentFilter, setCurrentFilter] = useState(
     searchParams.get(filterField) || ""
   );
 
-  function handleSearch() {
-    if (currentFilter?.trim()) {
-      searchParams.set(
-        filterField,
-        currentFilter.trim().replace("___", "").replace("__", "")
-      );
-      if (searchParams.get("page")) searchParams.set("page", 1);
-      setSearchParams(searchParams);
-    } else {
-      if (searchParams.get(filterField)) {
-        searchParams.delete(filterField);
+  function handleSearch(value) {
+    setCurrentFilter(value);
+    debounce(() => {
+      if (value.trim()) {
+        searchParams.set(
+          filterField,
+          value.trim().replace("___", "").replace("__", "")
+        );
         if (searchParams.get("page")) searchParams.set("page", 1);
         setSearchParams(searchParams);
+      } else {
+        if (searchParams.get(filterField)) {
+          searchParams.delete(filterField);
+          if (searchParams.get("page")) searchParams.set("page", 1);
+          setSearchParams(searchParams);
+        }
       }
-    }
-    close();
+    });
   }
 
   useEffect(() => {
@@ -213,14 +217,13 @@ function Search({ id, filterField }) {
     <StyledList $position={position} ref={ref}>
       <StyledListItem key={filterField}>
         <Input
+          type="search"
           name="filterSearch"
           ref={searchRef}
-          onChange={(e) => setCurrentFilter(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
           value={currentFilter}
+          placeholder="Filtrer..."
         />
-        <ButtonIcon onClick={handleSearch}>
-          <HiOutlineMagnifyingGlass />
-        </ButtonIcon>
       </StyledListItem>
     </StyledList>
   );
