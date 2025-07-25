@@ -4,7 +4,8 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { useDebounce } from "@/hooks/useDebounce";
 
 import Modal from "@/ui/Modal";
-import LoaderDots from "./LoaderDots";
+import Input from "@/ui/Input";
+import LoaderDots from "@/ui/LoaderDots";
 
 import {
   HiChevronUp,
@@ -15,7 +16,6 @@ import {
 import { GiCheckMark } from "react-icons/gi";
 
 import styled, { css } from "styled-components";
-import Input from "./Input";
 
 export const SelectContainer = styled.div`
   font-size: 1.4rem;

@@ -4,13 +4,8 @@ import { useClickOutside } from "@/hooks/useClickOutside";
 import { useDebounce } from "@/hooks/useDebounce";
 
 import Input from "@/ui/Input";
-import ButtonIcon from "@/ui/ButtonIcon";
 
-import {
-  HiMiniFunnel,
-  HiOutlineFunnel,
-  HiOutlineMagnifyingGlass,
-} from "react-icons/hi2";
+import { HiMiniFunnel, HiOutlineFunnel } from "react-icons/hi2";
 import styled, { css } from "styled-components";
 
 const StyledFilter = styled.div`
