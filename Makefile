@@ -1,4 +1,4 @@
-.PHONY: install up down build
+.PHONY: install up stop down build
 
 ifneq (,$(wildcard ./.env))
     include .env
