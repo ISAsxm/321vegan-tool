@@ -22,6 +22,7 @@ import Spinner from "@/ui/Spinner";
 
 import OffDataBox from "./OffDataBox";
 import RegisterProductForm from "./RegisterProductForm";
+import { getBrandsForSelect } from "@/services/apiBrands";
 
 import { PiPlant } from "react-icons/pi";
 import {
@@ -36,6 +37,7 @@ function ProductRegister() {
   const [isPendingOff, setIsPendingOff] = useState(false);
   const [errorOff, setErrorOff] = useState("");
   const [offProduct, setOffProduct] = useState({});
+  const [brandFromApi, setBrandFromApi] = useState(null);
   const goBack = useGoBack();
 
   useEffect(() => {
@@ -44,6 +46,14 @@ function ProductRegister() {
         setIsPendingOff(true);
         const data = await getProductData(productEan);
         if (data) setOffProduct(data);
+        // Fetch brand from API
+        const brands = data?.brands || "";
+        if (brands) {
+            const options = await getBrandsForSelect(brands);
+            if (options && options.data && options.data.length > 0) {
+              setBrandFromApi({ value: options.data[0].value, label: options.data[0].label });
+            } 
+          } 
       } catch (error) {
         console.error(error);
         setErrorOff(`Ean ${productEan} inconnu dans Open Food Facts`);
@@ -138,10 +148,12 @@ function ProductRegister() {
 
         <Section>
           <RegisterProductForm
+            key={brandFromApi ? brandFromApi.value : ""}
             productToCheckedIn={{
               ...product,
               name: name || product_name,
               brandName: offBrandName,
+              brand: brandFromApi ? { id: brandFromApi.value, name: brandFromApi.label } : product.brand,
             }}
             onClose={goBack}
           />
