@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 
 import { HiXMark } from "react-icons/hi2";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -14,6 +14,11 @@ const StyledModal = styled.div`
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
+  ${(props) =>
+    props.$nopadding &&
+    css`
+      padding: 0;
+    `}
   transition: all 0.5s;
   max-height: 80vh;
   overflow-y: scroll;
@@ -81,7 +86,7 @@ function Window({ children, name }) {
 
   return createPortal(
     <Overlay>
-      <StyledModal>
+      <StyledModal $nopadding={children.props?.$nopadding}>
         <Button onClick={close}>
           <HiXMark />
         </Button>

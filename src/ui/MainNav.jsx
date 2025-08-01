@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 
 import {
   HiOutlineBeaker,
@@ -9,6 +9,7 @@ import {
   HiOutlineBuildingOffice,
   HiMiniGlobeAlt,
   HiOutlineExclamationTriangle,
+  HiOutlineEnvelope,
 } from "react-icons/hi2";
 import { PiHandSoap, PiPlant } from "react-icons/pi";
 
@@ -59,7 +60,7 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function MainNav() {
-  const { isPending, user } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
 
   return (
     <nav>
@@ -76,13 +77,21 @@ function MainNav() {
             <span>Produits</span>
           </StyledNavLink>
         </li>
-        {!isPending && user.roles.includes("contributor") && (
-          <li>
-            <StyledNavLink to="/error-reports">
-              <HiOutlineExclamationTriangle />
-              <span>Erreurs signalées</span>
-            </StyledNavLink>
-          </li>
+        {hasAccess("contributor") && (
+          <>
+            <li>
+              <StyledNavLink to="/checkings">
+                <HiOutlineEnvelope />
+                <span>Contacts</span>
+              </StyledNavLink>
+            </li>
+            <li>
+              <StyledNavLink to="/error-reports">
+                <HiOutlineExclamationTriangle />
+                <span>Signalements</span>
+              </StyledNavLink>
+            </li>
+          </>
         )}
         <li>
           <StyledNavLink to="/additives">
@@ -103,7 +112,7 @@ function MainNav() {
             <span>Marques</span>
           </StyledNavLink>
         </li>
-        {!isPending && user.role === "admin" && (
+        {hasAccess("admin") && (
           <>
             <li>
               <StyledNavLink to="/users">

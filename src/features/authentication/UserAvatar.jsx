@@ -1,5 +1,5 @@
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 import { getInitials } from "@/utils/helpers";
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 
 import styled from "styled-components";
 
@@ -36,20 +36,18 @@ const Avatar = styled.div`
 `;
 
 function UserAvatar() {
-  const { isPending, user } = useCurrentUser();
-
-  if (isPending) return null;
+  const { currentUser } = useCurrentUserContext();
 
   return (
     <StyledUserAvatar>
       {/* uncomment when there is a storage solution for files
       <Avatar
-        src={user.avatar || "default-avatar.jpg"}
-        alt={`Avatar de ${user.nickname}`}
+        src={currentUser.avatar || "default-avatar.jpg"}
+        alt={`Avatar de ${currentUser.nickname}`}
       /> 
       */}
-      <Avatar>{getInitials(user.nickname)}</Avatar>
-      <span>{user.nickname}</span>
+      <Avatar>{getInitials(currentUser.nickname)}</Avatar>
+      <span>{currentUser.nickname}</span>
     </StyledUserAvatar>
   );
 }

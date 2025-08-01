@@ -1,14 +1,13 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
-import { useProductByEan } from "@/features/products/useProductByEan";
 
 import { useUpdateErrorReport } from "./useUpdateErrorReport";
 
 import Table from "@/ui/Table";
 import Tag from "@/ui/Tag";
+import Stacked from "@/ui/Stacked";
 import ButtonText from "@/ui/ButtonText";
-import LoaderDots from "@/ui/LoaderDots";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 
@@ -18,21 +17,6 @@ import styled, { css } from "styled-components";
 const Ref = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
-`;
-
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
 `;
 
 const Description = styled.div`
@@ -77,6 +61,7 @@ const ActionButton = styled.button`
 `;
 
 function ErrorReportTableRow({ errorReport }) {
+  const navigate = useNavigate();
   const {
     id: errorReportId,
     ean,
@@ -85,10 +70,10 @@ function ErrorReportTableRow({ errorReport }) {
     handled,
     created_at,
     updated_at,
+    product,
   } = errorReport;
 
   const { isUpdating, updateErrorReport } = useUpdateErrorReport();
-  const { isPending: isPendingProduct, product } = useProductByEan(ean);
 
   const statusInfo = handled
     ? { color: "green", label: "Traité" }
@@ -104,24 +89,15 @@ function ErrorReportTableRow({ errorReport }) {
   return (
     <Table.Row>
       <Ref>
-        {isPendingProduct ? (
-          <LoaderDots />
-        ) : product ? (
-          <ButtonText as={Link} to={`/products/${product.id}`} target="_blank">
-            {ean}
-          </ButtonText>
-        ) : (
-          <ButtonText
-            as={Link}
-            to={{
-              pathname: `/products`,
-              search: `?ean=${ean}`,
-            }}
-            target="_blank"
-          >
-            {ean}
-          </ButtonText>
-        )}
+        <ButtonText
+          onClick={() =>
+            navigate(
+              product ? `/products/${product.id}` : `/products?ean=${ean}`
+            )
+          }
+        >
+          {ean}
+        </ButtonText>
       </Ref>
 
       <Description title={comment}>{comment}</Description>

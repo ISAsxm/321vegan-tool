@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteProduct } from "./useDeleteProduct";
 
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
+import Stacked from "@/ui/Stacked";
 import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
@@ -23,21 +23,6 @@ const Ref = styled.div`
   color: var(--color-grey-600);
 `;
 
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
-`;
-
 function ProductTableRow({ product }) {
   const {
     id: productId,
@@ -51,7 +36,7 @@ function ProductTableRow({ product }) {
   } = product;
   const navigate = useNavigate();
   const { isDeleting, deleteProduct } = useDeleteProduct();
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
 
   return (
     <Table.Row>
@@ -75,9 +60,7 @@ function ProductTableRow({ product }) {
         {PRODUCT_STATUSES[status].label}
       </Tag>
 
-      {state === "CREATED" &&
-      !isPendingRoles &&
-      userRoles.includes("contributor") ? (
+      {state === "CREATED" && hasAccess("contributor") ? (
         <Tag
           type={PRODUCT_STATES[state].color}
           onClick={() => navigate(`/register/${ean}`)}
@@ -100,7 +83,7 @@ function ProductTableRow({ product }) {
             >
               Voir le détail
             </Menus.Button>
-            {!isPendingRoles && userRoles.includes("contributor") && (
+            {hasAccess("contributor") && (
               <>
                 {state === "CREATED" && (
                   <Menus.Button

@@ -15,6 +15,7 @@ export function useLogin() {
       setToken(data.access_token);
       queryClient.invalidateQueries({
         queryKey: ["user"],
+        refetchType: "all",
       });
       navigate("/dashboard", { replace: true });
     },

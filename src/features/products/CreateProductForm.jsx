@@ -1,8 +1,7 @@
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useCreateProduct } from "./useCreateProduct";
 import { getBrandsForSelect } from "@/services/apiBrands";
 
@@ -13,17 +12,14 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
-import Spinner from "@/ui/Spinner";
 
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function CreateProductForm({ onCloseModal }) {
   const { isCreating, createProduct } = useCreateProduct();
-  const { isPending: isPendingUser, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
   const { register, formState, handleSubmit, reset, control } = useForm();
   const { errors } = formState;
-
-  const isPending = isCreating || isPendingUser;
 
   const { field: brandField } = useController({
     name: "brand_id",
@@ -58,8 +54,6 @@ function CreateProductForm({ onCloseModal }) {
     });
   }
 
-  if (isPending) return <Spinner />;
-
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
       <FormRow label="État" error={errors.state?.message}>
@@ -72,11 +66,11 @@ function CreateProductForm({ onCloseModal }) {
             return {
               value: key,
               label: o.label,
-              disabled: userRoles.includes(o.role) ? false : true,
+              disabled: hasAccess(o.role) ? false : true,
             };
           })}
           required={true}
-          disabled={isPending}
+          disabled={isCreating}
         />
       </FormRow>
       <FormRow label="Statut" error={errors.status?.message}>
@@ -89,7 +83,7 @@ function CreateProductForm({ onCloseModal }) {
             return { value: key, label: o.label };
           })}
           required={true}
-          disabled={isPending}
+          disabled={isCreating}
         />
       </FormRow>
 
@@ -98,7 +92,7 @@ function CreateProductForm({ onCloseModal }) {
           name="brand_id"
           onChange={brandField.onChange}
           getOptions={getBrandsForSelect}
-          disabled={isPending}
+          disabled={isCreating}
           createComponent={<CreateBrandForm />}
         />
       </FormRow>
@@ -108,7 +102,7 @@ function CreateProductForm({ onCloseModal }) {
           type="text"
           id="ean"
           {...register("ean", { required: "Ce champ est obligatoire" })}
-          disabled={isPending}
+          disabled={isCreating}
           required
         />
       </FormRow>
@@ -118,7 +112,7 @@ function CreateProductForm({ onCloseModal }) {
           type="text"
           id="name"
           {...register("name")}
-          disabled={isPending}
+          disabled={isCreating}
         />
       </FormRow>
 
@@ -126,7 +120,7 @@ function CreateProductForm({ onCloseModal }) {
         <Textarea
           id="description"
           {...register("description")}
-          disabled={isPending}
+          disabled={isCreating}
         />
       </FormRow>
 
@@ -134,7 +128,7 @@ function CreateProductForm({ onCloseModal }) {
         <Textarea
           id="problem_description"
           {...register("problem_description")}
-          disabled={isPending}
+          disabled={isCreating}
         />
       </FormRow>
 
@@ -146,7 +140,7 @@ function CreateProductForm({ onCloseModal }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
-          disabled={isPending}
+          disabled={isCreating}
         />
       </FormRow>
 
@@ -155,11 +149,11 @@ function CreateProductForm({ onCloseModal }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isPending}
+          disabled={isCreating}
         >
           Annuler
         </Button>
-        <Button disabled={isPending} onClick={handleSubmit(onSubmit)}>
+        <Button disabled={isCreating} onClick={handleSubmit(onSubmit)}>
           Créer
         </Button>
       </FormRow>

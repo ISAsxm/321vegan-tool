@@ -1,33 +1,20 @@
 import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-
-import FullPage from "./FullPage";
-import Spinner from "./Spinner";
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 
 function ProtectedRouteRole({ children, role = "user" }) {
   const navigate = useNavigate();
-  // 1. Load the authenticated user roles
-  const { isPending, userRoles } = useCurrentUser();
-  const hasAccess = userRoles?.includes(role);
+  // 1. Load the check haccess method
+  const { hasAccess } = useCurrentUserContext();
   // 2. If user NOT has access, redirect to homepage
   useEffect(
     function () {
-      if (!hasAccess && !isPending) navigate("/");
+      if (!hasAccess(role)) navigate("/");
     },
-    [isPending, hasAccess, navigate]
+    [hasAccess, role, navigate]
   );
 
-  // 3. show spinner if loading
-  if (isPending)
-    return (
-      <FullPage>
-        <Spinner />
-      </FullPage>
-    );
-
-  // 4. If user has access, return children if exists otherwise return outlet
+  // 3. If user has access, return children if exists otherwise return outlet
   if (hasAccess) return children ? children : <Outlet />;
 
   return null;

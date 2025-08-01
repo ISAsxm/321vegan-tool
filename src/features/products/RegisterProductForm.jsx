@@ -3,11 +3,9 @@ import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { getBrandsForSelect } from "@/services/apiBrands";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useUpdateProduct } from "./useUpdateProduct";
 import { useDeleteProduct } from "./useDeleteProduct";
-import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
@@ -16,16 +14,17 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
+import Radios from "@/ui/Radios";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
-import Radios from "@/ui/Radios";
+import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const { isUpdating, updateProduct } = useUpdateProduct();
   const { isDeleting, deleteProduct } = useDeleteProduct();
-  const { isPending: isPendingUser, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
 
   const { register, formState, handleSubmit, reset, control, watch, setValue } =
     useForm({
@@ -36,8 +35,9 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     });
   const { errors } = formState;
 
-  const isPending = isPendingUser || isUpdating || isDeleting;
+  const isPending = isUpdating || isDeleting;
 
+  const watchFields = watch(["state", "status"]);
   const { field: brandField } = useController({
     name: "brand_id",
     control,
@@ -57,7 +57,6 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     control,
     defaultValue: checkedInValues.biodynamic,
   });
-  const watchFields = watch(["state", "status"]);
 
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
   const shouldShowProblemsField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
@@ -104,7 +103,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
               key={key}
               value={key}
               color={o.color}
-              disabled={isPending || !userRoles.includes(o.role)}
+              disabled={isPending || !hasAccess(o.role)}
             >
               {o.label}
             </Radios.RadioButton>
@@ -224,7 +223,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         >
           Annuler
         </Button>
-        {userRoles.includes("contributor") && (
+        {hasAccess("contributor") && (
           <Modal>
             <Modal.Open opens="delete">
               <Button $variation="danger" disabled={isPending} type="button">

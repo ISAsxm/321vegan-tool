@@ -1,10 +1,11 @@
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
 
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteBrand } from "./useDeleteBrand";
 
 import Table from "@/ui/Table";
 import Menus from "@/ui/Menus";
+import Stacked from "@/ui/Stacked";
 import NoDataItem from "@/ui/NoDataItem";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
@@ -20,23 +21,8 @@ const Ref = styled.div`
   color: var(--color-grey-600);
 `;
 
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
-`;
-
 function BrandTableRow({ brand }) {
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
   const { isDeleting, deleteBrand } = useDeleteBrand();
   const { id: brandId, name, created_at, updated_at, parent } = brand;
 
@@ -60,7 +46,7 @@ function BrandTableRow({ brand }) {
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
 
-      {!isPendingRoles && userRoles.includes("contributor") && (
+      {hasAccess("contributor") && (
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={brandId} />
@@ -69,7 +55,7 @@ function BrandTableRow({ brand }) {
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
 
-              {userRoles.includes("admin") && (
+              {hasAccess("admin") && (
                 <Modal.Open opens="delete">
                   <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
                 </Modal.Open>

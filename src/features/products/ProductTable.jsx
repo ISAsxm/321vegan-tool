@@ -39,6 +39,7 @@ function ProductTable() {
 
               <div>
                 Marque
+                <SortBy.Sort sortByField="brand_name" />
                 <Filters.Filter>
                   <Filters.Toggle id="filterBrandName" filterField="brand" />
                   <Filters.Search id="filterBrandName" filterField="brand" />
