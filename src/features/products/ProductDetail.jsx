@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { isToday } from "date-fns";
 
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-import { useGoBack } from "@/hooks/useGoBack";
 import { formatDate } from "@/utils/helpers";
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
+import { useGoBack } from "@/hooks/useGoBack";
 import { useProduct } from "./useProduct";
 import { useUpdateProduct } from "./useUpdateProduct";
 import { useDeleteProduct } from "./useDeleteProduct";
@@ -27,11 +26,20 @@ import Empty from "@/ui/Empty";
 import Spinner from "@/ui/Spinner";
 
 import UpdateProductForm from "./UpdateProductForm";
+import CheckingTable from "@/features/checkings/CheckingTable";
+import CreateCheckingForm from "@/features/checkings/CreateCheckingForm";
 
 import { PiPlant } from "react-icons/pi";
 import { HiOutlineCheckCircle } from "react-icons/hi2";
 
 import styled from "styled-components";
+
+const ProductDataBox = styled(DataBox)`
+  & > section:last-child {
+    padding-top: 0;
+    padding-bottom: 4rem;
+  }
+`;
 
 const SmallBox = styled.div`
   font-size: 1.4rem;
@@ -76,7 +84,7 @@ function ProductDetail() {
   const { isPending, product } = useProduct();
   const { isUpdating: isPublishing, updateProduct } = useUpdateProduct();
   const { isDeleting, deleteProduct } = useDeleteProduct();
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
 
   const isWorking = isPublishing || isDeleting;
 
@@ -87,7 +95,8 @@ function ProductDetail() {
     });
   }
 
-  if (isPending || isPendingRoles) return <Spinner />;
+  if (isPending) return <Spinner />;
+
   if (!product) return <Empty message="Produit inconnu" />;
 
   const {
@@ -102,6 +111,7 @@ function ProductDetail() {
     description,
     problem_description,
     created_from_off,
+    checkings,
   } = product;
 
   return (
@@ -111,7 +121,7 @@ function ProductDetail() {
         <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
       </Row>
 
-      <DataBox>
+      <ProductDataBox>
         <HeaderDetail type={PRODUCT_STATUSES[status].color}>
           <div>
             <PiPlant />
@@ -199,11 +209,21 @@ function ProductDetail() {
             </DataItem>
           </InfoBox>
         </Section>
-      </DataBox>
+
+        <Section>
+          <DataItem
+            icon={<HiOutlineCheckCircle />}
+            label="Prises de contact :"
+            type="vertical"
+          >
+            <CheckingTable checkings={checkings} product={product} />
+          </DataItem>
+        </Section>
+      </ProductDataBox>
 
       <Modal>
         <ButtonGroup $variation="end">
-          {userRoles.includes("contributor") && (
+          {hasAccess("contributor") && (
             <Button
               $variation="info"
               onClick={() => navigate(`/register/${ean}`)}
@@ -211,16 +231,20 @@ function ProductDetail() {
               Vérifier
             </Button>
           )}
-          {userRoles.includes("admin") && state === "WAITING_PUBLISH" && (
+          {hasAccess("admin") && state === "WAITING_PUBLISH" && (
             <Modal.Open opens="publish">
               <Button $variation="confirm" disabled={isWorking}>
                 Publier
               </Button>
             </Modal.Open>
           )}
-
-          {userRoles.includes("contributor") && (
+          {hasAccess("contributor") && (
             <>
+              {["NEED_CONTACT", "WAITING_BRAND_REPLY"].includes(state) && (
+                <Modal.Open opens="register-request">
+                  <Button $variation="warning">Contacter</Button>
+                </Modal.Open>
+              )}
               <Modal.Open opens="edit">
                 <Button $variation="accent">Éditer</Button>
               </Modal.Open>
@@ -239,6 +263,10 @@ function ProductDetail() {
 
         <Modal.Window name="edit">
           <UpdateProductForm productToUpdate={product} />
+        </Modal.Window>
+
+        <Modal.Window name="register-request">
+          <CreateCheckingForm product={product} />
         </Modal.Window>
 
         <Modal.Window name="publish">

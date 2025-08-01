@@ -32,11 +32,18 @@ function UpdateUserProfileForm({ user }) {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Adresse e-mail">
+      <FormRow
+        label="Adresse e-mail"
+        hint="Information uniquement visible par les administrateurices"
+      >
         <Input value={email} disabled />
       </FormRow>
 
-      <FormRow label="Pseudo" error={errors.nickname?.message}>
+      <FormRow
+        label="Pseudo"
+        error={errors.nickname?.message}
+        hint="Information visible par toustes les utilisateurices"
+      >
         <Input
           type="text"
           id="nickname"
@@ -47,7 +54,7 @@ function UpdateUserProfileForm({ user }) {
       </FormRow>
 
       {/* uncomment when there is a storage solution for files
-      <FormRow label="Avatar">
+      <FormRow label="Avatar" hint="Information visible par toustes les utilisateurices">
         <FileInput
           id="avatar"
           accept="image/*"

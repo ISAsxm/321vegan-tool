@@ -6,7 +6,6 @@ import { useGoBack } from "@/hooks/useGoBack";
 import { formatDate } from "@/utils/helpers";
 import { PRODUCT_STATUSES } from "@/utils/constants";
 import { getProductData } from "@/services/apiOpenFoodFacts";
-
 import { useProductByEan } from "./useProductByEan";
 
 import Row from "@/ui/Row";
@@ -47,13 +46,19 @@ function ProductRegister() {
         const data = await getProductData(productEan);
         if (data) setOffProduct(data);
         // Fetch brand from API
-        const brands = data?.brands || "";
+        const brands =
+          data?.brands?.split(", ").join(",") ||
+          data?.product_name?.split(" - ")[1] ||
+          "";
         if (brands) {
-            const options = await getBrandsForSelect(brands);
-            if (options && options.data && options.data.length > 0) {
-              setBrandFromApi({ value: options.data[0].value, label: options.data[0].label });
-            } 
-          } 
+          const options = await getBrandsForSelect(brands, "in");
+          if (options && options.data && options.data.length > 0) {
+            setBrandFromApi({
+              value: options.data[0].value,
+              label: options.data[0].label,
+            });
+          }
+        }
       } catch (error) {
         console.error(error);
         setErrorOff(`Ean ${productEan} inconnu dans Open Food Facts`);
@@ -148,12 +153,13 @@ function ProductRegister() {
 
         <Section>
           <RegisterProductForm
-            key={brandFromApi ? brandFromApi.value : ""}
             productToCheckedIn={{
               ...product,
               name: name || product_name,
               brandName: offBrandName,
-              brand: brandFromApi ? { id: brandFromApi.value, name: brandFromApi.label } : product.brand,
+              brand: brandFromApi
+                ? { id: brandFromApi.value, name: brandFromApi.label }
+                : product.brand,
             }}
             onClose={goBack}
           />

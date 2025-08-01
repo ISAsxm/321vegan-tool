@@ -13,4 +13,12 @@ export const productsKeys = {
   off: (id, code) => [...productsKeys.details(), id, code],
   counts: () => [...productsKeys.all, "count"],
   count: (filters) => [...productsKeys.counts(), filters],
+  checkings: () => [...productsKeys.all, "checking"],
+  checking: (filters, sortBy, page, size) => [
+    ...productsKeys.checkings(),
+    filters,
+    sortBy,
+    page,
+    size,
+  ],
 };

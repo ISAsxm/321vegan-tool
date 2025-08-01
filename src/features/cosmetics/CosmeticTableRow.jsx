@@ -1,9 +1,11 @@
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
+
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteCosmetic } from "./useDeleteCosmetic";
 
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
+import Stacked from "@/ui/Stacked";
 import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
@@ -11,25 +13,9 @@ import ConfirmAction from "@/ui/ConfirmAction";
 import UpdateCosmeticForm from "./UpdateCosmeticForm";
 
 import { HiPencil, HiTrash } from "react-icons/hi2";
-import styled from "styled-components";
-
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
-`;
 
 function CosmeticTableRow({ cosmetic }) {
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
   const { isDeleting, deleteCosmetic } = useDeleteCosmetic();
   const {
     id: cosmeticId,
@@ -61,7 +47,7 @@ function CosmeticTableRow({ cosmetic }) {
 
       <Stacked>{description}</Stacked>
 
-      {!isPendingRoles && userRoles.includes("contributor") && (
+      {hasAccess("contributor") && (
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={cosmeticId} />
@@ -70,7 +56,7 @@ function CosmeticTableRow({ cosmetic }) {
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
 
-              {userRoles.includes("admin") && (
+              {hasAccess("admin") && (
                 <Modal.Open opens="delete">
                   <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
                 </Modal.Open>

@@ -56,10 +56,10 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
   }
 }
 
-export async function getBrandsForSelect(searchName) {
+export async function getBrandsForSelect(searchName, operator = "ilike") {
   try {
     const filters = searchName
-      ? [{ field: "name__ilike", value: searchName }]
+      ? [{ field: `name__${operator}`, value: searchName }]
       : [];
     const sortBy = "name-asc";
     const page = 1;

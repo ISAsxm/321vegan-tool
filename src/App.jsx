@@ -10,11 +10,13 @@ import toast, { Toaster } from "react-hot-toast";
 
 import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { CurrentUserProvider } from "@/contexts/CurrentUserContext";
 
 import Dashboard from "@/pages/Dashboard";
 import Products from "@/pages/Products";
 import Product from "@/pages/Product";
 import Register from "@/pages/Register";
+import Checkings from "@/pages/Checkings";
 import Additives from "@/pages/Additives";
 import Additive from "@/pages/Additive";
 import Cosmetics from "@/pages/Cosmetics";
@@ -75,9 +77,11 @@ function App() {
             <Routes>
               <Route
                 element={
-                  <ProtectedRoute>
-                    <AppLayout />
-                  </ProtectedRoute>
+                  <CurrentUserProvider>
+                    <ProtectedRoute>
+                      <AppLayout />
+                    </ProtectedRoute>
+                  </CurrentUserProvider>
                 }
               >
                 <Route index element={<Navigate replace to="dashboard" />} />
@@ -89,6 +93,14 @@ function App() {
                   element={
                     <ProtectedRouteRole role="contributor">
                       <Register />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="checkings"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <Checkings />
                     </ProtectedRouteRole>
                   }
                 />

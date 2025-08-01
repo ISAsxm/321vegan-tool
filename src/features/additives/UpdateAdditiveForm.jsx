@@ -10,7 +10,6 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
-import Spinner from "@/ui/Spinner";
 
 function UpdateAdditiveForm({ additiveToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = additiveToUpdate;

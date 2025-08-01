@@ -1,11 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import { isToday } from "date-fns";
 
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-import { useGoBack } from "@/hooks/useGoBack";
 import { formatDate } from "@/utils/helpers";
 import { ADDITIVES_STATUSES } from "@/utils/constants";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
+import { useGoBack } from "@/hooks/useGoBack";
 import { useAdditive } from "./useAdditive";
 import { useDeleteAdditive } from "./useDeleteAdditive";
 
@@ -67,7 +66,7 @@ function AdditiveDetail() {
   const goBack = useGoBack();
   const { isPending, additive } = useAdditive();
   const { isDeleting, deleteAdditive } = useDeleteAdditive();
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
 
   if (isPending) return <Spinner />;
 
@@ -167,14 +166,14 @@ function AdditiveDetail() {
         </Section>
       </DataBox>
 
-      {!isPendingRoles && userRoles.includes("contributor") && (
+      {hasAccess("contributor") && (
         <Modal>
           <ButtonGroup $variation="end">
             <Modal.Open opens="edit">
               <Button $variation="accent">Éditer</Button>
             </Modal.Open>
 
-            {userRoles.includes("admin") && (
+            {hasAccess("admin") && (
               <>
                 <Modal.Open opens="delete">
                   <Button $variation="danger" disabled={isDeleting}>

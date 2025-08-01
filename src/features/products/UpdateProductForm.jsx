@@ -2,8 +2,7 @@ import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { getBrandsForSelect } from "@/services/apiBrands";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useUpdateProduct } from "./useUpdateProduct";
 
 import Button from "@/ui/Button";
@@ -13,14 +12,12 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
-import Spinner from "@/ui/Spinner";
-
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productToUpdate;
   const { isUpdating, updateProduct } = useUpdateProduct();
-  const { isPending: isPendingUser, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       ...updateValues,
@@ -62,8 +59,6 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     );
   }
 
-  if (isPendingUser) return <Spinner />;
-
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
       <FormRow label="État" error={errors.state?.message}>
@@ -76,7 +71,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
             return {
               value: key,
               label: o.label,
-              disabled: userRoles.includes(o.role) ? false : true,
+              disabled: hasAccess(o.role) ? false : true,
             };
           })}
           required={true}

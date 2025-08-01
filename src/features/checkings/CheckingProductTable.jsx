@@ -1,5 +1,4 @@
-import { useSearchProducts } from "./useSearchProducts";
-import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
+import { useSearchCheckingProducts } from "./useSearchCheckingProducts";
 
 import Table from "@/ui/Table";
 import Menus from "@/ui/Menus";
@@ -7,10 +6,11 @@ import Spinner from "@/ui/Spinner";
 import Pagination from "@/ui/Pagination";
 import Filters from "@/ui/Filters";
 import SortBy from "@/ui/SortBy";
-import ProductTableRow from "./ProductTableRow";
 
-function ProductTable() {
-  const { isPending, products, count } = useSearchProducts();
+import CheckingProductTableRow from "./CheckingProductTableRow";
+
+function CheckingProductTable() {
+  const { isPending, products, count } = useSearchCheckingProducts();
 
   if (isPending) return <Spinner />;
 
@@ -46,29 +46,23 @@ function ProductTable() {
                 </Filters.Filter>
               </div>
 
+              <div>Problèmes</div>
+
               <div>
-                Date de création
-                <SortBy.Sort sortByField="created_at" />
+                Contacté le
+                <SortBy.Sort sortByField="last_requested_on" />
               </div>
 
               <div>
-                Mise à jour
-                <SortBy.Sort sortByField="updated_at" />
-              </div>
-
-              <div>
-                Statut{" "}
+                Contacté par
                 <Filters.Filter>
-                  <Filters.Toggle id="filterStatus" filterField="status" />
-                  <Filters.List
-                    id="filterStatus"
-                    filterField="status"
-                    options={[
-                      { value: "all", label: "Tous" },
-                      ...Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
-                        return { value: key, label: o.label };
-                      }),
-                    ]}
+                  <Filters.Toggle
+                    id="filterCheckings"
+                    filterField="last_requested_by"
+                  />
+                  <Filters.Search
+                    id="filterCheckings"
+                    filterField="last_requested_by"
                   />
                 </Filters.Filter>
               </div>
@@ -82,9 +76,8 @@ function ProductTable() {
                     filterField="state"
                     options={[
                       { value: "all", label: "Tous" },
-                      ...Object.entries(PRODUCT_STATES).map(([key, o]) => {
-                        return { value: key, label: o.label };
-                      }),
+                      { value: "NEED_CONTACT", label: "À contacter" },
+                      { value: "WAITING_BRAND_REPLY", label: "Contacté" },
                     ]}
                   />
                 </Filters.Filter>
@@ -98,7 +91,7 @@ function ProductTable() {
         <Table.Body
           data={products}
           render={(product) => (
-            <ProductTableRow key={product.id} product={product} />
+            <CheckingProductTableRow key={product.id} product={product} />
           )}
         />
 
@@ -110,4 +103,4 @@ function ProductTable() {
   );
 }
 
-export default ProductTable;
+export default CheckingProductTable;

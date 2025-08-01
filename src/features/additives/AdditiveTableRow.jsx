@@ -2,12 +2,12 @@ import { useNavigate } from "react-router-dom";
 
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 import { ADDITIVES_STATUSES } from "@/utils/constants";
-import { useCurrentUser } from "@/features/authentication/useCurrentUser";
-
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteAdditive } from "./useDeleteAdditive";
 
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
+import Stacked from "@/ui/Stacked";
 import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
@@ -23,25 +23,10 @@ const Ref = styled.div`
   color: var(--color-grey-600);
 `;
 
-const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
-  & span:first-child {
-    font-weight: 500;
-  }
-
-  & span:last-child {
-    color: var(--color-grey-500);
-    font-size: 1.2rem;
-  }
-`;
-
 function AdditiveTableRow({ additive }) {
   const navigate = useNavigate();
   const { isDeleting, deleteAdditive } = useDeleteAdditive();
-  const { isPending: isPendingRoles, userRoles } = useCurrentUser();
+  const { hasAccess } = useCurrentUserContext();
   const {
     id: additiveId,
     name,
@@ -84,13 +69,13 @@ function AdditiveTableRow({ additive }) {
               Voir le détail
             </Menus.Button>
 
-            {!isPendingRoles && userRoles.includes("contributor") && (
+            {hasAccess("contributor") && (
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
             )}
 
-            {userRoles.includes("admin") && (
+            {hasAccess("admin") && (
               <Modal.Open opens="delete">
                 <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
               </Modal.Open>

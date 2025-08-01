@@ -38,6 +38,12 @@ export const PRODUCT_STATUSES = {
   NON_VEGAN: { color: "red", label: "Non vegan" },
 };
 
+export const CHECKING_STATUSES = {
+  PENDING: { color: "yellow", label: "En attente" },
+  VEGAN: { color: "green", label: "Vegan" },
+  NON_VEGAN: { color: "red", label: "Non vegan" },
+};
+
 export const ADDITIVES_STATUSES = {
   V: { color: "green", label: "Vegan" },
   C: { color: "red", label: "Carniste" },

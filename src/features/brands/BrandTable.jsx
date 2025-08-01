@@ -32,6 +32,7 @@ function BrandTable() {
 
               <div>
                 Maison mère
+                <SortBy.Sort sortByField="parent_name" />
                 <Filters.Filter>
                   <Filters.Toggle id="filterParentName" filterField="parent" />
                   <Filters.Search id="filterParentName" filterField="parent" />
