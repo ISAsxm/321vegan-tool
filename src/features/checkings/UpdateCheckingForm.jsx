@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { CHECKING_STATUSES } from "@/utils/constants";
@@ -18,31 +17,22 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
   const { id: updateId, ...updateValues } = checkingToUpdate;
   const { isUpdating, updateChecking } = useUpdateChecking();
   const { isUpdating: isUpdatingProduct, updateProduct } = useUpdateProduct();
-  const { register, formState, handleSubmit, reset, control, watch, setValue } =
-    useForm({
-      defaultValues: {
-        status: null,
-        responded_on: new Date().toISOString().substring(0, 16),
-        problem_description: updateValues.response,
-        biodynamic: product.biodynamic,
-      },
-    });
+  const { register, formState, handleSubmit, reset, control, watch } = useForm({
+    defaultValues: {
+      status: null,
+      responded_on: new Date().toISOString().substring(0, 16),
+      problem_description: updateValues.response,
+      biodynamic: product.biodynamic,
+    },
+  });
   const { errors } = formState;
   const isPending = isUpdating || isUpdatingProduct;
 
-  const watchFields = watch(["biodynamic", "status"]);
+  const watchFields = watch(["status"]);
   const { field: statusField } = useController({
     name: "status",
     control,
-    rules: {
-      required: "Ce champ est obligatoire",
-      validate: (value) => {
-        if (watchFields[0] && value !== "NON_VEGAN") {
-          return "Ce champs doit être 'NON VEGAN' quand la case 'Biodynamie' est cochée";
-        }
-        return undefined;
-      },
-    },
+    rules: { required: "Ce champ est obligatoire" },
   });
 
   const { field: isByodinamicField } = useController({
@@ -51,14 +41,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
     defaultValue: product.biodynamic,
   });
 
-  const showProblemField = watchFields[1] === "NON_VEGAN";
-
-  // Auto-set status to NON_VEGAN when biodynamic is checked
-  useEffect(() => {
-    if (watchFields[0] && watchFields[1] !== "NON_VEGAN") {
-      setValue("status", "NON_VEGAN");
-    }
-  }, [watchFields, setValue]);
+  const showProblemField = watchFields[0] === "NON_VEGAN";
 
   function onSubmit(data) {
     const newProduct = {
@@ -111,7 +94,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
         <Radios
           id="status"
           onChange={statusField.onChange}
-          defaultValue={watchFields[1]}
+          defaultValue={watchFields[0]}
           required={true}
         >
           {Object.entries(CHECKING_STATUSES)
