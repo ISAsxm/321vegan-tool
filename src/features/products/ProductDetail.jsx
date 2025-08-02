@@ -28,6 +28,7 @@ import Spinner from "@/ui/Spinner";
 import UpdateProductForm from "./UpdateProductForm";
 import CheckingTable from "@/features/checkings/CheckingTable";
 import CreateCheckingForm from "@/features/checkings/CreateCheckingForm";
+import GenerateCheckingMessage from "@/features/checkings/GenerateCheckingMessage";
 
 import { PiPlant } from "react-icons/pi";
 import { HiOutlineCheckCircle } from "react-icons/hi2";
@@ -241,9 +242,15 @@ function ProductDetail() {
           {hasAccess("contributor") && (
             <>
               {["NEED_CONTACT", "WAITING_BRAND_REPLY"].includes(state) && (
-                <Modal.Open opens="register-request">
-                  <Button $variation="warning">Contacter</Button>
-                </Modal.Open>
+                <>
+                  <Modal.Open opens="generate-email">
+                    <Button $variation="warning">Générer un message</Button>
+                  </Modal.Open>
+
+                  <Modal.Open opens="register-request">
+                    <Button $variation="warning">Contacter</Button>
+                  </Modal.Open>
+                </>
               )}
               <Modal.Open opens="edit">
                 <Button $variation="accent">Éditer</Button>
@@ -263,6 +270,10 @@ function ProductDetail() {
 
         <Modal.Window name="edit">
           <UpdateProductForm productToUpdate={product} />
+        </Modal.Window>
+
+        <Modal.Window name="generate-email">
+          <GenerateCheckingMessage product={product} />
         </Modal.Window>
 
         <Modal.Window name="register-request">

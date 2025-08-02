@@ -147,3 +147,16 @@ export const getInitials = function (name) {
     hasTokens ? name.charAt(name.lastIndexOf(" ") + 1) : ""
   }`.toUpperCase();
 };
+
+/**
+ * Fill in a given template with matching given data values.
+ *
+ * @param {string} template: The template to fill in
+ * @param {Object} data: An object containing template variables as key
+ * @return {String} the model filled in with the corresponding values
+ * */
+export const evaluate = (template, data) => {
+  return template.replace(/{{(.*?)}}/g, (match) => {
+    return data[match.split(/{{|}}/).filter(Boolean)[0].trim()];
+  });
+};

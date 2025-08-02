@@ -52,12 +52,7 @@ function ProductRegister() {
           "";
         if (brands) {
           const options = await getBrandsForSelect(brands, "in");
-          if (options && options.data && options.data.length > 0) {
-            setBrandFromApi({
-              value: options.data[0].value,
-              label: options.data[0].label,
-            });
-          }
+          setBrandFromApi(options?.data[0] || null);
         }
       } catch (error) {
         console.error(error);
@@ -156,10 +151,8 @@ function ProductRegister() {
             productToCheckedIn={{
               ...product,
               name: name || product_name,
+              brand: brandFromApi || product.brand,
               brandName: offBrandName,
-              brand: brandFromApi
-                ? { id: brandFromApi.value, name: brandFromApi.label }
-                : product.brand,
             }}
             onClose={goBack}
           />
