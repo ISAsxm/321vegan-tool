@@ -15,12 +15,14 @@ import NoDataItem from "@/ui/NoDataItem";
 import CreateCheckingForm from "./CreateCheckingForm";
 import UpdateCheckingForm from "./UpdateCheckingForm";
 import CheckingTable from "./CheckingTable";
+import GenerateCheckingMessage from "./GenerateCheckingMessage";
 
 import {
   HiEye,
   HiListBullet,
   HiOutlineEnvelope,
   HiOutlineEnvelopeOpen,
+  HiAtSymbol,
 } from "react-icons/hi2";
 import styled from "styled-components";
 
@@ -88,11 +90,20 @@ function CheckingProductTableRow({ product }) {
             >
               Voir le détail
             </Menus.Button>
-            <Modal.Open opens="checking-list">
-              <Menus.Button icon={<HiListBullet />}>
-                Voir toutes les prises de contact
+            {checkings.length > 0 && (
+              <Modal.Open opens="checking-list">
+                <Menus.Button icon={<HiListBullet />}>
+                  Voir toutes les prises de contact
+                </Menus.Button>
+              </Modal.Open>
+            )}
+
+            <Modal.Open opens="generate-email">
+              <Menus.Button icon={<HiAtSymbol />}>
+                Générer un message de contact
               </Menus.Button>
             </Modal.Open>
+
             <Modal.Open opens="register-request">
               <Menus.Button icon={<HiOutlineEnvelope />}>
                 Enregistrer une prise de contact
@@ -114,6 +125,10 @@ function CheckingProductTableRow({ product }) {
 
         <Modal.Window name="checking-list">
           <CheckingTable checkings={checkings} product={product} $nopadding />
+        </Modal.Window>
+
+        <Modal.Window name="generate-email">
+          <GenerateCheckingMessage product={product} />
         </Modal.Window>
 
         <Modal.Window name="register-request">

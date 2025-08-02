@@ -64,6 +64,8 @@ const LabelButton = styled.label`
   ${(props) =>
     props.$isSelected &&
     css`
+      color: var(--color-${(props) => props.color}-700);
+      background-color: var(--color-${(props) => props.color}-100);
       &::after {
         content: "✓";
         position: absolute;
@@ -117,7 +119,13 @@ function Radios({ children, id, required, onChange, defaultValue = "" }) {
   );
 }
 
-function RadioButton({ value, color, disabled = false, children, ...props }) {
+function RadioButton({
+  value,
+  color = "brand",
+  disabled = false,
+  children,
+  ...props
+}) {
   const { selectedValue, select, name } = useContext(RadiosContext);
   return (
     <LabelButton
