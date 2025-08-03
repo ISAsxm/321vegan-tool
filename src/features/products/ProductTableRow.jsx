@@ -63,7 +63,7 @@ function ProductTableRow({ product }) {
       {state === "CREATED" && hasAccess("contributor") ? (
         <Tag
           type={PRODUCT_STATES[state].color}
-          onClick={() => navigate(`/register/${ean}`)}
+          onClick={() => navigate(`/products/register/${ean}`)}
         >
           {PRODUCT_STATES[state].label}
         </Tag>
@@ -88,7 +88,7 @@ function ProductTableRow({ product }) {
                 {state === "CREATED" && (
                   <Menus.Button
                     icon={<HiDocumentCheck />}
-                    onClick={() => navigate(`/register/${ean}`)}
+                    onClick={() => navigate(`/products/register/${ean}`)}
                   >
                     Vérifier
                   </Menus.Button>

@@ -227,7 +227,7 @@ function ProductDetail() {
           {hasAccess("contributor") && (
             <Button
               $variation="info"
-              onClick={() => navigate(`/register/${ean}`)}
+              onClick={() => navigate(`/products/register/${ean}`)}
             >
               Vérifier
             </Button>
