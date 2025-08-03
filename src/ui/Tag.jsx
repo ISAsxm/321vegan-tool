@@ -10,13 +10,7 @@ const Tag = styled.span`
 
   color: var(--color-${(props) => props.type}-700);
   background-color: var(--color-${(props) => props.type}-100);
-
-  ${(props) =>
-    props.type &&
-    ["silver", "grey"].includes(props.type) &&
-    css`
-      border: 0.5px solid var(--color-${props.type}-700);
-    `}
+  border: 0.5px solid var(--color-${(props) => props.type}-700);
 
   ${(props) =>
     props.onClick &&

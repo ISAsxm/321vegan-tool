@@ -110,6 +110,7 @@ const GlobalStyles = createGlobalStyle`
 
 
     /* Green brand theme */
+    --color-brand-10: #f2f7f3;
     --color-brand-50: #b5d1ba;
     --color-brand-100: #9fc3a6;
     --color-brand-200: #88b692;
