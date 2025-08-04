@@ -52,7 +52,13 @@ function ProductRegister() {
           "";
         if (brands) {
           const options = await getBrandsForSelect(brands, "in");
-          setBrandFromApi(options?.data[0] || null);
+          const lastBrand = options?.data[options.data.length - 1];
+          if (lastBrand) {
+            setBrandFromApi({
+              id: lastBrand.value,
+              name: lastBrand.label,
+            });
+          }
         }
       } catch (error) {
         console.error(error);
