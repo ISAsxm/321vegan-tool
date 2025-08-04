@@ -52,13 +52,14 @@ function ProductRegister() {
           "";
         if (brands) {
           const options = await getBrandsForSelect(brands, "in");
-          const lastBrand = options?.data[options.data.length - 1];
-          if (lastBrand) {
-            setBrandFromApi({
-              id: lastBrand.value,
-              name: lastBrand.label,
-            });
-          }
+          const matchingBrand = options?.data.filter(function (opt) {
+            return opt.label === brands.split(",")[0];
+          })[0];
+          setBrandFromApi(
+            matchingBrand
+              ? { id: matchingBrand.value, name: matchingBrand.label }
+              : null
+          );
         }
       } catch (error) {
         console.error(error);
