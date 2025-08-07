@@ -3,6 +3,8 @@ import styled, { css } from "styled-components";
 const Tag = styled.span`
   width: fit-content;
   text-transform: uppercase;
+  text-align: center;
+  text-wrap: nowrap;
   font-size: 1.1rem;
   font-weight: 600;
   padding: 0.4rem 1.2rem;

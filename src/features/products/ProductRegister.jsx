@@ -52,8 +52,9 @@ function ProductRegister() {
           "";
         if (brands) {
           const options = await getBrandsForSelect(brands, "in");
+          const searchedBrand = brands.split(",")[0].toLowerCase();
           const matchingBrand = options?.data.filter(function (opt) {
-            return opt.label === brands.split(",")[0];
+            return opt.label.toLowerCase() === searchedBrand;
           })[0];
           setBrandFromApi(
             matchingBrand
