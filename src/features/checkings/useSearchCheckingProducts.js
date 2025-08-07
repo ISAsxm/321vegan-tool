@@ -22,7 +22,7 @@ export function useSearchCheckingProducts() {
 
   // FILTERS
   const filters = buildQueryFilters(filterFields, searchParams);
-  const index = filters.findIndex((obj) => obj.field === "state");
+  const index = filters.findIndex((obj) => obj.field === "state__in");
   if (index === -1) {
     filters.push({
       field: "state__in",
