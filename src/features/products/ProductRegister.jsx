@@ -21,7 +21,7 @@ import Spinner from "@/ui/Spinner";
 
 import OffDataBox from "./OffDataBox";
 import RegisterProductForm from "./RegisterProductForm";
-import { getBrandsForSelect } from "@/services/apiBrands";
+import { getBrandLookalike } from "@/services/apiBrands";
 
 import { PiPlant } from "react-icons/pi";
 import {
@@ -46,21 +46,14 @@ function ProductRegister() {
         const data = await getProductData(productEan);
         if (data) setOffProduct(data);
         // Fetch brand from API
-        const brands =
-          data?.brands?.split(", ").join(",") ||
+        const brand =
+          data?.brands?.split(",")[0] ||
           data?.product_name?.split(" - ")[1] ||
           "";
-        if (brands) {
-          const options = await getBrandsForSelect(brands, "in");
-          const searchedBrand = brands.split(",")[0].toLowerCase();
-          const matchingBrand = options?.data.filter(function (opt) {
-            return opt.label.toLowerCase() === searchedBrand;
-          })[0];
-          setBrandFromApi(
-            matchingBrand
-              ? { id: matchingBrand.value, name: matchingBrand.label }
-              : null
-          );
+        if (brand) {
+          const matchingBrand = await getBrandLookalike(brand);
+          if (matchingBrand)
+            setBrandFromApi({ id: matchingBrand.id, name: matchingBrand.name });
         }
       } catch (error) {
         console.error(error);
@@ -160,7 +153,7 @@ function ProductRegister() {
               ...product,
               name: name || product_name,
               brand: brandFromApi || product.brand,
-              brandName: offBrandName,
+              brandName: offBrandName.split(",")[0],
             }}
             onClose={goBack}
           />

@@ -8,8 +8,8 @@ import { getSearchBrands } from "@/services/apiBrands";
 import { brandsKeys } from "./queryKeyFactory";
 
 const filterFields = [
-  { field: "name", operator: "__contains", value: null },
-  { field: "parent", operator: "___name__contains", value: null },
+  { field: "name", operator: "__lookalike", value: null },
+  { field: "parent", operator: "___name__lookalike", value: null },
 ];
 
 export function useSearchBrands() {
