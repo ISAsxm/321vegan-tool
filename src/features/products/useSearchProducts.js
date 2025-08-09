@@ -12,7 +12,7 @@ const filterFields = [
   { field: "name", operator: "__contains", value: null },
   { field: "status", value: null },
   { field: "state", value: null },
-  { field: "brand", operator: "___name__contains", value: null },
+  { field: "brand", operator: "___name__lookalike", value: null },
 ];
 
 export function useSearchProducts() {

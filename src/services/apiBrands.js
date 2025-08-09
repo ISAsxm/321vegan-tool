@@ -56,7 +56,7 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
   }
 }
 
-export async function getBrandsForSelect(searchName, operator = "ilike") {
+export async function getBrandsForSelect(searchName, operator = "lookalike") {
   try {
     const filters = searchName
       ? [{ field: `name__${operator}`, value: searchName }]
@@ -87,6 +87,32 @@ export async function getBrandsForSelect(searchName, operator = "ilike") {
       );
     } else {
       throw new Error(`Couldn't load searched brands. Error: ${error.message}`);
+    }
+  }
+}
+
+export async function getBrandLookalike(searchName) {
+  try {
+    const params = new URLSearchParams({ name: searchName }).toString();
+    const res = await axiosInstance.get(
+      `${API_URL}/brands/lookalike?${params}`
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't find brand with name '${searchName}'. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't find brand with name '${searchName}'. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't find brand with name '${searchName}'. Error: ${error.message}`
+      );
     }
   }
 }
