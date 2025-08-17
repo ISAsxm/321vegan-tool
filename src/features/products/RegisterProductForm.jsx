@@ -21,6 +21,16 @@ import Spinner from "@/ui/Spinner";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import styled from "styled-components";
 
+  const IngredientLabel = styled.label`
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    user-select: none;
+    background-color: ${({ checked }) => (checked ? "#e0e0e0" : "#f9f9f9")};
+  `;
+
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const { isUpdating, updateProduct } = useUpdateProduct();
@@ -75,15 +85,6 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     viande: false,
   });
 
-  const IngredientLabel = styled.label`
-    cursor: pointer;
-    display: inline-block;
-    padding: 6px 12px;
-    border-radius: 0.5em;
-    border: 1px solid #ccc;
-    user-select: none;
-    background-color: ${({ checked }) => (checked ? "#e0e0e0" : "#f9f9f9")};
-  `;
 
   // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
   useEffect(() => {
