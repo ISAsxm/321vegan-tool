@@ -19,6 +19,7 @@ import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
+import styled from "styled-components";
 
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
@@ -37,7 +38,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   const isPending = isUpdating || isDeleting;
 
-  const watchFields = watch(["state", "status"]);
+  const watchFields = watch(["state", "status", "problem_description"]);
   const { field: brandField } = useController({
     name: "brand_id",
     control,
@@ -73,6 +74,16 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     miel: false,
     viande: false,
   });
+
+  const IngredientLabel = styled.label`
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    user-select: none;
+    background-color: ${({ checked }) => (checked ? "#e0e0e0" : "#f9f9f9")};
+  `;
 
   // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
   useEffect(() => {
@@ -208,32 +219,13 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
               })}
               disabled={isPending}
               required
-              onChange={(e) => {
-                setProblemDescription(e.target.value);
-              }}
-              value={problemDescription}
             />
           </FormRow>
 
-          <FormRow label="Ingrédients" error={errors.ingredients?.message}>
+          <FormRow label="Ingrédients">
             <div style={{ display: "flex", gap: "1.6rem", flexWrap: "wrap" }}>
               {Object.keys(ingredients).map((item) => (
-                <label
-                  key={item}
-                  style={{
-                    cursor: "pointer",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.8rem",
-                    display: "inline-block",
-                    padding: "6px 12px",
-                    borderRadius: "0.5em",
-                    border: "1px solid #ccc",
-                    backgroundColor: ingredients[item] ? "#e0e0e0" : "#f9f9f9",
-                    cursor: "pointer",
-                    userSelect: "none",
-                  }}
-                >
+                <IngredientLabel key={item} checked={ingredients[item]}>
                   <input
                     type="checkbox"
                     checked={ingredients[item]}
@@ -246,8 +238,8 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
                       }));
 
                       // Update problemDescription values array
-                      let valuesArray = problemDescription
-                        .split(" ")
+                     let valuesArray = (watchFields[2] || "")
+                        .split(/[ ,;]+/)
                         .map((v) => v.trim())
                         .filter((v) => v);
 
@@ -258,14 +250,12 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
                       }
 
                       // Update problemDescription string
-                      setProblemDescription(valuesArray.join(" "));
+                      setValue("problem_description", valuesArray.join(" "));
                     }}
-                    style={{
-                      display: "none",
-                    }}
+                    style={{ display: "none" }}
                   />
                   {item.charAt(0).toUpperCase() + item.slice(1)}
-                </label>
+                </IngredientLabel>
               ))}
             </div>
           </FormRow>
