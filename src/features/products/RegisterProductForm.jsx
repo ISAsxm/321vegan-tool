@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
@@ -19,6 +19,17 @@ import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
+import styled from "styled-components";
+
+  const IngredientLabel = styled.label`
+    cursor: pointer;
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 0.5em;
+    border: 1px solid #ccc;
+    user-select: none;
+    background-color: ${({ checked }) => (checked ? "#e0e0e0" : "#f9f9f9")};
+  `;
 
 function RegisterProductForm({ productToCheckedIn, onClose }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
@@ -37,7 +48,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   const isPending = isUpdating || isDeleting;
 
-  const watchFields = watch(["state", "status"]);
+  const watchFields = watch(["state", "status", "problem_description"]);
   const { field: brandField } = useController({
     name: "brand_id",
     control,
@@ -64,6 +75,16 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
   );
   // Check if status should be locked when state is NEED_CONTACT
   const isStatusLocked = watchFields[0] === "NEED_CONTACT";
+
+  const [problemDescription, setProblemDescription] = useState("");
+
+  const [ingredients, setIngredients] = useState({
+    lait: false,
+    oeuf: false,
+    miel: false,
+    viande: false,
+  });
+
 
   // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
   useEffect(() => {
@@ -183,23 +204,63 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
       </FormRow>
 
       {shouldShowProblemsField && (
-        <FormRow
-          label="Problèmes"
-          hint="Raison pour laquelle le produit n'est pas vegan"
-          error={errors.problem_description?.message}
-        >
-          <Textarea
-            id="problem_description"
-            {...register("problem_description", {
-              required:
-                "Ce champ est obligatoire lorsque le status est 'MAYBE VEGAN' ou 'NON VEGAN'",
-              validate: (value) =>
-                shouldShowProblemsField && !value ? false : true,
-            })}
-            disabled={isPending}
-            required
-          />
-        </FormRow>
+        <>
+          <FormRow
+            label="Problèmes"
+            hint="Raison pour laquelle le produit n'est pas vegan"
+            error={errors.problem_description?.message}
+          >
+            <Textarea
+              id="problem_description"
+              {...register("problem_description", {
+                required:
+                  "Ce champ est obligatoire lorsque le status est 'MAYBE VEGAN' ou 'NON VEGAN'",
+                validate: (value) =>
+                  shouldShowProblemsField && !value ? false : true,
+              })}
+              disabled={isPending}
+              required
+            />
+          </FormRow>
+
+          <FormRow label="Ingrédients">
+            <div style={{ display: "flex", gap: "1.6rem", flexWrap: "wrap" }}>
+              {Object.keys(ingredients).map((item) => (
+                <IngredientLabel key={item} checked={ingredients[item]}>
+                  <input
+                    type="checkbox"
+                    checked={ingredients[item]}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+                      // Update ingredient state
+                      setIngredients((prev) => ({
+                        ...prev,
+                        [item]: checked,
+                      }));
+
+                      // Update problemDescription values array
+                     let valuesArray = (watchFields[2] || "")
+                        .split(/[ ,;]+/)
+                        .map((v) => v.trim())
+                        .filter((v) => v);
+
+                      if (checked && !valuesArray.includes(item)) {
+                        valuesArray.push(item);
+                      } else if (!checked && valuesArray.includes(item)) {
+                        valuesArray = valuesArray.filter((val) => val !== item);
+                      }
+
+                      // Update problemDescription string
+                      setValue("problem_description", valuesArray.join(" "));
+                    }}
+                    style={{ display: "none" }}
+                  />
+                  {item.charAt(0).toUpperCase() + item.slice(1)}
+                </IngredientLabel>
+              ))}
+            </div>
+          </FormRow>
+        </>
       )}
 
       <FormRow label="Biodynamie ?" error={errors.biodynamic?.message}>
