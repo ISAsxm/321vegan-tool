@@ -12,7 +12,7 @@ export function useUploadBrandLogo() {
     error,
   } = useMutation({
     mutationFn: ({ id, logoFile }) => uploadBrandLogoApi(id, logoFile),
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success(`Logo de la marque ajouté !`);
       queryClient.invalidateQueries({
         queryKey: brandsKeys.all,

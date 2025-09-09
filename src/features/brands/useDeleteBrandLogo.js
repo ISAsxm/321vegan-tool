@@ -12,7 +12,7 @@ export function useDeleteBrandLogo() {
     error,
   } = useMutation({
     mutationFn: (id) => deleteBrandLogoApi(id),
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast.success(`Logo de la marque supprimé !`);
       queryClient.invalidateQueries({
         queryKey: brandsKeys.all,
