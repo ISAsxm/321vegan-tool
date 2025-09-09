@@ -1,31 +1,20 @@
 import { useController, useForm } from "react-hook-form";
-import { useState } from "react";
 
 import { getBrandsForSelect } from "@/services/apiBrands";
 import { useUpdateBrand } from "./useUpdateBrand";
-import { useUploadBrandLogo } from "./useUploadBrandLogo";
-import { useDeleteBrandLogo } from "./useDeleteBrandLogo";
+import BrandLogoManager from "./BrandLogoManager";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
-import FileInput from "@/ui/FileInput";
 
 import Spinner from "@/ui/Spinner";
-import styled from "styled-components";
-
-const LogoContainer = styled.div`
-  margin-bottom: 1rem;
-`;
 
 function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = brandToUpdate;
   const { isUpdating, updateBrand } = useUpdateBrand();
-  const { isUploading, uploadBrandLogo } = useUploadBrandLogo();
-  const { isDeleting, deleteBrandLogo } = useDeleteBrandLogo();
-  const [selectedLogo, setSelectedLogo] = useState(null);
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       ...updateValues,
@@ -45,41 +34,13 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
       {
         onSuccess: () => {
           reset();
-          setSelectedLogo(null);
           onCloseModal?.();
         },
       }
     );
   }
 
-  const handleLogoChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setSelectedLogo(file);
-      uploadBrandLogo(
-        { id: updateId, logoFile: file },
-        {
-          onSuccess: () => {
-            setSelectedLogo(null);
-          },
-          onError: () => {
-            setSelectedLogo(null);
-            event.target.value = '';
-          }
-        }
-      );
-    }
-  };
-
-  const handleDeleteLogo = () => {
-    deleteBrandLogo(updateId, {
-      onSuccess: () => {
-        onCloseModal?.();
-      },
-    });
-  };
-
-  if (isUpdating || isDeleting) return <Spinner />;
+  if (isUpdating) return <Spinner />;
 
   return (
     <Form
@@ -116,29 +77,11 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Logo" htmlFor="logo">
-        {brandToUpdate.logo_path && (
-          <LogoContainer>
-            <img 
-              src={`${import.meta.env.VITE_API_URL}/${brandToUpdate.logo_path}`}
-              alt={`Logo de ${brandToUpdate.name}`}
-            />
-            <Button
-              $variation="danger"
-              $size="small"
-              type="button"
-              onClick={handleDeleteLogo}
-              disabled={isUpdating || isDeleting}
-            >
-              Supprimer
-            </Button>
-          </LogoContainer>
-        )}
-        <FileInput
-          id="logo"
-          accept="image/*"
-          onChange={handleLogoChange}
-          disabled={isUpdating || isUploading || isDeleting}
+      <FormRow label="Logo" htmlFor="brand-logo">
+        <BrandLogoManager 
+          brand={brandToUpdate}
+          disabled={isUpdating}
+          id="brand-logo"
         />
       </FormRow>
 
@@ -147,12 +90,12 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           $variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
-          disabled={isUpdating || isDeleting}
+          disabled={isUpdating}
         >
           Annuler
         </Button>
-        <Button disabled={isUpdating || isDeleting}>
-          {isDeleting ? "Suppression en cours..." : "Modifier"}
+        <Button disabled={isUpdating}>
+          Modifier
         </Button>
       </FormRow>
     </Form>

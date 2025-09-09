@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Children } from "react";
 
 const Label = styled.label`
   font-weight: 500;
@@ -56,12 +55,12 @@ const Error = styled.span`
   color: var(--color-red-700);
 `;
 
-function FormRow({ label, hint, error, children, htmlFor }) {
+function FormRow({ label, hint, error, children }) {
   return (
     <StyledFormRow>
       {label && (
         <div>
-          <Label htmlFor={htmlFor}>{label}</Label>
+          <Label htmlFor={children.props.id}>{label}</Label>
           {hint && <Hint>{hint}</Hint>}
         </div>
       )}
