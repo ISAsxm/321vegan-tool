@@ -202,3 +202,60 @@ export async function deleteBrand(id) {
     }
   }
 }
+
+export async function uploadBrandLogo(id, logoFile) {
+  try {
+    const formData = new FormData();
+    formData.append("file", logoFile);
+
+    const res = await axiosInstance.post(
+      `${API_URL}/brands/${id}/upload-logo`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't upload logo for brand # ${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't upload logo for brand # ${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't upload logo for brand # ${id}. Error: ${error.message}`
+      );
+    }
+  }
+}
+
+export async function deleteBrandLogo(id) {
+  try {
+    const res = await axiosInstance.delete(`${API_URL}/brands/${id}/logo`);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't delete logo for brand # ${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't delete logo for brand # ${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't delete logo for brand # ${id}. Error: ${error.message}`
+      );
+    }
+  }
+}
