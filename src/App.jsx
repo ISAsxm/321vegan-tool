@@ -12,21 +12,23 @@ import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CurrentUserProvider } from "@/contexts/CurrentUserContext";
 
-import Dashboard from "@/pages/Dashboard";
-import Products from "@/pages/Products";
-import Product from "@/pages/Product";
-import Register from "@/pages/Register";
-import Checkings from "@/pages/Checkings";
-import Additives from "@/pages/Additives";
-import Additive from "@/pages/Additive";
-import Cosmetics from "@/pages/Cosmetics";
-import Brands from "@/pages/Brands";
-import Users from "@/pages/Users";
-import ApiClients from "@/pages/ApiClients";
-import ErrorReports from "@/pages/ErrorReports";
 import Account from "@/pages/Account";
+import Additive from "@/pages/Additive";
+import Additives from "@/pages/Additives";
+import ApiClients from "@/pages/ApiClients";
+import Brands from "@/pages/Brands";
+import Cosmetics from "@/pages/Cosmetics";
+import Checkings from "@/pages/Checkings";
+import Dashboard from "@/pages/Dashboard";
+import ErrorReports from "@/pages/ErrorReports";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
+import Product from "@/pages/Product";
+import Products from "@/pages/Products";
+import Register from "@/pages/Register";
+import ScoringCategories from "@/pages/ScoringCategories";
+import ScoringCriteria from "@/pages/ScoringCriteria";
+import Users from "@/pages/Users";
 
 import ProtectedRoute from "@/ui/ProtectedRoute";
 import ProtectedRouteRole from "@/ui/ProtectedRouteRole";
@@ -108,6 +110,11 @@ function App() {
                 <Route path="additives/:additiveId" element={<Additive />} />
                 <Route path="cosmetics" element={<Cosmetics />} />
                 <Route path="brands" element={<Brands />} />
+                <Route
+                  path="scoring/categories"
+                  element={<ScoringCategories />}
+                />
+                <Route path="scoring/criteria" element={<ScoringCriteria />} />
                 <Route
                   path="error-reports"
                   element={

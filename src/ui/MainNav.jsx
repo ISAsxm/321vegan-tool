@@ -10,6 +10,9 @@ import {
   HiMiniGlobeAlt,
   HiOutlineExclamationTriangle,
   HiOutlineEnvelope,
+  HiOutlineTrophy,
+  HiOutlineRectangleGroup,
+  HiOutlineCheckBadge,
 } from "react-icons/hi2";
 import { PiHandSoap, PiPlant } from "react-icons/pi";
 
@@ -110,6 +113,22 @@ function MainNav() {
           <StyledNavLink to="/brands">
             <HiOutlineBuildingOffice />
             <span>Marques</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/scoring/categories">
+            <HiOutlineTrophy />
+            <span>
+              Score <HiOutlineRectangleGroup /> Catégories
+            </span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/scoring/criteria">
+            <HiOutlineTrophy />
+            <span>
+              Score <HiOutlineCheckBadge /> Critères
+            </span>
           </StyledNavLink>
         </li>
         {hasAccess("admin") && (
