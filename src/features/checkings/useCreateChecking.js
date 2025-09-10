@@ -11,7 +11,7 @@ export function useCreateChecking() {
     onSuccess: () => {
       toast.success("La prise de contact a bien été créée");
       queryClient.invalidateQueries({
-        queryKey: productsKeys.all,
+        queryKey: productsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

@@ -80,7 +80,7 @@ function ScoringCategoryTableRow({ category }) {
           </Menus.Menu>
 
           <Modal.Window name="add-criteria">
-            <CreateScoringCriterionForm defaultCategory={category} />
+            <CreateScoringCriterionForm category={category} />
           </Modal.Window>
           <Modal.Window name="edit">
             <UpdateScoringCategoryForm categoryToUpdate={category} />

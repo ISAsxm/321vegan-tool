@@ -11,7 +11,7 @@ export function useUpdateProduct() {
     onSuccess: () => {
       toast.success("Le produit a bien été modifié");
       queryClient.invalidateQueries({
-        queryKey: productsKeys.all,
+        queryKey: productsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

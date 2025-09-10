@@ -1,6 +1,6 @@
 export const brandsKeys = {
-  all: ["brands"],
-  lists: () => [...brandsKeys.all, "list"],
+  all: () => ["brands"],
+  lists: () => [...brandsKeys.all(), "list"],
   list: (filters, sortBy, page, size) => [
     ...brandsKeys.lists(),
     filters,
@@ -8,6 +8,6 @@ export const brandsKeys = {
     page,
     size,
   ],
-  details: () => [...brandsKeys.all, "detail"],
+  details: () => [...brandsKeys.all(), "detail"],
   detail: (id) => [...brandsKeys.details(), id],
 };

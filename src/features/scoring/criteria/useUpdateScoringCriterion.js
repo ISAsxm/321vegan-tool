@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateScoringCriterion as updateScoringCriterionApi } from "@/services/apiScoring";
-import { scoringCriteriaKeys } from "../queryKeyFactory";
+import { scoringCategoriesKeys } from "@/features/scoring/categories/queryKeyFactory";
 import toast from "react-hot-toast";
 
 export function useUpdateScoringCriterion() {
@@ -12,7 +12,7 @@ export function useUpdateScoringCriterion() {
       onSuccess: () => {
         toast.success("Le critère a bien été modifié");
         queryClient.invalidateQueries({
-          queryKey: scoringCriteriaKeys.all,
+          queryKey: scoringCategoriesKeys.all(),
         });
       },
       onError: (err) => toast.error(err.message),

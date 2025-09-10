@@ -8,11 +8,11 @@ export function useDeleteBrand() {
 
   const { isPending: isDeleting, mutate: deleteBrand } = useMutation({
     mutationFn: deleteBrandApi,
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       toast.success("La marque a bien été supprimée");
-      queryClient.removeQueries(brandsKeys.detail);
+      queryClient.removeQueries(brandsKeys.detail(id));
       queryClient.invalidateQueries({
-        queryKey: brandsKeys.all,
+        queryKey: brandsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

@@ -11,7 +11,7 @@ export function useDeleteUser() {
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été supprimé.e");
       queryClient.invalidateQueries({
-        queryKey: usersKeys.all,
+        queryKey: usersKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

@@ -11,7 +11,7 @@ export function useUpdateAdditive() {
     onSuccess: () => {
       toast.success("L'additif a bien été modifié");
       queryClient.invalidateQueries({
-        queryKey: additivesKeys.all,
+        queryKey: additivesKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

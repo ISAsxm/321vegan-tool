@@ -1,6 +1,6 @@
 export const productsKeys = {
-  all: ["products"],
-  lists: () => [...productsKeys.all, "list"],
+  all: () => ["products"],
+  lists: () => [...productsKeys.all(), "list"],
   list: (filters, sortBy, page, size) => [
     ...productsKeys.lists(),
     filters,
@@ -8,12 +8,12 @@ export const productsKeys = {
     page,
     size,
   ],
-  details: () => [...productsKeys.all, "detail"],
+  details: () => [...productsKeys.all(), "detail"],
   detail: (id) => [...productsKeys.details(), id],
   off: (id, code) => [...productsKeys.details(), id, code],
-  counts: () => [...productsKeys.all, "count"],
+  counts: () => [...productsKeys.all(), "count"],
   count: (filters) => [...productsKeys.counts(), filters],
-  checkings: () => [...productsKeys.all, "checking"],
+  checkings: () => [...productsKeys.all(), "checking"],
   checking: (filters, sortBy, page, size) => [
     ...productsKeys.checkings(),
     filters,

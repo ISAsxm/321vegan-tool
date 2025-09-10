@@ -27,7 +27,6 @@ import Product from "@/pages/Product";
 import Products from "@/pages/Products";
 import Register from "@/pages/Register";
 import ScoringCategories from "@/pages/ScoringCategories";
-import ScoringCriteria from "@/pages/ScoringCriteria";
 import Users from "@/pages/Users";
 
 import ProtectedRoute from "@/ui/ProtectedRoute";
@@ -110,11 +109,15 @@ function App() {
                 <Route path="additives/:additiveId" element={<Additive />} />
                 <Route path="cosmetics" element={<Cosmetics />} />
                 <Route path="brands" element={<Brands />} />
+
                 <Route
                   path="scoring/categories"
-                  element={<ScoringCategories />}
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <ScoringCategories />
+                    </ProtectedRouteRole>
+                  }
                 />
-                <Route path="scoring/criteria" element={<ScoringCriteria />} />
                 <Route
                   path="error-reports"
                   element={

@@ -1,56 +1,20 @@
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { useCreateScoringCategory } from "./useCreateScoringCategory";
 
 import Button from "@/ui/Button";
-import ButtonIcon from "@/ui/ButtonIcon";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
+import FormCol from "@/ui/FormCol";
 import Input from "@/ui/Input";
-
+import {
+  ScoringCriteriaFormList,
+  ScoringCriteriaFormItem,
+  ScoringCriteriaFormButtonDelete,
+  ScoringCriteriaFormButtonAdd,
+} from "@/features/scoring/criteria/ScoringCriteriaFormList";
 import { HiTrash } from "react-icons/hi2";
-import styled from "styled-components";
 
-const CriteriaList = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
-`;
-
-const CriteriaItem = styled.li`
-  display: grid;
-  grid-template-columns: 1fr 4rem 1.2fr;
-  align-items: stretch;
-  gap: 0.4rem;
-  width: 100%;
-`;
-
-const CriterionButtonDelete = styled.button`
-  background: none;
-  border: none;
-  padding: 0.3rem;
-  border-radius: var(--border-radius-sm);
-  transition: all 0.2s;
-  text-align: center;
-  color: var(--color-red-100);
-  background-color: var(--color-red-700);
-  &:hover {
-    background-color: var(--color-red-800);
-  }
-
-  & svg {
-    width: 1.5rem;
-    height: 1.5rem;
-    color: currentColor;
-  }
-`;
-
-const CriterionError = styled.span`
-  font-size: 1.4rem;
-  color: var(--color-red-700);
-`;
-
-function CreateScoringCategoryForm({ onCloseModal, onCreateOption }) {
+function CreateScoringCategoryForm({ onCloseModal }) {
   const { isCreating, createScoringCategory } = useCreateScoringCategory();
   const { register, formState, handleSubmit, reset, control } = useForm();
   const { errors } = formState;
@@ -62,21 +26,16 @@ function CreateScoringCategoryForm({ onCloseModal, onCreateOption }) {
   } = useFieldArray({
     control,
     name: "criteria",
-    // rules: { required: "Ce champ est obligatoire" },
   });
 
   function onSubmit(data) {
-    console.log(data);
-    // createScoringCategory(data, {
-    //   onSuccess: (data) => {
-    //     reset();
-    //     onCloseModal?.();
-    //     onCreateOption?.({ value: data.id, label: data.name });
-    //   },
-    // });
+    createScoringCategory(data, {
+      onSuccess: () => {
+        reset();
+        onCloseModal?.();
+      },
+    });
   }
-
-  console.log(errors);
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
@@ -92,38 +51,39 @@ function CreateScoringCategoryForm({ onCloseModal, onCreateOption }) {
 
       <FormRow label="Critères">
         <div id="criteria">
-          <CriteriaList>
+          <ScoringCriteriaFormList>
             {criteriaFields.map((item, index) => (
-              <CriteriaItem key={item.id}>
-                <Input
-                  type="text"
-                  id={`criteria.${index}.name`}
-                  {...register(`criteria.${index}.name`, {
-                    required: "Ce champ est obligatoire",
-                  })}
-                  required
-                  defaultValue={index}
-                />
-                <CriterionButtonDelete
-                  type="button"
-                  onClick={() => remove(index)}
-                >
-                  <HiTrash />
-                </CriterionButtonDelete>
-                {errors.criteria?.[index]?.name && (
-                  <CriterionError>This can't be empty</CriterionError>
-                )}
-              </CriteriaItem>
+              <FormCol
+                key={item.id}
+                error={errors.criteria?.[index]?.name.message}
+              >
+                <ScoringCriteriaFormItem>
+                  <Input
+                    type="text"
+                    id={`criteria.${index}.name`}
+                    {...register(`criteria.${index}.name`, {
+                      required:
+                        "Une valeur est requise sinon supprimez la ligne",
+                    })}
+                    required
+                    defaultValue={index}
+                  />
+                  <ScoringCriteriaFormButtonDelete
+                    type="button"
+                    onClick={() => remove(index)}
+                  >
+                    <HiTrash />
+                  </ScoringCriteriaFormButtonDelete>
+                </ScoringCriteriaFormItem>
+              </FormCol>
             ))}
-          </CriteriaList>
-          <Button
-            $variation="accent"
-            $size="small"
+          </ScoringCriteriaFormList>
+          <ScoringCriteriaFormButtonAdd
             type="button"
             onClick={() => append({ name: null })}
           >
             Ajouter
-          </Button>
+          </ScoringCriteriaFormButtonAdd>
         </div>
       </FormRow>
 

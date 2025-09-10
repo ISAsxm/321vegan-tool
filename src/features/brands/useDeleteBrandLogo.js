@@ -15,7 +15,7 @@ export function useDeleteBrandLogo() {
     onSuccess: () => {
       toast.success(`Logo de la marque supprimé !`);
       queryClient.invalidateQueries({
-        queryKey: brandsKeys.all,
+        queryKey: brandsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

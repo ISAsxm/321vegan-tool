@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteScoringCategory as deleteScoringCategoryApi } from "@/services/apiScoring";
-import { scoringCategoriesKeys } from "../queryKeyFactory";
+import { scoringCategoriesKeys } from "./queryKeyFactory";
 import toast from "react-hot-toast";
 
 export function useDeleteScoringCategory() {
@@ -11,7 +11,7 @@ export function useDeleteScoringCategory() {
     onSuccess: () => {
       toast.success("La catégorie a bien été supprimée");
       queryClient.invalidateQueries({
-        queryKey: scoringCategoriesKeys.all,
+        queryKey: scoringCategoriesKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

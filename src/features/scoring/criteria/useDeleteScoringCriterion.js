@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteScoringCriterion as deleteScoringCriterionApi } from "@/services/apiScoring";
-import { scoringCriteriaKeys } from "../queryKeyFactory";
+import { scoringCategoriesKeys } from "@/features/scoring/categories/queryKeyFactory";
 import toast from "react-hot-toast";
 
 export function useDeleteScoringCriterion() {
@@ -12,7 +12,7 @@ export function useDeleteScoringCriterion() {
       onSuccess: () => {
         toast.success("Le critère a bien été supprimé");
         queryClient.invalidateQueries({
-          queryKey: scoringCriteriaKeys.all,
+          queryKey: scoringCategoriesKeys.all(),
         });
       },
       onError: (err) => toast.error(err.message),

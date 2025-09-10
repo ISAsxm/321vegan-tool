@@ -15,7 +15,7 @@ export function useUploadBrandLogo() {
     onSuccess: () => {
       toast.success(`Logo de la marque ajouté !`);
       queryClient.invalidateQueries({
-        queryKey: brandsKeys.all,
+        queryKey: brandsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

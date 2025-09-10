@@ -11,7 +11,7 @@ export function useUpdateChecking() {
     onSuccess: () => {
       toast.success("La prise de contact a bien été modifiée");
       queryClient.invalidateQueries({
-        queryKey: productsKeys.all,
+        queryKey: productsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

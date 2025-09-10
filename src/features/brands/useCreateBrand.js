@@ -11,7 +11,7 @@ export function useCreateBrand() {
     onSuccess: () => {
       toast.success("La marque a bien été créée");
       queryClient.invalidateQueries({
-        queryKey: brandsKeys.all,
+        queryKey: brandsKeys.all(),
       });
     },
     onError: (err) => {

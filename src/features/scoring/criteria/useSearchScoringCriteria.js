@@ -5,7 +5,7 @@ import { PAGE_SIZE } from "@/utils/constants";
 import { buildQueryFilters } from "@/utils/helpers";
 import { getSearchScoringCriteria } from "@/services/apiScoring";
 
-import { scoringCriteriaKeys } from "../queryKeyFactory";
+import { scoringCategoriesKeys } from "@/features/scoring/categories/queryKeyFactory";
 
 const filterFields = [
   { field: "name", operator: "__lookalike", value: null },
@@ -32,7 +32,7 @@ export function useSearchScoringCriteria() {
     data: { data: scoringCriteria, count } = {},
     error,
   } = useQuery({
-    queryKey: scoringCriteriaKeys.list(filters, sortBy, page, size),
+    queryKey: scoringCategoriesKeys.list(filters, sortBy, page, size),
     queryFn: () => getSearchScoringCriteria({ filters, sortBy, page, size }),
     placeholderData: keepPreviousData,
   });

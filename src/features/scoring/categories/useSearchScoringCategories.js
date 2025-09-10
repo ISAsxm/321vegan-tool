@@ -4,8 +4,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { PAGE_SIZE } from "@/utils/constants";
 import { buildQueryFilters } from "@/utils/helpers";
 import { getSearchScoringCategories } from "@/services/apiScoring";
-
-import { scoringCategoriesKeys } from "../queryKeyFactory";
+import { scoringCategoriesKeys } from "./queryKeyFactory";
 
 const filterFields = [
   { field: "name", operator: "__lookalike", value: null },

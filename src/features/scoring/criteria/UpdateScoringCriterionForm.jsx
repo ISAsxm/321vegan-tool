@@ -1,36 +1,26 @@
-import { useController, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useUpdateScoringCriterion } from "./useUpdateScoringCriterion";
-import { getScoringCategoriesForSelect } from "@/services/apiScoring";
-
-import CreateScoringCategoryForm from "@/features/scoring/categories/CreateScoringCategoryForm";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
-import Select from "@/ui/Select";
 import Input from "@/ui/Input";
 
 function UpdateScoringCriterionForm({ criterionToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = criterionToUpdate;
   const { isUpdating, updateScoringCriterion } = useUpdateScoringCriterion();
-  const { register, formState, handleSubmit, reset, control } = useForm({
-    defaultValues: {
-      ...updateValues,
-      category_id: criterionToUpdate.category.id,
-    },
+  const { register, formState, handleSubmit, reset } = useForm({
+    defaultValues: updateValues,
   });
   const { errors } = formState;
 
-  const { field: categoryField } = useController({
-    name: "category_id",
-    control,
-    defaultValue: criterionToUpdate.category.id,
-    rules: { required: "Ce champ est obligatoire" },
-  });
-
   function onSubmit(data) {
     updateScoringCriterion(
-      { newData: data, id: updateId },
+      {
+        newData: data,
+        id: updateId,
+        category_id: criterionToUpdate.category.id,
+      },
       {
         onSuccess: () => {
           reset();
@@ -42,24 +32,6 @@ function UpdateScoringCriterionForm({ criterionToUpdate, onCloseModal }) {
 
   return (
     <Form type={onCloseModal ? "modal" : "regular"}>
-      <FormRow label="Catégorie" error={errors.category_id?.message}>
-        <Select
-          name="category_id"
-          onChange={categoryField.onChange}
-          getOptions={getScoringCategoriesForSelect}
-          defaultOptions={[
-            {
-              value: criterionToUpdate.category.id,
-              label: criterionToUpdate.category.name,
-            },
-          ]}
-          defaultValue={[categoryField.value]}
-          required={true}
-          disabled={isUpdating}
-          createComponent={<CreateScoringCategoryForm />}
-        />
-      </FormRow>
-
       <FormRow label="Nom" error={errors.name?.message}>
         <Input
           type="text"

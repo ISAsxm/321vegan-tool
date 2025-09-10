@@ -11,7 +11,7 @@ export function useUpdateErrorReport() {
     onSuccess: () => {
       toast.success("Le rapport d'erreur a bien été modifié");
       queryClient.invalidateQueries({
-        queryKey: errorReportsKeys.all,
+        queryKey: errorReportsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

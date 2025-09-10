@@ -11,7 +11,7 @@ export function useUpdateBrand() {
     onSuccess: () => {
       toast.success("La marque a bien été modifiée");
       queryClient.invalidateQueries({
-        queryKey: brandsKeys.all,
+        queryKey: brandsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

@@ -1,10 +1,10 @@
+import { useDeleteScoringCriterion } from "./useDeleteScoringCriterion";
+import UpdateScoringCriterionForm from "./UpdateScoringCriterionForm";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 
 import { HiPencil, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
-import UpdateScoringCriterionForm from "./UpdateScoringCriterionForm";
-import { useDeleteScoringCriterion } from "./useDeleteScoringCriterion";
 
 const StyledScoringCriteriaList = styled.ul`
   display: flex;
@@ -17,7 +17,7 @@ const CriterionItem = styled.li`
   background-color: var(--color-brand-700);
   color: var(--color-brand-10);
   font-size: 1.2rem;
-  padding: 0.2rem 0.4rem;
+  padding: 0.4rem 0.6rem;
   display: grid;
   grid-template-columns: 1fr 4rem;
   align-items: center;
@@ -69,23 +69,23 @@ function ScoringCriteriaList({ criteria, canDelete }) {
           <CriterionItem key={criterion.id}>
             {criterion.name}{" "}
             <CriteriaButtonGroup>
-              <Modal.Open opens="edit-criterion">
+              <Modal.Open opens={`edit-criterion-${criterion.id}`}>
                 <CriterionButtonEdit disabled={isDeleting}>
                   <HiPencil />
                 </CriterionButtonEdit>
               </Modal.Open>{" "}
               {canDelete && (
-                <Modal.Open opens="delete-criterion">
+                <Modal.Open opens={`delete-criterion-${criterion.id}`}>
                   <CriterionButtonDelete disabled={isDeleting}>
                     <HiTrash />
                   </CriterionButtonDelete>
                 </Modal.Open>
               )}
             </CriteriaButtonGroup>
-            <Modal.Window name="edit-criterion">
+            <Modal.Window name={`edit-criterion-${criterion.id}`}>
               <UpdateScoringCriterionForm criterionToUpdate={criterion} />
             </Modal.Window>
-            <Modal.Window name="delete-criterion">
+            <Modal.Window name={`delete-criterion-${criterion.id}`}>
               <ConfirmAction
                 variation="delete"
                 title="Supprimer un critère"

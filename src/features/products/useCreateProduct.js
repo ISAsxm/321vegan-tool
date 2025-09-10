@@ -11,7 +11,7 @@ export function useCreateProduct() {
     onSuccess: () => {
       toast.success("Le produit a bien été créé");
       queryClient.invalidateQueries({
-        queryKey: productsKeys.all,
+        queryKey: productsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),
