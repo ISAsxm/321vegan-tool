@@ -2,6 +2,7 @@ import { useController, useForm } from "react-hook-form";
 
 import { getBrandsForSelect } from "@/services/apiBrands";
 import { useUpdateBrand } from "./useUpdateBrand";
+import BrandLogoManager from "./BrandLogoManager";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
@@ -66,13 +67,21 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Nom" error={errors.name?.message}>
+      <FormRow label="Nom" error={errors.name?.message} htmlFor="name">
         <Input
           type="text"
           id="name"
           {...register("name", { required: "Ce champ est obligatoire" })}
           disabled={isUpdating}
           required
+        />
+      </FormRow>
+
+      <FormRow label="Logo" htmlFor="brand-logo">
+        <BrandLogoManager 
+          brand={brandToUpdate}
+          disabled={isUpdating}
+          id="brand-logo"
         />
       </FormRow>
 
@@ -85,7 +94,9 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         >
           Annuler
         </Button>
-        <Button disabled={isUpdating}>Modifier</Button>
+        <Button disabled={isUpdating}>
+          Modifier
+        </Button>
       </FormRow>
     </Form>
   );

@@ -11,6 +11,7 @@ import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 
 import UpdateBrandForm from "./UpdateBrandForm";
+import BrandLogo from "./BrandLogo";
 
 import { HiPencil, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
@@ -29,6 +30,8 @@ function BrandTableRow({ brand }) {
   return (
     <Table.Row>
       <Ref># {brandId}</Ref>
+
+      <BrandLogo brand={brand} />
 
       <Stacked>{name}</Stacked>
 
