@@ -19,6 +19,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
     defaultValues: {
       ...updateValues,
       parent_id: brandToUpdate.parent?.id || null,
+      logo_path: brandToUpdate.logo_path || null,
     },
   });
   const { errors } = formState;
@@ -29,8 +30,13 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
   });
 
   function onSubmit(data) {
+    const updateData = {
+      ...data,
+      logo_path: brandToUpdate.logo_path || null,
+    };
+    
     updateBrand(
-      { newData: data, id: updateId },
+      { newData: updateData, id: updateId },
       {
         onSuccess: () => {
           reset();
@@ -77,6 +83,11 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         />
       </FormRow>
 
+        {/* Hidden input to preserve logo_path in form data */}
+        <input
+          type="hidden"
+          {...register("logo_path")}
+        />
       <FormRow label="Logo" htmlFor="brand-logo">
         <BrandLogoManager 
           brand={brandToUpdate}
