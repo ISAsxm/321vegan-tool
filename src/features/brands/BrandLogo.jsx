@@ -9,8 +9,13 @@ const LogoContainer = styled.div`
 `;
 
 const LogoImg = styled.img`
+  display: block;
   width: 4rem;
   height: 4rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--border-radius-sm);
 `;
 
 const NoLogoPlaceholder = styled.div`

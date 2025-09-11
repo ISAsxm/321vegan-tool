@@ -4,6 +4,7 @@ import {
   QueryClient,
   QueryClientProvider,
   QueryCache,
+  MutationCache,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import toast, { Toaster } from "react-hot-toast";
@@ -63,6 +64,11 @@ function App() {
                   `Une erreur est survenue. Veuillez réessayer utlérieurement ou contacter le support si le problème persiste`
               );
             }
+          },
+        }),
+        mutationCache: new MutationCache({
+          onSuccess: () => {
+            queryClient.invalidateQueries();
           },
         }),
       })

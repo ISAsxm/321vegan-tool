@@ -8,6 +8,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Spinner from "@/ui/Spinner";
+import ImageUpload from "@/ui/ImageUpload";
 
 function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
   const { isCreating, createBrand } = useCreateBrand();
@@ -15,12 +16,18 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
     defaultValues: {
       parent_id: null,
       name: prefillName || null,
+      logo_path: null,
     },
   });
   const { errors } = formState;
 
   const { field: parentField } = useController({
     name: "parent_id",
+    control,
+  });
+
+  const { field: logoField } = useController({
+    name: "logo_path",
     control,
   });
 
@@ -55,6 +62,14 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
           {...register("name", { required: "Ce champ est obligatoire" })}
           disabled={isCreating}
           required
+        />
+      </FormRow>
+
+      <FormRow label="Logo" error={errors.logo_path?.message}>
+        <ImageUpload
+          id="logo_path"
+          onUpload={logoField.onChange}
+          disabled={isCreating}
         />
       </FormRow>
 
