@@ -1,15 +1,21 @@
-import styled from "styled-components";
+import { API_URL } from "@/utils/constants";
+
 import { HiPhoto } from "react-icons/hi2";
+import styled from "styled-components";
 
 const LogoContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
 `;
 
 const LogoImg = styled.img`
+  display: block;
   width: 4rem;
   height: 4rem;
+  aspect-ratio: 1;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--border-radius-sm);
 `;
 
 const NoLogoPlaceholder = styled.div`
@@ -26,23 +32,15 @@ const NoLogoPlaceholder = styled.div`
 
 function BrandLogo({ brand }) {
   const { logo_path, name } = brand;
-
-  const apiBaseUrl = import.meta.env.VITE_API_URL;
-
-  if (logo_path) {
-    const logoUrl = `${apiBaseUrl}/${logo_path}`;
-    return (
-      <LogoContainer>
-        <LogoImg src={logoUrl} alt={`Logo ${name}`} />
-      </LogoContainer>
-    );
-  }
-
   return (
     <LogoContainer>
-      <NoLogoPlaceholder>
-        <HiPhoto />
-      </NoLogoPlaceholder>
+      {logo_path ? (
+        <LogoImg src={`${API_URL}/${logo_path}`} alt={`Logo ${name}`} />
+      ) : (
+        <NoLogoPlaceholder>
+          <HiPhoto />
+        </NoLogoPlaceholder>
+      )}
     </LogoContainer>
   );
 }

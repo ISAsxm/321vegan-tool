@@ -2,13 +2,13 @@ import { useController, useForm } from "react-hook-form";
 
 import { getBrandsForSelect } from "@/services/apiBrands";
 import { useUpdateBrand } from "./useUpdateBrand";
-import BrandLogoManager from "./BrandLogoManager";
 
 import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
+import ImageUpload from "@/ui/ImageUpload";
 
 import Spinner from "@/ui/Spinner";
 
@@ -25,6 +25,11 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
 
   const { field: parentField } = useController({
     name: "parent_id",
+    control,
+  });
+
+  const { field: logoField } = useController({
+    name: "logo_path",
     control,
   });
 
@@ -77,11 +82,12 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Logo" htmlFor="brand-logo">
-        <BrandLogoManager 
-          brand={brandToUpdate}
+      <FormRow label="Logo" error={errors.logo_path?.message}>
+        <ImageUpload
+          id="logo_path"
+          onUpload={logoField.onChange}
           disabled={isUpdating}
-          id="brand-logo"
+          defaultValue={logoField.value}
         />
       </FormRow>
 
@@ -94,9 +100,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
         >
           Annuler
         </Button>
-        <Button disabled={isUpdating}>
-          Modifier
-        </Button>
+        <Button disabled={isUpdating}>Modifier</Button>
       </FormRow>
     </Form>
   );

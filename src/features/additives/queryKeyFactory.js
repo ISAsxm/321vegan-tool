@@ -1,6 +1,6 @@
 export const additivesKeys = {
-  all: ["additives"],
-  lists: () => [...additivesKeys.all, "list"],
+  all: () => ["additives"],
+  lists: () => [...additivesKeys.all(), "list"],
   list: (filters, sortBy, page, size) => [
     ...additivesKeys.lists(),
     filters,
@@ -8,6 +8,6 @@ export const additivesKeys = {
     page,
     size,
   ],
-  details: () => [...additivesKeys.all, "detail"],
+  details: () => [...additivesKeys.all(), "detail"],
   detail: (id) => [...additivesKeys.details(), id],
 };

@@ -8,11 +8,11 @@ export function useDeleteAdditive() {
 
   const { isPending: isDeleting, mutate: deleteAdditive } = useMutation({
     mutationFn: deleteAdditiveApi,
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       toast.success("L'additif a bien été supprimé");
-      queryClient.removeQueries(additivesKeys.detail);
+      queryClient.removeQueries(additivesKeys.detail(id));
       queryClient.invalidateQueries({
-        queryKey: additivesKeys.all,
+        queryKey: additivesKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

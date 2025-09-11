@@ -11,7 +11,7 @@ export function useCreateApiClient() {
     onSuccess: () => {
       toast.success("Le client API a bien été créé");
       queryClient.invalidateQueries({
-        queryKey: apiclientsKeys.all,
+        queryKey: apiclientsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

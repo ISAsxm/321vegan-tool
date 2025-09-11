@@ -1,17 +1,6 @@
-import { buildURLSearchParams } from "@/utils/helpers";
+import { buildURLSearchParams, sortByInputFirst } from "@/utils/helpers";
 import { API_URL } from "@/utils/constants";
 import axiosInstance from "@/services/axiosInstance";
-
-function sortByInputFirst(input, data) {
-  const [first, others] = data.reduce(
-    ([a, b], c) =>
-      c.label.toLowerCase().indexOf(input.toLowerCase()) == 0
-        ? [[...a, c], b]
-        : [a, [...b, c]],
-    [[], []]
-  );
-  return first.concat(others);
-}
 
 export async function getBrands() {
   try {

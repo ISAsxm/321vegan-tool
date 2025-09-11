@@ -11,7 +11,7 @@ export function useUpdateUser() {
     onSuccess: () => {
       toast.success("L'utilisateurice a bien été modifié.e");
       queryClient.invalidateQueries({
-        queryKey: usersKeys.all,
+        queryKey: usersKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

@@ -1,6 +1,6 @@
 export const cosmeticsKeys = {
-  all: ["cosmetics"],
-  lists: () => [...cosmeticsKeys.all, "list"],
+  all: () => ["cosmetics"],
+  lists: () => [...cosmeticsKeys.all(), "list"],
   list: (filters, sortBy, page, size) => [
     ...cosmeticsKeys.lists(),
     filters,
@@ -8,7 +8,7 @@ export const cosmeticsKeys = {
     page,
     size,
   ],
-  details: () => [...cosmeticsKeys.all, "detail"],
+  details: () => [...cosmeticsKeys.all(), "detail"],
   detail: (id) => [...cosmeticsKeys.details(), id],
-  select: () => [...cosmeticsKeys.all, "select"],
+  select: () => [...cosmeticsKeys.all(), "select"],
 };

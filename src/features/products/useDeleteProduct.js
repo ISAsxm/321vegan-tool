@@ -8,11 +8,11 @@ export function useDeleteProduct() {
 
   const { isPending: isDeleting, mutate: deleteProduct } = useMutation({
     mutationFn: deleteProductApi,
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       toast.success("Le produit a bien été supprimé");
-      queryClient.removeQueries(productsKeys.detail);
+      queryClient.removeQueries(productsKeys.detail(id));
       queryClient.invalidateQueries({
-        queryKey: productsKeys.all,
+        queryKey: productsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

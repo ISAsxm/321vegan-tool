@@ -160,3 +160,21 @@ export const evaluate = (template, data) => {
     return data[match.split(/{{|}}/).filter(Boolean)[0].trim()];
   });
 };
+
+/**
+ * Sort a given array by a given input first.
+ *
+ * @param {string} input: The input to order by
+ * @param {Array} data: An array containing all data as options (i.e [{ value: id, label: name },])
+ * @return {Array} the data filtering by input first
+ * */
+export const sortByInputFirst = (input, data) => {
+  const [first, others] = data.reduce(
+    ([a, b], c) =>
+      c.label.toLowerCase().indexOf(input.toLowerCase()) == 0
+        ? [[...a, c], b]
+        : [a, [...b, c]],
+    [[], []]
+  );
+  return first.concat(others);
+};

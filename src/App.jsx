@@ -4,6 +4,7 @@ import {
   QueryClient,
   QueryClientProvider,
   QueryCache,
+  MutationCache,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import toast, { Toaster } from "react-hot-toast";
@@ -12,21 +13,22 @@ import { DarkModeProvider } from "@/contexts/DarkModeContext";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { CurrentUserProvider } from "@/contexts/CurrentUserContext";
 
-import Dashboard from "@/pages/Dashboard";
-import Products from "@/pages/Products";
-import Product from "@/pages/Product";
-import Register from "@/pages/Register";
-import Checkings from "@/pages/Checkings";
-import Additives from "@/pages/Additives";
-import Additive from "@/pages/Additive";
-import Cosmetics from "@/pages/Cosmetics";
-import Brands from "@/pages/Brands";
-import Users from "@/pages/Users";
-import ApiClients from "@/pages/ApiClients";
-import ErrorReports from "@/pages/ErrorReports";
 import Account from "@/pages/Account";
+import Additive from "@/pages/Additive";
+import Additives from "@/pages/Additives";
+import ApiClients from "@/pages/ApiClients";
+import Brands from "@/pages/Brands";
+import Cosmetics from "@/pages/Cosmetics";
+import Checkings from "@/pages/Checkings";
+import Dashboard from "@/pages/Dashboard";
+import ErrorReports from "@/pages/ErrorReports";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
+import Product from "@/pages/Product";
+import Products from "@/pages/Products";
+import Register from "@/pages/Register";
+import ScoringCategories from "@/pages/ScoringCategories";
+import Users from "@/pages/Users";
 
 import ProtectedRoute from "@/ui/ProtectedRoute";
 import ProtectedRouteRole from "@/ui/ProtectedRouteRole";
@@ -62,6 +64,11 @@ function App() {
                   `Une erreur est survenue. Veuillez réessayer utlérieurement ou contacter le support si le problème persiste`
               );
             }
+          },
+        }),
+        mutationCache: new MutationCache({
+          onSuccess: () => {
+            queryClient.invalidateQueries();
           },
         }),
       })
@@ -108,6 +115,15 @@ function App() {
                 <Route path="additives/:additiveId" element={<Additive />} />
                 <Route path="cosmetics" element={<Cosmetics />} />
                 <Route path="brands" element={<Brands />} />
+
+                <Route
+                  path="scoring/categories"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <ScoringCategories />
+                    </ProtectedRouteRole>
+                  }
+                />
                 <Route
                   path="error-reports"
                   element={
