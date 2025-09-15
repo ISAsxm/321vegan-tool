@@ -12,6 +12,10 @@ const StyledFormRow = styled.div`
 
   padding: 1.2rem 0;
 
+  & > div:has(label) {
+    align-self: start;
+  }
+
   &:first-child {
     padding-top: 0;
   }

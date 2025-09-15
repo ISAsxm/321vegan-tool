@@ -10,4 +10,5 @@ export const brandsKeys = {
   ],
   details: () => [...brandsKeys.all(), "detail"],
   detail: (id) => [...brandsKeys.details(), id],
+  scores: (id) => [...brandsKeys.details(), id, "scores"],
 };
