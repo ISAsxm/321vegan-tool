@@ -43,6 +43,7 @@ function UpdateScoringCategoryForm({ categoryToUpdate, onCloseModal }) {
   });
 
   function checkCanDelete(index) {
+    if (index <= 0) return false;
     const idToCheck = getValues(`criteria.${index}.id`);
     const criterionToCheck = criteria.find(
       (criterion) => criterion.id === idToCheck
@@ -109,8 +110,11 @@ function UpdateScoringCategoryForm({ categoryToUpdate, onCloseModal }) {
                     type="text"
                     id={`criteria.${index}.name`}
                     {...register(`criteria.${index}.name`, {
-                      required:
-                        "Une valeur est requise sinon supprimez la ligne",
+                      required: `${
+                        index > 0
+                          ? "Une valeur est requise sinon supprimez la ligne"
+                          : "Ce champ est obligatoire"
+                      } `,
                     })}
                     required
                     defaultValue={index}

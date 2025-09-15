@@ -184,7 +184,7 @@ input:disabled {
   color: var(--color-grey-500);
 }
 
-input:focus,
+input:not([type="radio"]):focus,
 button:focus,
 textarea:focus,
 select:focus {

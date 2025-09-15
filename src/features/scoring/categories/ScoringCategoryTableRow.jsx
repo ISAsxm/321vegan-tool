@@ -39,7 +39,7 @@ function ScoringCategoryTableRow({ category }) {
         {criteria.length > 0 ? (
           <ScoringCriteriaList
             criteria={criteria}
-            canDelete={hasAccess("admin")}
+            canDelete={criteria.length > 1 && hasAccess("admin")}
           />
         ) : (
           <NoDataItem>Aucun</NoDataItem>

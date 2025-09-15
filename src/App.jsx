@@ -17,6 +17,7 @@ import Account from "@/pages/Account";
 import Additive from "@/pages/Additive";
 import Additives from "@/pages/Additives";
 import ApiClients from "@/pages/ApiClients";
+import Brand from "@/pages/Brand";
 import Brands from "@/pages/Brands";
 import Cosmetics from "@/pages/Cosmetics";
 import Checkings from "@/pages/Checkings";
@@ -115,7 +116,7 @@ function App() {
                 <Route path="additives/:additiveId" element={<Additive />} />
                 <Route path="cosmetics" element={<Cosmetics />} />
                 <Route path="brands" element={<Brands />} />
-
+                <Route path="brands/:brandId" element={<Brand />} />
                 <Route
                   path="scoring/categories"
                   element={

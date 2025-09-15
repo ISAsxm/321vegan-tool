@@ -16,7 +16,12 @@ import { HiTrash } from "react-icons/hi2";
 
 function CreateScoringCategoryForm({ onCloseModal }) {
   const { isCreating, createScoringCategory } = useCreateScoringCategory();
-  const { register, formState, handleSubmit, reset, control } = useForm();
+  const { register, formState, handleSubmit, reset, control } = useForm({
+    defaultValues: {
+      name: null,
+      criteria: [{ name: null }],
+    },
+  });
   const { errors } = formState;
 
   const {
@@ -62,18 +67,23 @@ function CreateScoringCategoryForm({ onCloseModal }) {
                     type="text"
                     id={`criteria.${index}.name`}
                     {...register(`criteria.${index}.name`, {
-                      required:
-                        "Une valeur est requise sinon supprimez la ligne",
+                      required: `${
+                        index > 0
+                          ? "Une valeur est requise sinon supprimez la ligne"
+                          : "Ce champ est obligatoire"
+                      } `,
                     })}
                     required
                     defaultValue={index}
                   />
-                  <ScoringCriteriaFormButtonDelete
-                    type="button"
-                    onClick={() => remove(index)}
-                  >
-                    <HiTrash />
-                  </ScoringCriteriaFormButtonDelete>
+                  {index > 0 && (
+                    <ScoringCriteriaFormButtonDelete
+                      type="button"
+                      onClick={() => remove(index)}
+                    >
+                      <HiTrash />
+                    </ScoringCriteriaFormButtonDelete>
+                  )}
                 </ScoringCriteriaFormItem>
               </FormCol>
             ))}

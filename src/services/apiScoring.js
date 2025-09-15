@@ -303,3 +303,125 @@ export async function deleteScoringCriterion(id) {
     }
   }
 }
+
+export async function createUpdateBrandScore(brandId, scoreData) {
+  try {
+    const res = await axiosInstance.post(
+      `${API_URL}/scoring/brands/${brandId}/scores`,
+      scoreData
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't create brand score. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't create brand score. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't create brand score. Error: ${error.message}`);
+    }
+  }
+}
+
+export async function getBrandScores(brandId) {
+  try {
+    const res = await axiosInstance.get(
+      `${API_URL}/scoring/brands/${brandId}/scores`
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load brand scores. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't load brand scores. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't load brand scores. Error: ${error.message}`);
+    }
+  }
+}
+
+export async function updateBrandScore(brandId, scoreData) {
+  try {
+    const { criterion_id, description, score } = scoreData;
+    const res = await axiosInstance.put(
+      `${API_URL}/scoring/brands/${brandId}/scores/${criterion_id}`,
+      { description: description, score: score }
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't update brand score. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't update brand score. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't update brand score. Error: ${error.message}`);
+    }
+  }
+}
+
+export async function deleteBrandScore(brandId, criterionId) {
+  try {
+    const res = await axiosInstance.delete(
+      `${API_URL}/scoring/brands/${brandId}/scores/${criterionId}`
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't delete brand score # ${brandId} criterion # ${criterionId}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't delete brand score # ${brandId} criterion # ${criterionId}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't delete brand score # ${brandId} criterion # ${criterionId}. Error: ${error.message}`
+      );
+    }
+  }
+}
+
+export async function getBrandScoringReport(brandId) {
+  try {
+    const res = await axiosInstance.get(
+      `${API_URL}/scoring/brands/${brandId}/scoring-report`
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load brand scoring report. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't load brand scoring report. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't load brand scoring report. Error: ${error.message}`
+      );
+    }
+  }
+}

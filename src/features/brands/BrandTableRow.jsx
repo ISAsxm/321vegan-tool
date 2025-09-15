@@ -1,11 +1,14 @@
+import { useNavigate } from "react-router-dom";
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteBrand } from "./useDeleteBrand";
+import { getScoresColor } from "@/features/scoring/brands/utils";
 
 import Table from "@/ui/Table";
 import Menus from "@/ui/Menus";
 import Stacked from "@/ui/Stacked";
+import Tag from "@/ui/Tag";
 import NoDataItem from "@/ui/NoDataItem";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
@@ -13,24 +16,16 @@ import ConfirmAction from "@/ui/ConfirmAction";
 import UpdateBrandForm from "./UpdateBrandForm";
 import BrandLogo from "./BrandLogo";
 
-import { HiPencil, HiTrash } from "react-icons/hi2";
-import styled from "styled-components";
-
-const Ref = styled.div`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-grey-600);
-`;
+import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
 
 function BrandTableRow({ brand }) {
+  const navigate = useNavigate();
   const { hasAccess } = useCurrentUserContext();
   const { isDeleting, deleteBrand } = useDeleteBrand();
-  const { id: brandId, name, created_at, updated_at, parent } = brand;
+  const { id: brandId, name, created_at, updated_at, parent, score } = brand;
 
   return (
     <Table.Row>
-      <Ref># {brandId}</Ref>
-
       <BrandLogo brand={brand} />
 
       <Stacked>{name}</Stacked>
@@ -49,11 +44,20 @@ function BrandTableRow({ brand }) {
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
 
+      <Tag type={getScoresColor(score)}>{score ? `${score}%` : "N/A"}</Tag>
+
       {hasAccess("contributor") && (
         <Modal>
           <Menus.Menu>
             <Menus.Toggle id={brandId} />
             <Menus.List id={brandId}>
+              <Menus.Button
+                icon={<HiEye />}
+                onClick={() => navigate(`/brands/${brandId}`)}
+              >
+                Voir le détail
+              </Menus.Button>
+
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
@@ -69,6 +73,7 @@ function BrandTableRow({ brand }) {
           <Modal.Window name="edit">
             <UpdateBrandForm brandToUpdate={brand} />
           </Modal.Window>
+
           <Modal.Window name="delete">
             <ConfirmAction
               variation="delete"
