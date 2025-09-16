@@ -4,7 +4,7 @@ import axiosInstance from "./axiosInstance";
 
 export async function getScoringCategories() {
   try {
-    const res = await axiosInstance.get(`${API_URL}/scoring/categories/`);
+    const res = await axiosInstance.get(`${API_URL}/scoring/categories`);
     const data = await res.data;
     return { data: data, count: data?.length };
   } catch (error) {
