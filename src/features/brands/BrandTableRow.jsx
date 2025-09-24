@@ -44,7 +44,7 @@ function BrandTableRow({ brand }) {
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
 
-      <Tag type={getScoresColor(score)}>{score ? `${score}%` : "N/A"}</Tag>
+      <Tag type={getScoresColor(score)}>{score !== null ? `${score}%` : "N/A"}</Tag>
 
       {hasAccess("contributor") && (
         <Modal>

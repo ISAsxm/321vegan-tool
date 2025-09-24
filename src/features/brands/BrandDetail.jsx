@@ -151,7 +151,9 @@ function BrandDetail() {
               label="Score éthique :"
               type="horizontal"
             >
-              <Tag type={scoreColor}>{score ? `${score}%` : "N/A"}</Tag>
+              <Tag type={scoreColor}>
+                {score !== null ? `${score}%` : "N/A"}
+              </Tag>
             </DataItem>
           </InfoBox>
         </Section>
