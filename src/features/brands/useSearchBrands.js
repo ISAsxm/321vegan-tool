@@ -10,6 +10,7 @@ import { brandsKeys } from "./queryKeyFactory";
 const filterFields = [
   { field: "name", operator: "__lookalike", value: null },
   { field: "parent", operator: "___name__lookalike", value: null },
+  { field: "boycott", value: null },
 ];
 
 export function useSearchBrands() {

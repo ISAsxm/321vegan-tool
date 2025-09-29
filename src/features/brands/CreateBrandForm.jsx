@@ -7,8 +7,9 @@ import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
-import Spinner from "@/ui/Spinner";
 import ImageUpload from "@/ui/ImageUpload";
+import Checkbox from "@/ui/Checkbox";
+import Spinner from "@/ui/Spinner";
 
 function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
   const { isCreating, createBrand } = useCreateBrand();
@@ -17,6 +18,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
       parent_id: null,
       name: prefillName || null,
       logo_path: null,
+      boycott: false,
     },
   });
   const { errors } = formState;
@@ -29,6 +31,12 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
   const { field: logoField } = useController({
     name: "logo_path",
     control,
+  });
+
+  const { field: boycottField } = useController({
+    name: "boycott",
+    control,
+    defaultValue: false,
   });
 
   function onSubmit(data) {
@@ -69,6 +77,18 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
         <ImageUpload
           id="logo_path"
           onUpload={logoField.onChange}
+          disabled={isCreating}
+        />
+      </FormRow>
+
+      <FormRow label="Boycott ?" error={errors.boycott?.message}>
+        <Checkbox
+          name="boycott"
+          onChange={boycottField.onChange}
+          onBlur={boycottField.onBlur}
+          checked={boycottField.value}
+          value={boycottField.value}
+          $inputRef={boycottField.ref}
           disabled={isCreating}
         />
       </FormRow>

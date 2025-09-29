@@ -22,7 +22,15 @@ function BrandTableRow({ brand }) {
   const navigate = useNavigate();
   const { hasAccess } = useCurrentUserContext();
   const { isDeleting, deleteBrand } = useDeleteBrand();
-  const { id: brandId, name, created_at, updated_at, parent, score } = brand;
+  const {
+    id: brandId,
+    name,
+    created_at,
+    updated_at,
+    parent,
+    score,
+    boycott,
+  } = brand;
 
   return (
     <Table.Row>
@@ -44,7 +52,11 @@ function BrandTableRow({ brand }) {
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
 
-      <Tag type={getScoresColor(score)}>{score !== null ? `${score}%` : "N/A"}</Tag>
+      <Tag type={getScoresColor(score)}>
+        {score !== null ? `${score}%` : "N/A"}
+      </Tag>
+
+      {boycott ? <Tag type="red">Oui</Tag> : <Tag type="green">Non</Tag>}
 
       {hasAccess("contributor") && (
         <Modal>

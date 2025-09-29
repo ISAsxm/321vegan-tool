@@ -12,11 +12,23 @@ export function useUpdateBrand() {
 
   const { isPending: isUpdating, mutate: updateBrand } = useMutation({
     mutationFn: async ({ id, newData }) => {
-      const { parent_id, name, logo_path } = newData;
-      return Promise.all([
-        updateBrandApi(id, { parent_id: parent_id, name: name }),
-        logo_path ? uploadBrandLogo(id, logo_path) : deleteBrandLogo(id),
-      ]);
+      const { parent_id, name, logo_path, boycott } = newData;
+      if (typeof logo_path === "string" || logo_path instanceof String) {
+        return await updateBrandApi(id, {
+          parent_id: parent_id,
+          name: name,
+          boycott: boycott,
+        });
+      } else {
+        return Promise.all([
+          updateBrandApi(id, {
+            parent_id: parent_id,
+            name: name,
+            boycott: boycott,
+          }),
+          logo_path ? uploadBrandLogo(id, logo_path) : deleteBrandLogo(id),
+        ]);
+      }
     },
     onSuccess: () => {
       toast.success("La marque a bien été modifiée");

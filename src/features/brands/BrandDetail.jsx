@@ -50,7 +50,7 @@ const InfoBox = styled.div`
   grid-template-areas:
     "name name parent"
     "logo logo logo"
-    "score score score";
+    "score score boycott";
   gap: 4rem;
   padding-top: 2rem;
 
@@ -65,6 +65,9 @@ const InfoBox = styled.div`
   }
   & div:nth-child(4) {
     grid-area: score;
+  }
+  & div:nth-child(5) {
+    grid-area: boycott;
   }
 `;
 
@@ -86,7 +89,15 @@ function BrandDetail() {
 
   if (!brand) return <Empty message="Marque inconnue" />;
 
-  const { id: brandId, created_at, updated_at, name, parent, score } = brand;
+  const {
+    id: brandId,
+    created_at,
+    updated_at,
+    name,
+    parent,
+    score,
+    boycott,
+  } = brand;
 
   const scoreColor = getScoresColor(score);
 
@@ -135,7 +146,13 @@ function BrandDetail() {
               label="Maison mère :"
               type="horizontal"
             >
-              {parent?.name || <NoDataItem>--</NoDataItem>}
+              {parent ? (
+                <ButtonText onClick={() => navigate(`/brands/${parent.id}`)}>
+                  {parent.name}
+                </ButtonText>
+              ) : (
+                <NoDataItem>--</NoDataItem>
+              )}
             </DataItem>
 
             <DataItem
@@ -154,6 +171,18 @@ function BrandDetail() {
               <Tag type={scoreColor}>
                 {score !== null ? `${score}%` : "N/A"}
               </Tag>
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Boycott :"
+              type="horizontal"
+            >
+              {boycott ? (
+                <Tag type="red">Oui</Tag>
+              ) : (
+                <Tag type="green">Non</Tag>
+              )}
             </DataItem>
           </InfoBox>
         </Section>

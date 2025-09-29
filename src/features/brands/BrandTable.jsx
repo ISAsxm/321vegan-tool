@@ -15,7 +15,7 @@ function BrandTable() {
 
   return (
     <Menus>
-      <Table columns="1fr 1.4fr 1.4fr 1.4fr 1.4fr 0.6fr 3.2rem">
+      <Table columns="1fr 1.4fr 1.4fr 1.4fr 1.4fr 0.8fr 0.6fr 3.2rem">
         <Filters>
           <SortBy>
             <Table.Header>
@@ -51,6 +51,22 @@ function BrandTable() {
 
               <div>
                 Score éthique <SortBy.Sort sortByField="score" />
+              </div>
+
+              <div>
+                Boycott{" "}
+                <Filters.Filter>
+                  <Filters.Toggle id="filterBoycott" filterField="boycott" />
+                  <Filters.List
+                    id="filterBoycott"
+                    filterField="boycott"
+                    options={[
+                      { value: "all", label: "Tous" },
+                      { value: "1", label: "Oui" },
+                      { value: "0", label: "Non" },
+                    ]}
+                  />
+                </Filters.Filter>
               </div>
 
               <div></div>

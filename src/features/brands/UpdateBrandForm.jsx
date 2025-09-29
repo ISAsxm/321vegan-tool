@@ -9,7 +9,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import ImageUpload from "@/ui/ImageUpload";
-
+import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 
 function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
@@ -31,6 +31,12 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
   const { field: logoField } = useController({
     name: "logo_path",
     control,
+  });
+
+  const { field: boycottField } = useController({
+    name: "boycott",
+    control,
+    defaultValue: brandToUpdate.boycott,
   });
 
   function onSubmit(data) {
@@ -88,6 +94,18 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           onUpload={logoField.onChange}
           disabled={isUpdating}
           defaultValue={logoField.value}
+        />
+      </FormRow>
+
+      <FormRow label="Boycott ?" error={errors.boycott?.message}>
+        <Checkbox
+          name="boycott"
+          onChange={boycottField.onChange}
+          onBlur={boycottField.onBlur}
+          checked={boycottField.value}
+          value={boycottField.value}
+          $inputRef={boycottField.ref}
+          disabled={isUpdating}
         />
       </FormRow>
 
