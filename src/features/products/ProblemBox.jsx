@@ -44,21 +44,27 @@ const IngredientLabel = styled.label`
 `;
 
 function ProblemBox({ children, defaultValue, onChange }) {
-  const [ingredients, setIngredients] = useState({
-    lait: false,
-    œuf: false,
-    miel: false,
-    viande: false,
-    poisson: false,
-  });
+  const [ingredients, setIngredients] = useState([
+    { label: "lait", isChecked: false },
+    { label: "œuf", isChecked: false },
+    { label: "miel", isChecked: false },
+    { label: "viande", isChecked: false },
+    { label: "poisson", isChecked: false },
+    { label: "arôme", isChecked: false },
+    { label: "arôme naturel", isChecked: false },
+    { label: "vitamine", isChecked: false },
+  ]);
 
   function handleToggleIngredient(e) {
     const checked = e.target.checked;
     const value = e.target.value;
-    setIngredients((prev) => ({
-      ...prev,
-      [value]: checked,
-    }));
+    setIngredients((ingredients) =>
+      ingredients.map((ingredient) =>
+        ingredient.label === value
+          ? { ...ingredient, isChecked: checked }
+          : ingredient
+      )
+    );
     const valueToCheck = value.replace("œ", "oe");
     let valuesArray = (defaultValue || "")
       .split(/[,;]+/)
@@ -80,15 +86,15 @@ function ProblemBox({ children, defaultValue, onChange }) {
     <StyledProblemBox>
       {children}
       <IngredientBox>
-        {Object.entries(ingredients).map(([value, isChecked]) => (
-          <IngredientLabel key={value} checked={isChecked}>
+        {ingredients.map(({ label, isChecked }) => (
+          <IngredientLabel key={label} checked={isChecked}>
             <input
               type="checkbox"
-              value={value}
+              value={label}
               checked={isChecked}
               onChange={handleToggleIngredient}
             />
-            {value}
+            {label}
           </IngredientLabel>
         ))}
       </IngredientBox>
