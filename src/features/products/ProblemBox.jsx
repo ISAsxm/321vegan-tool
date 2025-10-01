@@ -51,8 +51,12 @@ function ProblemBox({ children, defaultValue, onChange }) {
     { label: "viande", isChecked: false },
     { label: "poisson", isChecked: false },
     { label: "arôme", isChecked: false },
+    { label: "arômes", isChecked: false },
     { label: "arôme naturel", isChecked: false },
+    { label: "arômes naturels", isChecked: false },
     { label: "vitamine", isChecked: false },
+    { label: "vitamines", isChecked: false },
+    { label: "ingrédients inconnus", isChecked: false },
   ]);
 
   function handleToggleIngredient(e) {
@@ -65,19 +69,32 @@ function ProblemBox({ children, defaultValue, onChange }) {
           : ingredient
       )
     );
-    const valueToCheck = value.replace("œ", "oe");
+    const valueToCheck = value
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/\u0153/g, "oe");
     let valuesArray = (defaultValue || "")
       .split(/[,;]+/)
       .map((v) => v.trim())
       .filter((v) => v);
     const isIncluded = valuesArray.some(
-      (val) => val.toLowerCase().replace("œ", "oe") === valueToCheck
+      (val) =>
+        val
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .replace(/\u0153/g, "oe") === valueToCheck
     );
     if (checked && !isIncluded) {
       valuesArray.push(`${value.charAt(0).toUpperCase()}${value.slice(1)}`);
     } else if (!checked && isIncluded) {
       valuesArray = valuesArray.filter(
-        (val) => val.toLowerCase().replace("œ", "oe") !== valueToCheck
+        (val) =>
+          val
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .replace(/\u0153/g, "oe") !== valueToCheck
       );
     }
     onChange("problem_description", valuesArray.join(", "));
