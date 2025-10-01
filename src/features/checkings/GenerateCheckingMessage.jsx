@@ -51,7 +51,7 @@ function GenerateCheckingMessage({ product, onCloseModal }) {
   const data = {
     NAME: name || "[NOM DU PRODUIT]",
     EAN: ean,
-    PROBLEM_DESCRIPTION: problem_description || "[PROBLÈMES]",
+    PROBLEM_DESCRIPTION: problem_description?.toLowerCase() || "[PROBLÈMES]",
     USERNAME: currentUser.nickname,
   };
 
