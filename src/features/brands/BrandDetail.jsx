@@ -49,7 +49,7 @@ const InfoBox = styled.div`
   display: grid;
   grid-template-areas:
     "name name parent"
-    "logo logo logo"
+    "logo logo email"
     "score score boycott";
   gap: 4rem;
   padding-top: 2rem;
@@ -64,9 +64,12 @@ const InfoBox = styled.div`
     grid-area: logo;
   }
   & div:nth-child(4) {
-    grid-area: score;
+    grid-area: email;
   }
   & div:nth-child(5) {
+    grid-area: score;
+  }
+  & div:nth-child(6) {
     grid-area: boycott;
   }
 `;
@@ -94,6 +97,7 @@ function BrandDetail() {
     created_at,
     updated_at,
     name,
+    email,
     parent,
     score,
     boycott,
@@ -161,6 +165,14 @@ function BrandDetail() {
               type="horizontal"
             >
               <BrandLogo brand={brand} size={8} />
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Adresse e-mail :"
+              type="horizontal"
+            >
+              {email || <NoDataItem>--</NoDataItem>}
             </DataItem>
 
             <DataItem

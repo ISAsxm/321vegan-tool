@@ -45,16 +45,16 @@ const IngredientLabel = styled.label`
 
 function ProblemBox({ children, defaultValue, onChange }) {
   const [ingredients, setIngredients] = useState([
-    { label: "lait", isChecked: false },
-    { label: "œuf", isChecked: false },
-    { label: "miel", isChecked: false },
-    { label: "viande", isChecked: false },
-    { label: "poisson", isChecked: false },
-    { label: "gélatine", isChecked: false },
-    { label: "arômes", isChecked: false },
-    { label: "arômes naturels", isChecked: false },
-    { label: "vitamines", isChecked: false },
-    { label: "ingrédients inconnus", isChecked: false },
+    { label: "lait", checked: false },
+    { label: "œuf", checked: false },
+    { label: "miel", checked: false },
+    { label: "viande", checked: false },
+    { label: "poisson", checked: false },
+    { label: "gélatine", checked: false },
+    { label: "arômes", checked: false },
+    { label: "arômes naturels", checked: false },
+    { label: "vitamines", checked: false },
+    { label: "ingrédients inconnus", checked: false },
   ]);
 
   function handleToggleIngredient(e) {
@@ -63,7 +63,7 @@ function ProblemBox({ children, defaultValue, onChange }) {
     setIngredients((ingredients) =>
       ingredients.map((ingredient) =>
         ingredient.label === value
-          ? { ...ingredient, isChecked: checked }
+          ? { ...ingredient, checked: checked }
           : ingredient
       )
     );
@@ -101,12 +101,12 @@ function ProblemBox({ children, defaultValue, onChange }) {
     <StyledProblemBox>
       {children}
       <IngredientBox>
-        {ingredients.map(({ label, isChecked }) => (
-          <IngredientLabel key={label} checked={isChecked}>
+        {ingredients.map(({ label, checked }) => (
+          <IngredientLabel key={label} checked={checked}>
             <input
               type="checkbox"
               value={label}
-              checked={isChecked}
+              checked={checked}
               onChange={handleToggleIngredient}
             />
             {label}

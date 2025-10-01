@@ -73,6 +73,20 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
         />
       </FormRow>
 
+      <FormRow label="Adresse e-mail" error={errors.email?.message}>
+        <Input
+          type="email"
+          id="email"
+          {...register("email", {
+            pattern: {
+              value: /\S+@\S+\.\S+/,
+              message: "Adresse e-mail invalide",
+            },
+          })}
+          disabled={isCreating}
+        />
+      </FormRow>
+
       <FormRow label="Logo" error={errors.logo_path?.message}>
         <ImageUpload
           id="logo_path"

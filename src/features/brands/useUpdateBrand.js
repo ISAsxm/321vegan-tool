@@ -12,12 +12,13 @@ export function useUpdateBrand() {
 
   const { isPending: isUpdating, mutate: updateBrand } = useMutation({
     mutationFn: async ({ id, newData }) => {
-      const { parent_id, name, logo_path, boycott } = newData;
+      const { parent_id, name, logo_path, boycott, email } = newData;
       if (typeof logo_path === "string" || logo_path instanceof String) {
         return await updateBrandApi(id, {
           parent_id: parent_id,
           name: name,
           boycott: boycott,
+          email: email,
         });
       } else {
         return Promise.all([
@@ -25,6 +26,7 @@ export function useUpdateBrand() {
             parent_id: parent_id,
             name: name,
             boycott: boycott,
+            email: email,
           }),
           logo_path ? uploadBrandLogo(id, logo_path) : deleteBrandLogo(id),
         ]);
