@@ -50,11 +50,9 @@ function ProblemBox({ children, defaultValue, onChange }) {
     { label: "miel", isChecked: false },
     { label: "viande", isChecked: false },
     { label: "poisson", isChecked: false },
-    { label: "arôme", isChecked: false },
+    { label: "gélatine", isChecked: false },
     { label: "arômes", isChecked: false },
-    { label: "arôme naturel", isChecked: false },
     { label: "arômes naturels", isChecked: false },
-    { label: "vitamine", isChecked: false },
     { label: "vitamines", isChecked: false },
     { label: "ingrédients inconnus", isChecked: false },
   ]);
