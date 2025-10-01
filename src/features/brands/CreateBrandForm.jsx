@@ -19,6 +19,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
       name: prefillName || null,
       logo_path: null,
       boycott: false,
+      email: null,
     },
   });
   const { errors } = formState;
