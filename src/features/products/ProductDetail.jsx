@@ -192,7 +192,13 @@ function ProductDetail() {
               label="Marque :"
               type="horizontal"
             >
-              {brand?.name || <NoDataItem>--</NoDataItem>}
+              {brand ? (
+                <ButtonText onClick={() => navigate(`/brands/${brand.id}`)}>
+                  {brand.name}
+                </ButtonText>
+              ) : (
+                <NoDataItem>--</NoDataItem>
+              )}
             </DataItem>
             <DataItem
               icon={<HiOutlineCheckCircle />}

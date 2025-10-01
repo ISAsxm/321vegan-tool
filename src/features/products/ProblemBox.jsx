@@ -44,34 +44,55 @@ const IngredientLabel = styled.label`
 `;
 
 function ProblemBox({ children, defaultValue, onChange }) {
-  const [ingredients, setIngredients] = useState({
-    lait: false,
-    œuf: false,
-    miel: false,
-    viande: false,
-    poisson: false,
-  });
+  const [ingredients, setIngredients] = useState([
+    { label: "lait", checked: false },
+    { label: "œuf", checked: false },
+    { label: "miel", checked: false },
+    { label: "viande", checked: false },
+    { label: "poisson", checked: false },
+    { label: "gélatine", checked: false },
+    { label: "arômes", checked: false },
+    { label: "arômes naturels", checked: false },
+    { label: "vitamines", checked: false },
+    { label: "ingrédients inconnus", checked: false },
+  ]);
 
   function handleToggleIngredient(e) {
     const checked = e.target.checked;
     const value = e.target.value;
-    setIngredients((prev) => ({
-      ...prev,
-      [value]: checked,
-    }));
-    const valueToCheck = value.replace("œ", "oe");
+    setIngredients((ingredients) =>
+      ingredients.map((ingredient) =>
+        ingredient.label === value
+          ? { ...ingredient, checked: checked }
+          : ingredient
+      )
+    );
+    const valueToCheck = value
+      .normalize("NFD")
+      .replace(/\p{Diacritic}/gu, "")
+      .replace(/\u0153/g, "oe");
     let valuesArray = (defaultValue || "")
       .split(/[,;]+/)
       .map((v) => v.trim())
       .filter((v) => v);
     const isIncluded = valuesArray.some(
-      (val) => val.toLowerCase().replace("œ", "oe") === valueToCheck
+      (val) =>
+        val
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/\p{Diacritic}/gu, "")
+          .replace(/\u0153/g, "oe") === valueToCheck
     );
     if (checked && !isIncluded) {
       valuesArray.push(`${value.charAt(0).toUpperCase()}${value.slice(1)}`);
     } else if (!checked && isIncluded) {
       valuesArray = valuesArray.filter(
-        (val) => val.toLowerCase().replace("œ", "oe") !== valueToCheck
+        (val) =>
+          val
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/\p{Diacritic}/gu, "")
+            .replace(/\u0153/g, "oe") !== valueToCheck
       );
     }
     onChange("problem_description", valuesArray.join(", "));
@@ -80,15 +101,15 @@ function ProblemBox({ children, defaultValue, onChange }) {
     <StyledProblemBox>
       {children}
       <IngredientBox>
-        {Object.entries(ingredients).map(([value, isChecked]) => (
-          <IngredientLabel key={value} checked={isChecked}>
+        {ingredients.map(({ label, checked }) => (
+          <IngredientLabel key={label} checked={checked}>
             <input
               type="checkbox"
-              value={value}
-              checked={isChecked}
+              value={label}
+              checked={checked}
               onChange={handleToggleIngredient}
             />
-            {value}
+            {label}
           </IngredientLabel>
         ))}
       </IngredientBox>

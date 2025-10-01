@@ -47,11 +47,11 @@ function GenerateCheckingMessage({ product, onCloseModal }) {
   const [body, setBody] = useState("");
   const { isCopying, isCopied, error, copyToClipboard } = useCopyToClipboard();
   const { currentUser } = useCurrentUserContext();
-  const { name, ean, problem_description } = product;
+  const { name, ean, problem_description, brand } = product;
   const data = {
     NAME: name || "[NOM DU PRODUIT]",
     EAN: ean,
-    PROBLEM_DESCRIPTION: problem_description || "[PROBLÈMES]",
+    PROBLEM_DESCRIPTION: problem_description?.toLowerCase() || "[PROBLÈMES]",
     USERNAME: currentUser.nickname,
   };
 
@@ -120,6 +120,7 @@ function GenerateCheckingMessage({ product, onCloseModal }) {
           Annuler
         </Button>
         <MailtoLink
+          email={brand?.root_email || ""}
           subject="Demande d'informations concernant un produit"
           body={body}
         >

@@ -5,6 +5,7 @@ import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteProduct } from "./useDeleteProduct";
 
+import ButtonText from "@/ui/ButtonText";
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
 import Stacked from "@/ui/Stacked";
@@ -44,7 +45,15 @@ function ProductTableRow({ product }) {
 
       <Stacked>{name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 
-      <Stacked>{brand?.name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
+      <Stacked>
+        {brand ? (
+          <ButtonText onClick={() => navigate(`/brands/${brand.id}`)}>
+            {brand.name}
+          </ButtonText>
+        ) : (
+          <NoDataItem>Inconnue</NoDataItem>
+        )}
+      </Stacked>
 
       <Stacked>
         <span>{formatDate(created_at)}</span>
