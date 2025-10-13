@@ -19,13 +19,6 @@ const Ref = styled.div`
   color: var(--color-grey-600);
 `;
 
-const Description = styled.div`
-  max-width: 200px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
 const ActionButton = styled.button`
   display: flex;
   align-items: center;
@@ -100,7 +93,7 @@ function ErrorReportTableRow({ errorReport }) {
         </ButtonText>
       </Ref>
 
-      <Description title={comment}>{comment}</Description>
+      <Stacked>{comment}</Stacked>
 
       <Stacked>
         <span>{contact}</span>

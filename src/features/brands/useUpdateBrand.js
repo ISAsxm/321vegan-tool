@@ -18,7 +18,7 @@ export function useUpdateBrand() {
           parent_id: parent_id,
           name: name,
           boycott: boycott,
-          email: email,
+          email: email || null,
         });
       } else {
         return Promise.all([
@@ -26,7 +26,7 @@ export function useUpdateBrand() {
             parent_id: parent_id,
             name: name,
             boycott: boycott,
-            email: email,
+            email: email || null,
           }),
           logo_path ? uploadBrandLogo(id, logo_path) : deleteBrandLogo(id),
         ]);

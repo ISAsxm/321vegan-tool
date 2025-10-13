@@ -15,7 +15,7 @@ export function useCreateBrand() {
         parent_id: parent_id,
         name: name,
         boycott: boycott,
-        email: email,
+        email: email || null,
       });
       if (logo_path) {
         brand = await uploadBrandLogo(brand.id, logo_path);

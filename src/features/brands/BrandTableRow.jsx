@@ -30,13 +30,17 @@ function BrandTableRow({ brand }) {
     parent,
     score,
     boycott,
+    email,
   } = brand;
 
   return (
     <Table.Row>
       <BrandLogo brand={brand} />
 
-      <Stacked>{name}</Stacked>
+      <Stacked>
+        <span>{name}</span>
+        <span>{email}</span>
+      </Stacked>
 
       <Stacked>
         {parent ? parent.name : <NoDataItem>Aucune</NoDataItem>}

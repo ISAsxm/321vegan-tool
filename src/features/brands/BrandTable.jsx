@@ -15,7 +15,7 @@ function BrandTable() {
 
   return (
     <Menus>
-      <Table columns="1fr 1.4fr 1.4fr 1.4fr 1.4fr 0.8fr 0.6fr 3.2rem">
+      <Table columns="0.8fr 1.6fr 1.4fr 1.4fr 1.4fr 0.8fr 0.8fr 3.2rem">
         <Filters>
           <SortBy>
             <Table.Header>

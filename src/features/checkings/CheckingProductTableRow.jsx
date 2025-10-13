@@ -53,7 +53,24 @@ function CheckingProductTableRow({ product }) {
 
       <Stacked>{name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 
-      <Stacked>{brand?.name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
+      {brand ? (
+        <Stacked>
+          <div>
+            {brand.name}{" "}
+            {brand.root_email && (
+              <NoDataItem>
+                <small title={brand.root_email}>
+                  <HiAtSymbol />
+                </small>
+              </NoDataItem>
+            )}
+          </div>
+        </Stacked>
+      ) : (
+        <Stacked>
+          <NoDataItem>Inconnue</NoDataItem>
+        </Stacked>
+      )}
 
       <Stacked>{lastChecking?.response || problem_description}</Stacked>
 

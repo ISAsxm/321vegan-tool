@@ -13,7 +13,7 @@ function ErrorReportTable() {
   if (isPending) return <Spinner />;
 
   return (
-    <Table columns="1.4fr 2fr 1.4fr 1.4fr 1.4fr 1.4fr  3.2rem">
+    <Table columns="1.8fr 2fr 1.4fr 1.4fr 1.4fr 1.4fr  3.2rem">
       <Filters>
         <SortBy>
           <Table.Header>
