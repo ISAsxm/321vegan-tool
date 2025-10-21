@@ -29,7 +29,6 @@ export const SelectContainer = styled.div`
   position: relative;
 
   display: flex;
-  /* flex-wrap: wrap; */
   align-items: stretch;
   width: 100%;
 
@@ -131,7 +130,7 @@ export const SelectOption = styled.div`
   padding: 0.8rem 1.2rem;
   cursor: pointer;
   display: grid;
-  grid-template-columns: 1rem 1fr;
+  grid-template-columns: 1rem 1fr 1rem;
   align-items: center;
   gap: 1rem;
   text-wrap: balance;
@@ -149,8 +148,11 @@ export const SelectOption = styled.div`
     css`
       background-color: var(--color-grey-50);
 
-      & svg {
+      & svg:first-of-type {
         color: var(--color-brand-600);
+      }
+      & svg:nth-of-type(2) {
+        color: var(--color-red-700);
       }
     `}
 
@@ -215,6 +217,7 @@ const Select = ({
   placeHolder = "Sélectionnez",
   isSearchable = false,
   isMulti = false,
+  isNullable = false,
   align = "left",
 }) => {
   const debounce = useDebounce(1000);
@@ -253,7 +256,9 @@ const Select = ({
 
   function unselectOption(option) {
     if (option.disabled) return;
-    return selectedValue.filter((o) => o.value !== option.value);
+    return isMulti
+      ? selectedValue.filter((o) => o.value !== option.value)
+      : null;
   }
 
   function isSelected(option) {
@@ -309,10 +314,10 @@ const Select = ({
     onChange(isMulti ? newValue.map((o) => o.value) : option.value);
   }
 
-  function handleUnselectMultiOption(option) {
+  function handleUnselectOption(option) {
     const newValue = unselectOption(option);
     setSelectedValue(newValue);
-    onChange(isMulti ? newValue.map((o) => o.value) : option.value);
+    onChange(isMulti ? newValue.map((o) => o.value) : newValue);
   }
 
   function handleCreateOption(option) {
@@ -374,7 +379,7 @@ const Select = ({
                   key={`${o.value}-${i}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    handleUnselectMultiOption(o);
+                    handleUnselectOption(o);
                   }}
                 >
                   {o.label}
@@ -425,7 +430,11 @@ const Select = ({
           {choices.length > 0 ? (
             choices.map((option) => (
               <SelectOption
-                onClick={() => handleSelectOption(option)}
+                onClick={() =>
+                  isSelected(option) && isNullable
+                    ? handleUnselectOption(option)
+                    : handleSelectOption(option)
+                }
                 key={option.value}
                 $isHilighted={isSelected(option)}
                 $disabled={option.disabled}
@@ -433,6 +442,7 @@ const Select = ({
               >
                 <GiCheckMark />
                 {option.label}
+                {isSelected(option) && isNullable && <HiXMark />}
               </SelectOption>
             ))
           ) : (

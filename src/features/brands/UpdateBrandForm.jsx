@@ -75,6 +75,8 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
               : []
           }
           disabled={isUpdating}
+          isSearchable={true}
+          isNullable={true}
         />
       </FormRow>
 

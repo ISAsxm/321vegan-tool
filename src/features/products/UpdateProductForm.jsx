@@ -95,7 +95,6 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
         <Select
           name="brand_id"
           onChange={brandField.onChange}
-          isMulti={false}
           defaultOptions={
             productToUpdate.brand
               ? [
@@ -110,6 +109,8 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
           getOptions={getBrandsForSelect}
           required={false}
           disabled={isUpdating}
+          isSearchable={true}
+          isNullable={true}
           createComponent={<CreateBrandForm />}
         />
       </FormRow>
