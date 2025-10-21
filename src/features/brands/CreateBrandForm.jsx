@@ -58,9 +58,10 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
         <Select
           name="parent_id"
           onChange={parentField.onChange}
-          isSearchable={true}
-          disabled={isCreating}
           getOptions={getBrandsForSelect}
+          disabled={isCreating}
+          isSearchable={true}
+          isNullable={true}
         />
       </FormRow>
 

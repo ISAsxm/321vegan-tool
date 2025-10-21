@@ -94,6 +94,8 @@ function CreateProductForm({ onCloseModal }) {
           getOptions={getBrandsForSelect}
           disabled={isCreating}
           createComponent={<CreateBrandForm />}
+          isSearchable={true}
+          isNullable={true}
         />
       </FormRow>
 

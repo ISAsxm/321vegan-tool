@@ -149,6 +149,8 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           }
           defaultValue={[brandField.value]}
           disabled={isUpdating}
+          isSearchable={true}
+          isNullable={true}
           createComponent={
             <CreateBrandForm prefillName={productToCheckedIn.brandName} />
           }
