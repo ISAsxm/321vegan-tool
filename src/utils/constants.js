@@ -39,7 +39,8 @@ export const PRODUCT_STATUSES = {
 };
 
 export const CHECKING_STATUSES = {
-  PENDING: { color: "yellow", label: "En attente" },
+  PENDING: { color: "silver", label: "En attente" },
+  MAYBE_VEGAN: { color: "yellow", label: "Maybe vegan" },
   VEGAN: { color: "green", label: "Vegan" },
   NON_VEGAN: { color: "red", label: "Non vegan" },
 };
