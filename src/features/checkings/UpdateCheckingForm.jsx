@@ -41,7 +41,9 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
     defaultValue: product.biodynamic,
   });
 
-  const showProblemField = watchFields[0] === "NON_VEGAN";
+  const showProblemField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
+    watchFields[0]
+  );
 
   function onSubmit(data) {
     const newProduct = {
@@ -122,7 +124,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
             id="problem_description"
             {...register("problem_description", {
               required:
-                "Ce champ est obligatoire lorsque le status est 'NON VEGAN'",
+                "Ce champ est obligatoire lorsque le status est 'MAYBE VEGAN' ou 'NON VEGAN'",
               validate: (value) => (showProblemField && !value ? false : true),
             })}
             disabled={isPending}
