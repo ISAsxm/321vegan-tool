@@ -1,23 +1,20 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
-
-import { useLogin } from "./useLogin";
+import { useRequestPasswordReset } from "./useRequestPasswordReset";
 
 import Form from "@/ui/Form";
 import FormCol from "@/ui/FormCol";
 import Input from "@/ui/Input";
-import PasswordInput from "@/ui/PasswordInput";
 import Button from "@/ui/Button";
 import SpinnerMini from "@/ui/SpinnerMini";
 
-function LoginForm() {
-  const { isPending, login } = useLogin();
+function ForgotPasswordForm() {
+  const { isPending, requestPasswordReset } = useRequestPasswordReset();
 
   const { register, formState, handleSubmit, reset } = useForm();
   const { errors } = formState;
 
   function onSubmit(data) {
-    login(data, {
+    requestPasswordReset(data.email, {
       onSettled: () => {
         reset();
       },
@@ -30,7 +27,7 @@ function LoginForm() {
         <Input
           type="email"
           id="email"
-          autoComplete="username"
+          autoComplete="email"
           {...register("email", {
             required: "Ce champ est obligatoire",
             pattern: {
@@ -43,29 +40,13 @@ function LoginForm() {
         />
       </FormCol>
 
-      <FormCol label="Mot de passe" error={errors.password?.message}>
-        <PasswordInput
-          id="password"
-          autoComplete="current-password"
-          {...register("password", {
-            required: "Ce champ est obligatoire",
-          })}
-          disabled={isPending}
-          required
-        />
-      </FormCol>
-
       <FormCol>
         <Button size="large" disabled={isPending}>
-          {!isPending ? "Me connecter" : <SpinnerMini />}
+          {!isPending ? "Envoyer le lien de réinitialisation" : <SpinnerMini />}
         </Button>
-      </FormCol>
-
-      <FormCol>
-        <Link to="/forgot-password">Mot de passe oublié ?</Link>
       </FormCol>
     </Form>
   );
 }
 
-export default LoginForm;
+export default ForgotPasswordForm;

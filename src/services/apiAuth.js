@@ -104,3 +104,79 @@ export async function updateCurrentUser({ id, password, nickname, avatar }) {
     }
   }
 }
+
+export async function requestPasswordReset(email) {
+  try {
+    const res = await axios.post(`${API_URL}/auth/password-reset/request`, {
+      email,
+    });
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        `Couldn't request password reset. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't request password reset. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't request password reset. Error: ${error.message}`
+      );
+    }
+  }
+}
+
+export async function verifyPasswordResetToken(token) {
+  try {
+    const res = await axios.post(
+      `${API_URL}/auth/password-reset/verify-token`,
+      {
+        token,
+      }
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        `Invalid or expired token. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(`Couldn't verify token. Request error: ${error.request}`);
+    } else {
+      throw new Error(`Couldn't verify token. Error: ${error.message}`);
+    }
+  }
+}
+
+export async function confirmPasswordReset({ token, new_password }) {
+  try {
+    const res = await axios.post(`${API_URL}/auth/password-reset/confirm`, {
+      token,
+      new_password,
+    });
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 400) {
+        const errorData = error.response.data;
+        if (errorData.detail && errorData.detail.errors) {
+          throw new Error(errorData.detail.errors.join(", "));
+        }
+      }
+      throw new Error(
+        `Couldn't reset password. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't reset password. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(`Couldn't reset password. Error: ${error.message}`);
+    }
+  }
+}
