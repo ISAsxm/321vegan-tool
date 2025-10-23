@@ -23,11 +23,13 @@ import Cosmetics from "@/pages/Cosmetics";
 import Checkings from "@/pages/Checkings";
 import Dashboard from "@/pages/Dashboard";
 import ErrorReports from "@/pages/ErrorReports";
+import ForgotPassword from "@/pages/ForgotPassword";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
 import Product from "@/pages/Product";
 import Products from "@/pages/Products";
 import Register from "@/pages/Register";
+import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
 import Users from "@/pages/Users";
 
@@ -153,6 +155,8 @@ function App() {
               </Route>
 
               <Route path="login" element={<Login />} />
+              <Route path="forgot-password" element={<ForgotPassword />} />
+              <Route path="reset-password" element={<ResetPassword />} />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
