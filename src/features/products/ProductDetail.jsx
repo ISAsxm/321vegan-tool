@@ -52,6 +52,7 @@ const InfoBox = styled.div`
     "state status off"
     "name name brand"
     "description description description"
+    "old old biodynamic"
     "problem problem problem";
   gap: 4rem;
 
@@ -73,6 +74,13 @@ const InfoBox = styled.div`
   & div:nth-child(6) {
     grid-area: description;
   }
+  & div:nth-child(7) {
+    grid-area: old;
+  }
+  & div:nth-child(8) {
+    grid-area: biodynamic;
+  }
+
   & div:last-child {
     grid-area: problem;
     padding-bottom: 4rem;
@@ -113,6 +121,8 @@ function ProductDetail() {
     problem_description,
     created_from_off,
     checkings,
+    has_non_vegan_old_receipe,
+    biodynamic,
   } = product;
 
   return (
@@ -207,6 +217,28 @@ function ProductDetail() {
             >
               {description || <NoDataItem>--</NoDataItem>}
             </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="A une ancienne recette non vegan ?"
+              type="horizontal"
+            >
+              <Tag type={has_non_vegan_old_receipe ? "orange" : "red"}>
+                {has_non_vegan_old_receipe ? "OUI" : "NON"}
+              </Tag>
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Agriculture biodynamique ?"
+              type="horizontal"
+            >
+              <Tag type={biodynamic ? "orange" : "red"}>
+                {biodynamic ? "OUI" : "NON"}
+              </Tag>
+            </DataItem>
+
+
             <DataItem
               icon={<HiOutlineCheckCircle />}
               label="Problèmes :"
@@ -214,9 +246,10 @@ function ProductDetail() {
             >
               {problem_description || <NoDataItem>--</NoDataItem>}
             </DataItem>
+
           </InfoBox>
         </Section>
-
+        
         <Section>
           <DataItem
             icon={<HiOutlineCheckCircle />}

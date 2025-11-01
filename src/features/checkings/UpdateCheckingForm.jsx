@@ -23,6 +23,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
       responded_on: new Date().toISOString().substring(0, 16),
       problem_description: updateValues.response,
       biodynamic: product.biodynamic,
+      has_non_vegan_old_receipe: product.has_non_vegan_old_receipe,
     },
   });
   const { errors } = formState;
@@ -40,6 +41,11 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
     control,
     defaultValue: product.biodynamic,
   });
+  const { field: hasNonVeganOldReceipeField } = useController({
+    name: "has_non_vegan_old_receipe",
+    control,
+    defaultValue: product.has_non_vegan_old_receipe,
+  });
 
   const showProblemField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
     watchFields[0]
@@ -51,6 +57,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
       state: "WAITING_PUBLISH",
       status: data.status,
       biodynamic: data.biodynamic,
+      has_non_vegan_old_receipe: data.has_non_vegan_old_receipe,
       problem_description: showProblemField ? data.problem_description : null,
     };
     updateChecking(
@@ -141,6 +148,18 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
+          disabled={isPending}
+        />
+      </FormRow>
+
+      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+        <Checkbox
+          name="has_non_vegan_old_receipe"
+          onChange={hasNonVeganOldReceipeField.onChange}
+          onBlur={hasNonVeganOldReceipeField.onBlur}
+          checked={hasNonVeganOldReceipeField.value}
+          value={hasNonVeganOldReceipeField.value}
+          $inputRef={hasNonVeganOldReceipeField.ref}
           disabled={isPending}
         />
       </FormRow>

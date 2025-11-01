@@ -46,6 +46,11 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     control,
     defaultValue: updateValues.biodynamic,
   });
+  const { field: hasNonVeganOldReceipeField } = useController({
+    name: "has_non_vegan_old_receipe",
+    control,
+    defaultValue: updateValues.has_non_vegan_old_receipe,
+  });
 
   function onSubmit(data) {
     updateProduct(
@@ -159,6 +164,18 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
+          disabled={isUpdating}
+        />
+      </FormRow>
+
+      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+        <Checkbox
+          name="has_non_vegan_old_receipe"
+          onChange={hasNonVeganOldReceipeField.onChange}
+          onBlur={hasNonVeganOldReceipeField.onBlur}
+          checked={hasNonVeganOldReceipeField.value}
+          value={hasNonVeganOldReceipeField.value}
+          $inputRef={hasNonVeganOldReceipeField.ref}
           disabled={isUpdating}
         />
       </FormRow>

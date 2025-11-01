@@ -58,6 +58,11 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
     control,
     defaultValue: checkedInValues.biodynamic,
   });
+  const { field: hasNonVeganOldReceipeField } = useController({
+    name: "has_non_vegan_old_receipe",
+    control,
+    defaultValue: checkedInValues.has_non_vegan_old_receipe,
+  });
 
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
   const shouldShowProblemsField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
@@ -215,6 +220,18 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
+          disabled={isPending}
+        />
+      </FormRow>
+
+      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+        <Checkbox
+          name="has_non_vegan_old_receipe"
+          onChange={hasNonVeganOldReceipeField.onChange}
+          onBlur={hasNonVeganOldReceipeField.onBlur}
+          checked={hasNonVeganOldReceipeField.value}
+          value={hasNonVeganOldReceipeField.value}
+          $inputRef={hasNonVeganOldReceipeField.ref}
           disabled={isPending}
         />
       </FormRow>
