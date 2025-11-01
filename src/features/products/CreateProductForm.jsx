@@ -44,6 +44,11 @@ function CreateProductForm({ onCloseModal }) {
     control,
     defaultValue: false,
   });
+  const { field: hasNonVeganOldReceipeField } = useController({
+    name: "has_non_vegan_old_receipe",
+    control,
+    defaultValue: false,
+  });
 
   function onSubmit(data) {
     createProduct(data, {
@@ -142,6 +147,18 @@ function CreateProductForm({ onCloseModal }) {
           checked={isByodinamicField.value}
           value={isByodinamicField.value}
           $inputRef={isByodinamicField.ref}
+          disabled={isCreating}
+        />
+      </FormRow>
+
+      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+        <Checkbox
+          name="has_non_vegan_old_receipe"
+          onChange={hasNonVeganOldReceipeField.onChange}
+          onBlur={hasNonVeganOldReceipeField.onBlur}
+          checked={hasNonVeganOldReceipeField.value}
+          value={hasNonVeganOldReceipeField.value}
+          $inputRef={hasNonVeganOldReceipeField.ref}
           disabled={isCreating}
         />
       </FormRow>
