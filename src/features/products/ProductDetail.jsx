@@ -238,7 +238,6 @@ function ProductDetail() {
               </Tag>
             </DataItem>
 
-
             <DataItem
               icon={<HiOutlineCheckCircle />}
               label="Problèmes :"
@@ -246,10 +245,9 @@ function ProductDetail() {
             >
               {problem_description || <NoDataItem>--</NoDataItem>}
             </DataItem>
-
           </InfoBox>
         </Section>
-        
+
         <Section>
           <DataItem
             icon={<HiOutlineCheckCircle />}

@@ -224,7 +224,10 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         />
       </FormRow>
 
-      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+      <FormRow
+        label="Ancienne recette non vegan ?"
+        error={errors.has_non_vegan_old_receipe?.message}
+      >
         <Checkbox
           name="has_non_vegan_old_receipe"
           onChange={hasNonVeganOldReceipeField.onChange}
