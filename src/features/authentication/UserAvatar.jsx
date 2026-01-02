@@ -1,5 +1,4 @@
 import { getInitials } from "@/utils/helpers";
-import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 
 import styled from "styled-components";
 
@@ -35,19 +34,17 @@ const Avatar = styled.div`
   outline: 2px solid var(--color-grey-100);
 `;
 
-function UserAvatar() {
-  const { currentUser } = useCurrentUserContext();
-
+function UserAvatar({ user }) {
   return (
     <StyledUserAvatar>
       {/* uncomment when there is a storage solution for files
       <Avatar
-        src={currentUser.avatar || "default-avatar.jpg"}
-        alt={`Avatar de ${currentUser.nickname}`}
+        src={user.avatar || "default-avatar.jpg"}
+        alt={`Avatar de ${user.nickname}`}
       /> 
       */}
-      <Avatar>{getInitials(currentUser.nickname)}</Avatar>
-      <span>{currentUser.nickname}</span>
+      <Avatar>{getInitials(user.nickname)}</Avatar>
+      <span>{user.nickname}</span>
     </StyledUserAvatar>
   );
 }

@@ -4,6 +4,7 @@ import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 import { PRODUCT_STATES } from "@/utils/constants";
 
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
+import { useCopyToClipboard } from "@/hooks/useCopyToClipboard";
 
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
@@ -11,12 +12,12 @@ import Stacked from "@/ui/Stacked";
 import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import NoDataItem from "@/ui/NoDataItem";
+import SpinnerMini from "@/ui/SpinnerMini";
 
 import CreateCheckingForm from "./CreateCheckingForm";
 import UpdateCheckingForm from "./UpdateCheckingForm";
 import CheckingTable from "./CheckingTable";
 import GenerateCheckingMessage from "./GenerateCheckingMessage";
-
 import {
   HiEye,
   HiListBullet,
@@ -31,9 +32,20 @@ const Ref = styled.div`
   color: var(--color-grey-600);
 `;
 
+const BrandData = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+
+  & > small {
+    cursor: pointer;
+  }
+`;
+
 function CheckingProductTableRow({ product }) {
   const { currentUser } = useCurrentUserContext();
   const navigate = useNavigate();
+  const { isCopying, copyToClipboard } = useCopyToClipboard();
   const {
     id: productId,
     name,
@@ -55,16 +67,17 @@ function CheckingProductTableRow({ product }) {
 
       {brand ? (
         <Stacked>
-          <div>
-            {brand.name}{" "}
+          <BrandData>
+            {brand.name}
             {brand.root_email && (
-              <NoDataItem>
-                <small title={brand.root_email}>
-                  <HiAtSymbol />
-                </small>
-              </NoDataItem>
+              <small
+                title={brand.root_email}
+                onClick={() => copyToClipboard(brand.root_email)}
+              >
+                {isCopying ? <SpinnerMini size="xs" /> : <HiAtSymbol />}
+              </small>
             )}
-          </div>
+          </BrandData>
         </Stacked>
       ) : (
         <Stacked>

@@ -1,6 +1,17 @@
 import { BiLoaderAlt } from "react-icons/bi";
 
-import styled, { keyframes } from "styled-components";
+import styled, { keyframes, css } from "styled-components";
+
+const sizes = {
+  xs: css`
+    width: 1.4rem;
+    height: 1.4rem;
+  `,
+  s: css`
+    width: 2.4rem;
+    height: 2.4rem;
+  `,
+};
 
 const rotate = keyframes`
   to {
@@ -9,8 +20,7 @@ const rotate = keyframes`
 `;
 
 const SpinnerMini = styled(BiLoaderAlt)`
-  width: 2.4rem;
-  height: 2.4rem;
+  ${(props) => sizes[props.size || "s"]}
   animation: ${rotate} 1.5s infinite linear;
 `;
 
