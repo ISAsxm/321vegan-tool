@@ -24,6 +24,7 @@ import Checkings from "@/pages/Checkings";
 import Dashboard from "@/pages/Dashboard";
 import ErrorReports from "@/pages/ErrorReports";
 import ForgotPassword from "@/pages/ForgotPassword";
+import InterestingProducts from "@/pages/InterestingProducts";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
 import Product from "@/pages/Product";
@@ -98,6 +99,7 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="products" element={<Products />} />
                 <Route path="products/:productId" element={<Product />} />
+                <Route path="interesting-products" element={<InterestingProducts />} />
                 <Route
                   path="products/register/:productEan"
                   element={
