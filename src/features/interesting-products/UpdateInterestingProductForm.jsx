@@ -32,19 +32,19 @@ function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal
   const { field: categoryField } = useController({
     name: "category_id",
     control,
-    defaultValue: updateValues.category_id || null,
+    defaultValue: interestingProductToUpdate.category_id || null,
   });
 
   const { field: brandField } = useController({
     name: "brand_id",
     control,
-    defaultValue: updateValues.brand_id || null,
+    defaultValue: interestingProductToUpdate.brand_id || null,
   });
 
   const { field: imageField } = useController({
     name: "image",
     control,
-    defaultValue: updateValues.image || null,
+    defaultValue: interestingProductToUpdate.image || null,
   });
 
   function onSubmit(data) {
@@ -111,7 +111,7 @@ function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal
           disabled={isUpdating}
           isSearchable={true}
           isNullable={true}
-          defaultValue={categoryField.value ? [categoryField.value] : null}
+          defaultValue={[categoryField.value]}
           defaultOptions={
             interestingProductToUpdate.category_id && interestingProductToUpdate.category_name
               ? [
@@ -133,7 +133,7 @@ function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal
           disabled={isUpdating}
           isSearchable={true}
           isNullable={true}
-          defaultValue={brandField.value ? [brandField.value] : null}
+          defaultValue={[brandField.value]}
           defaultOptions={
             interestingProductToUpdate.brand_id && interestingProductToUpdate.brand_name
               ? [

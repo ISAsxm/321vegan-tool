@@ -15,6 +15,7 @@ import ConfirmAction from "@/ui/ConfirmAction";
 import NoDataItem from "@/ui/NoDataItem";
 
 import UpdateInterestingProductForm from "./UpdateInterestingProductForm";
+import InterestingProductImage from "./InterestingProductImage";
 
 import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
@@ -22,14 +23,6 @@ import styled from "styled-components";
 const Ref = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
-`;
-
-const Image = styled.img`
-  display: block;
-  width: 4rem;
-  height: 4rem;
-  object-fit: cover;
-  border-radius: var(--border-radius-sm);
 `;
 
 function InterestingProductTableRow({ interestingProduct }) {
@@ -53,13 +46,7 @@ function InterestingProductTableRow({ interestingProduct }) {
 
       <Stacked>{name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 
-      <div>
-        {image ? (
-          <Image src={image} alt={name} />
-        ) : (
-          <NoDataItem>Aucune image</NoDataItem>
-        )}
-      </div>
+      <InterestingProductImage interestingProduct={interestingProduct} />
 
       <Tag type={INTERESTING_PRODUCT_TYPES[type]?.color || "silver"}>
         {INTERESTING_PRODUCT_TYPES[type]?.label || type}

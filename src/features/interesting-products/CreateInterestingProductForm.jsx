@@ -132,10 +132,15 @@ function CreateInterestingProductForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow>
-        <Button $variation="secondary" type="reset" onClick={() => reset()}>
+        <Button
+          $variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+          disabled={isCreating}
+        >
           Annuler
         </Button>
-        <Button disabled={isCreating}>Ajouter</Button>
+        <Button disabled={isCreating}>Créer</Button>
       </FormRow>
     </Form>
   );
