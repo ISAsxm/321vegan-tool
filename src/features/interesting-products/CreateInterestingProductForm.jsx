@@ -63,13 +63,7 @@ function CreateInterestingProductForm({ onCloseModal }) {
         <Input
           type="text"
           id="ean"
-          {...register("ean", {
-            required: "Ce champ est obligatoire",
-            pattern: {
-              value: /^\d{13}$/,
-              message: "Le code-barres doit contenir 13 chiffres",
-            },
-          })}
+          {...register("ean", { required: "Ce champ est obligatoire" })}
           disabled={isCreating}
           required
         />
