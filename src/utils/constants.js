@@ -38,6 +38,11 @@ export const PRODUCT_STATUSES = {
   NON_VEGAN: { color: "red", label: "Non vegan" },
 };
 
+export const INTERESTING_PRODUCT_TYPES = {
+  popular: { color: "blue", label: "Populaire" },
+  sponsored: { color: "yellow", label: "Sponsorisé" },
+};
+
 export const CHECKING_STATUSES = {
   PENDING: { color: "silver", label: "En attente" },
   MAYBE_VEGAN: { color: "yellow", label: "Maybe vegan" },

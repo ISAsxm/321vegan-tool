@@ -17,7 +17,7 @@ import {
   HiChevronDown,
   HiChevronUp,
 } from "react-icons/hi2";
-import { PiHandSoap, PiPlant } from "react-icons/pi";
+import { PiHandSoap, PiPlant, PiSparkle } from "react-icons/pi";
 
 import styled from "styled-components";
 import { useState } from "react";
@@ -121,6 +121,12 @@ function MainNav() {
           <StyledNavLink to="/products">
             <PiPlant />
             <span>Produits</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/interesting-products">
+            <PiSparkle />
+            <span>Produits d'intérêt</span>
           </StyledNavLink>
         </li>
         {hasAccess("contributor") && (
