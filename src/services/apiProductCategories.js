@@ -27,7 +27,7 @@ export async function getProductCategories() {
 
 export async function getProductCategoriesForSelect(searchName = "") {
   try {
-    const res = await axiosInstance.get(`${API_URL}/product-categories`);
+    const res = await axiosInstance.get(`${API_URL}/product-categories/`);
     console.log(res);
     const data = await res.data;
     return {
