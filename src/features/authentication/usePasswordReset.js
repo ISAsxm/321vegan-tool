@@ -17,7 +17,7 @@ export function useVerifyPasswordResetToken(token, enabled = true) {
   return { data, isLoading, error, isValidToken: !error && !!data };
 }
 
-export function useConfirmPasswordReset(token) {
+export function useConfirmPasswordReset() {
   const navigate = useNavigate();
 
   const { mutate: confirmPasswordReset, isPending } = useMutation({

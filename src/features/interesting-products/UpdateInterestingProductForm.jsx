@@ -12,9 +12,16 @@ import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import ImageUpload from "@/ui/ImageUpload";
 
-function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal }) {
+import CreateBrandForm from "@/features/brands/CreateBrandForm";
+import CreateProductCategoryForm from "@/features/product-categories/CreateProductCategoryForm";
+
+function UpdateInterestingProductForm({
+  interestingProductToUpdate,
+  onCloseModal,
+}) {
   const { id: updateId, ...updateValues } = interestingProductToUpdate;
-  const { isUpdating, updateInterestingProduct } = useUpdateInterestingProduct();
+  const { isUpdating, updateInterestingProduct } =
+    useUpdateInterestingProduct();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       ...updateValues,
@@ -60,7 +67,10 @@ function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal
   }
 
   return (
-    <Form type={onCloseModal ? "modal" : "regular"} onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      type={onCloseModal ? "modal" : "regular"}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <FormRow label="Code-barres (EAN)" error={errors.ean?.message}>
         <Input
           type="text"
@@ -108,12 +118,14 @@ function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal
           name="category_id"
           onChange={categoryField.onChange}
           getOptions={getProductCategoriesForSelect}
+          createComponent={<CreateProductCategoryForm />}
           disabled={isUpdating}
           isSearchable={true}
           isNullable={true}
           defaultValue={[categoryField.value]}
           defaultOptions={
-            interestingProductToUpdate.category_id && interestingProductToUpdate.category_name
+            interestingProductToUpdate.category_id &&
+            interestingProductToUpdate.category_name
               ? [
                   {
                     value: interestingProductToUpdate.category_id,
@@ -130,12 +142,14 @@ function UpdateInterestingProductForm({ interestingProductToUpdate, onCloseModal
           name="brand_id"
           onChange={brandField.onChange}
           getOptions={getBrandsForSelect}
+          createComponent={<CreateBrandForm />}
           disabled={isUpdating}
           isSearchable={true}
           isNullable={true}
           defaultValue={[brandField.value]}
           defaultOptions={
-            interestingProductToUpdate.brand_id && interestingProductToUpdate.brand_name
+            interestingProductToUpdate.brand_id &&
+            interestingProductToUpdate.brand_name
               ? [
                   {
                     value: interestingProductToUpdate.brand_id,

@@ -107,7 +107,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
           required={true}
         >
           {Object.entries(CHECKING_STATUSES)
-            .filter(([key, o]) => key !== "PENDING")
+            .filter((key) => key !== "PENDING")
             .map(([key, o]) => (
               <Radios.RadioButton
                 key={key}
@@ -152,7 +152,10 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+      <FormRow
+        label="Ancienne recette non vegan ?"
+        error={errors.has_non_vegan_old_receipe?.message}
+      >
         <Checkbox
           name="has_non_vegan_old_receipe"
           onChange={hasNonVeganOldReceipeField.onChange}

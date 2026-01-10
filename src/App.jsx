@@ -29,6 +29,7 @@ import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
 import Product from "@/pages/Product";
 import Products from "@/pages/Products";
+import ProductCategories from "@/pages/ProductCategories";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
@@ -99,7 +100,13 @@ function App() {
                 <Route path="dashboard" element={<Dashboard />} />
                 <Route path="products" element={<Products />} />
                 <Route path="products/:productId" element={<Product />} />
-                <Route path="interesting-products" element={<InterestingProducts />} />
+                <Route
+                  path="interesting-products"
+                  element={<InterestingProducts />}
+                />
+                <Route path="categories" element={<ProductCategories />} />
+                <Route path="brands" element={<Brands />} />
+                <Route path="brands/:brandId" element={<Brand />} />
                 <Route
                   path="products/register/:productEan"
                   element={
@@ -119,8 +126,6 @@ function App() {
                 <Route path="additives" element={<Additives />} />
                 <Route path="additives/:additiveId" element={<Additive />} />
                 <Route path="cosmetics" element={<Cosmetics />} />
-                <Route path="brands" element={<Brands />} />
-                <Route path="brands/:brandId" element={<Brand />} />
                 <Route
                   path="scoring/categories"
                   element={

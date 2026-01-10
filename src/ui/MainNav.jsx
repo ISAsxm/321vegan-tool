@@ -18,6 +18,7 @@ import {
   HiChevronUp,
 } from "react-icons/hi2";
 import { PiHandSoap, PiPlant, PiSparkle } from "react-icons/pi";
+import { GiForkKnifeSpoon } from "react-icons/gi";
 
 import styled from "styled-components";
 import { useState } from "react";
@@ -117,18 +118,40 @@ function MainNav() {
             <span>Dashboard</span>
           </StyledNavLink>
         </li>
-        <li>
-          <StyledNavLink to="/products">
-            <PiPlant />
-            <span>Produits</span>
-          </StyledNavLink>
-        </li>
-        <li>
-          <StyledNavLink to="/interesting-products">
-            <PiSparkle />
-            <span>Produits d'intérêt</span>
-          </StyledNavLink>
-        </li>
+        <NavSubItem
+          currentOpen={currentOpen}
+          onOpen={setCurrentOpen}
+          id="product"
+          icon={<GiForkKnifeSpoon />}
+          title="Alimentaire"
+        >
+          <NavList>
+            <li>
+              <NestedNavLink to="/products">
+                <PiPlant />
+                <span>Produits</span>
+              </NestedNavLink>
+            </li>
+            <li>
+              <NestedNavLink to="/interesting-products">
+                <PiSparkle />
+                <span>Vegandex</span>
+              </NestedNavLink>
+            </li>
+            <li>
+              <NestedNavLink to="/categories">
+                <HiOutlineRectangleGroup /> <span>Catégories</span>
+              </NestedNavLink>
+            </li>
+            <li>
+              <NestedNavLink to="/brands">
+                <HiOutlineBuildingOffice />
+                <span>Marques</span>
+              </NestedNavLink>
+            </li>
+          </NavList>
+        </NavSubItem>
+
         {hasAccess("contributor") && (
           <NavSubItem
             currentOpen={currentOpen}
@@ -164,12 +187,7 @@ function MainNav() {
             <span>Cosmétiques</span>
           </StyledNavLink>
         </li>
-        <li>
-          <StyledNavLink to="/brands">
-            <HiOutlineBuildingOffice />
-            <span>Marques</span>
-          </StyledNavLink>
-        </li>
+
         {hasAccess("contributor") && (
           <NavSubItem
             currentOpen={currentOpen}

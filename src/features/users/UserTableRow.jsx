@@ -57,15 +57,7 @@ const UserAvatar = styled.span`
 // `;
 
 function UserTableRow({ user }) {
-  const {
-    id: userId,
-    nickname,
-    avatar,
-    email,
-    is_active,
-    role,
-    created_at,
-  } = user;
+  const { id: userId, nickname, email, is_active, role, created_at } = user;
   const { isDeleting, deleteUser } = useDeleteUser();
   const { currentUser } = useCurrentUserContext();
 
