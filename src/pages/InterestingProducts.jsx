@@ -10,7 +10,7 @@ function InterestingProducts() {
     <>
       <Row type="horizontal">
         <Heading as="h1">
-          <PiSparkle /> Produits d'intérêt
+          <PiSparkle /> Produits d'intérêt (vegandex)
         </Heading>
         <InterestingProductListOperations />
       </Row>

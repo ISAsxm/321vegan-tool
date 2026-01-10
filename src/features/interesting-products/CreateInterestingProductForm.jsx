@@ -12,8 +12,12 @@ import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import ImageUpload from "@/ui/ImageUpload";
 
+import CreateBrandForm from "@/features/brands/CreateBrandForm";
+import CreateProductCategoryForm from "@/features/product-categories/CreateProductCategoryForm";
+
 function CreateInterestingProductForm({ onCloseModal }) {
-  const { isCreating, createInterestingProduct } = useCreateInterestingProduct();
+  const { isCreating, createInterestingProduct } =
+    useCreateInterestingProduct();
   const { register, formState, handleSubmit, reset, control } = useForm({
     defaultValues: {
       ean: null,
@@ -36,11 +40,13 @@ function CreateInterestingProductForm({ onCloseModal }) {
   const { field: categoryField } = useController({
     name: "category_id",
     control,
+    defaultValue: null,
   });
 
   const { field: brandField } = useController({
     name: "brand_id",
     control,
+    defaultValue: null,
   });
 
   const { field: imageField } = useController({
@@ -58,7 +64,10 @@ function CreateInterestingProductForm({ onCloseModal }) {
   }
 
   return (
-    <Form type={onCloseModal ? "modal" : "regular"} onSubmit={handleSubmit(onSubmit)}>
+    <Form
+      type={onCloseModal ? "modal" : "regular"}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <FormRow label="Code-barres (EAN)" error={errors.ean?.message}>
         <Input
           type="text"
@@ -100,6 +109,7 @@ function CreateInterestingProductForm({ onCloseModal }) {
           name="category_id"
           onChange={categoryField.onChange}
           getOptions={getProductCategoriesForSelect}
+          createComponent={<CreateProductCategoryForm />}
           disabled={isCreating}
           isSearchable={true}
           isNullable={true}
@@ -111,6 +121,7 @@ function CreateInterestingProductForm({ onCloseModal }) {
           name="brand_id"
           onChange={brandField.onChange}
           getOptions={getBrandsForSelect}
+          createComponent={<CreateBrandForm />}
           disabled={isCreating}
           isSearchable={true}
           isNullable={true}

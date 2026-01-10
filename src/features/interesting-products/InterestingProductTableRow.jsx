@@ -1,11 +1,8 @@
-import { useNavigate } from "react-router-dom";
-
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 import { INTERESTING_PRODUCT_TYPES } from "@/utils/constants";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useDeleteInterestingProduct } from "./useDeleteInterestingProduct";
 
-import ButtonText from "@/ui/ButtonText";
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
 import Stacked from "@/ui/Stacked";
@@ -17,7 +14,7 @@ import NoDataItem from "@/ui/NoDataItem";
 import UpdateInterestingProductForm from "./UpdateInterestingProductForm";
 import InterestingProductImage from "./InterestingProductImage";
 
-import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
 
 const Ref = styled.div`
@@ -26,18 +23,10 @@ const Ref = styled.div`
 `;
 
 function InterestingProductTableRow({ interestingProduct }) {
-  const {
-    id,
-    name,
-    ean,
-    type,
-    brand_name,
-    category_name,
-    image,
-    created_at,
-  } = interestingProduct;
-  const navigate = useNavigate();
-  const { isDeleting, deleteInterestingProduct } = useDeleteInterestingProduct();
+  const { id, name, ean, type, brand_name, category_name, created_at } =
+    interestingProduct;
+  const { isDeleting, deleteInterestingProduct } =
+    useDeleteInterestingProduct();
   const { hasAccess } = useCurrentUserContext();
 
   return (
@@ -52,13 +41,9 @@ function InterestingProductTableRow({ interestingProduct }) {
         {INTERESTING_PRODUCT_TYPES[type]?.label || type}
       </Tag>
 
-      <Stacked>
-        {category_name || <NoDataItem>Inconnue</NoDataItem>}
-      </Stacked>
+      <Stacked>{category_name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 
-      <Stacked>
-        {brand_name || <NoDataItem>Inconnue</NoDataItem>}
-      </Stacked>
+      <Stacked>{brand_name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 
       <Stacked>
         <span>{formatDate(created_at)}</span>
@@ -83,7 +68,9 @@ function InterestingProductTableRow({ interestingProduct }) {
         </Menus.Menu>
 
         <Modal.Window name="edit">
-          <UpdateInterestingProductForm interestingProductToUpdate={interestingProduct} />
+          <UpdateInterestingProductForm
+            interestingProductToUpdate={interestingProduct}
+          />
         </Modal.Window>
 
         <Modal.Window name="delete">
