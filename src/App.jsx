@@ -20,6 +20,7 @@ import ApiClients from "@/pages/ApiClients";
 import Brand from "@/pages/Brand";
 import Brands from "@/pages/Brands";
 import Cosmetics from "@/pages/Cosmetics";
+import HouseholdCleaners from "@/pages/HouseholdCleaners";
 import Checkings from "@/pages/Checkings";
 import Dashboard from "@/pages/Dashboard";
 import ErrorReports from "@/pages/ErrorReports";
@@ -66,7 +67,7 @@ function App() {
             if (error.response?.status !== 401) {
               toast.error(
                 query?.meta?.errorMessage ||
-                  `Une erreur est survenue. Veuillez réessayer utlérieurement ou contacter le support si le problème persiste`
+                  `Une erreur est survenue. Veuillez réessayer utlérieurement ou contacter le support si le problème persiste`,
               );
             }
           },
@@ -76,7 +77,7 @@ function App() {
             queryClient.invalidateQueries();
           },
         }),
-      })
+      }),
   );
 
   return (
@@ -125,6 +126,10 @@ function App() {
                 />
                 <Route path="additives" element={<Additives />} />
                 <Route path="additives/:additiveId" element={<Additive />} />
+                <Route
+                  path="household-cleaners"
+                  element={<HouseholdCleaners />}
+                />
                 <Route path="cosmetics" element={<Cosmetics />} />
                 <Route
                   path="scoring/categories"

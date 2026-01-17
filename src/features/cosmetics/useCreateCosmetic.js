@@ -11,7 +11,7 @@ export function useCreateCosmetic() {
     onSuccess: () => {
       toast.success("La marque de cosmétiques a bien été créée");
       queryClient.invalidateQueries({
-        queryKey: cosmeticsKeys.lists(),
+        queryKey: cosmeticsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

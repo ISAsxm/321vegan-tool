@@ -11,7 +11,7 @@ function Cosmetics() {
     <>
       <Row type="horizontal">
         <Heading as="h1">
-          <PiHandSoap /> Cosmétiques
+          <PiHandSoap /> Marques de cosmétiques
         </Heading>
         <CosmeticListOperations />
       </Row>
