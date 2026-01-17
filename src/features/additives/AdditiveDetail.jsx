@@ -80,7 +80,7 @@ function AdditiveDetail() {
     e_number,
     description,
     status,
-    sources,
+    source,
   } = additive;
 
   return (
@@ -132,7 +132,7 @@ function AdditiveDetail() {
               label="E code :"
               type="horizontal"
             >
-              {e_number || <NoDataItem>--</NoDataItem>}
+              {e_number}
             </DataItem>
 
             <DataItem
@@ -146,21 +146,28 @@ function AdditiveDetail() {
             <DataItem
               icon={<HiOutlineCheckCircle />}
               label="Description :"
-              type="horizontal"
+              type="vertical"
             >
               {description || <NoDataItem>--</NoDataItem>}
             </DataItem>
 
             <DataItem
               icon={<HiOutlineCheckCircle />}
-              label="Sources :"
+              label="Source :"
               type="horizontal"
             >
-              {sources?.map((s) => (
-                <ButtonText as="a" href={s.value} target="_blank" key={s.value}>
-                  {s.value}
+              {source ? (
+                <ButtonText
+                  as="a"
+                  href={source}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {source}
                 </ButtonText>
-              )) || <NoDataItem>--</NoDataItem>}
+              ) : (
+                <NoDataItem>--</NoDataItem>
+              )}
             </DataItem>
           </InfoBox>
         </Section>

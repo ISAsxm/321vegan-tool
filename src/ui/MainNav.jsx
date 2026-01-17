@@ -174,12 +174,14 @@ function MainNav() {
             </NavList>
           </NavSubItem>
         )}
+
         <li>
           <StyledNavLink to="/additives">
             <HiOutlineBeaker />
             <span>Additifs</span>
           </StyledNavLink>
         </li>
+
         <li>
           <StyledNavLink to="/household-cleaners">
             <PiSprayBottle />

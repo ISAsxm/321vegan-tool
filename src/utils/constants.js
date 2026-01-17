@@ -51,10 +51,9 @@ export const CHECKING_STATUSES = {
 };
 
 export const ADDITIVES_STATUSES = {
-  V: { color: "green", label: "Vegan" },
-  C: { color: "red", label: "Carniste" },
-  D: { color: "yellow", label: "Ça dépend" },
-  U: { color: "silver", label: "Inconnu" },
+  VEGAN: { color: "green", label: "Vegan" },
+  NON_VEGAN: { color: "red", label: "Carniste" },
+  MAYBE_VEGAN: { color: "yellow", label: "Ça dépend" },
 };
 
 /** Used to highlight ingredients in product detail view */
@@ -126,6 +125,7 @@ export const NON_VEGAN_INGREDIENTS = [
   "arômes naturels",
   "vitamin d",
   "vitamine d",
+  " D",
 ];
 /**
  * Used to highlight ingredients in product detail view

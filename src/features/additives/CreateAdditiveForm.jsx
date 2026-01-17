@@ -8,7 +8,7 @@ import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
-import Select from "@/ui/Select";
+import Radios from "@/ui/Radios";
 
 function CreateAdditiveForm({ onCloseModal }) {
   const { isCreating, createAdditive } = useCreateAdditive();
@@ -56,18 +56,18 @@ function CreateAdditiveForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="Statut" error={errors.status?.message}>
-        <Select
-          name="status"
-          onChange={statusField.onChange}
-          isMulti={false}
-          isSearchable={true}
-          defaultValue={[]}
-          required={true}
-          disabled={isCreating}
-          defaultOptions={Object.entries(ADDITIVES_STATUSES).map(([key, o]) => {
-            return { value: key, label: o.label };
-          })}
-        />
+        <Radios id="status" onChange={statusField.onChange} required={true}>
+          {Object.entries(ADDITIVES_STATUSES).map(([key, o]) => (
+            <Radios.RadioButton
+              key={key}
+              value={key}
+              color={o.color}
+              disabled={isCreating}
+            >
+              {o.label}
+            </Radios.RadioButton>
+          ))}
+        </Radios>
       </FormRow>
 
       <FormRow label="Description" error={errors.description?.message}>
@@ -78,13 +78,12 @@ function CreateAdditiveForm({ onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Sources" error={errors.sources?.message}>
+      <FormRow label="Source" error={errors.source?.message}>
         <Input
           type="text"
-          id="sources"
-          {...register("sources", { required: "Ce champ est obligatoire" })}
+          id="source"
+          {...register("source")}
           disabled={isCreating}
-          required
         />
       </FormRow>
 

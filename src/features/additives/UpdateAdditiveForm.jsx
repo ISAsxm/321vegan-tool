@@ -9,16 +9,13 @@ import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
-import Select from "@/ui/Select";
+import Radios from "@/ui/Radios";
 
 function UpdateAdditiveForm({ additiveToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = additiveToUpdate;
   const { isUpdating, updateAdditive } = useUpdateAdditive();
   const { register, formState, handleSubmit, reset, control } = useForm({
-    defaultValues: {
-      ...updateValues,
-      sources: additiveToUpdate.sources?.[0]?.value,
-    },
+    defaultValues: updateValues,
   });
   const { errors } = formState;
 
@@ -36,7 +33,7 @@ function UpdateAdditiveForm({ additiveToUpdate, onCloseModal }) {
           reset();
           onCloseModal?.();
         },
-      }
+      },
     );
   }
 
@@ -66,18 +63,23 @@ function UpdateAdditiveForm({ additiveToUpdate, onCloseModal }) {
       </FormRow>
 
       <FormRow label="Statut" error={errors.status?.message}>
-        <Select
-          name="status"
+        <Radios
+          id="status"
           onChange={statusField.onChange}
-          isMulti={false}
-          isSearchable={true}
-          defaultValue={[statusField.value]}
+          defaultValue={statusField.value}
           required={true}
-          disabled={isUpdating}
-          defaultOptions={Object.entries(ADDITIVES_STATUSES).map(([key, o]) => {
-            return { value: key, label: o.label };
-          })}
-        />
+        >
+          {Object.entries(ADDITIVES_STATUSES).map(([key, o]) => (
+            <Radios.RadioButton
+              key={key}
+              value={key}
+              color={o.color}
+              disabled={isUpdating}
+            >
+              {o.label}
+            </Radios.RadioButton>
+          ))}
+        </Radios>
       </FormRow>
 
       <FormRow label="Description" error={errors.description?.message}>
@@ -88,13 +90,12 @@ function UpdateAdditiveForm({ additiveToUpdate, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Sources" error={errors.sources?.message}>
+      <FormRow label="Source" error={errors.source?.message}>
         <Input
           type="text"
-          id="sources"
-          {...register("sources", { required: "Ce champ est obligatoire" })}
+          id="source"
+          {...register("source")}
           disabled={isUpdating}
-          required
         />
       </FormRow>
 
