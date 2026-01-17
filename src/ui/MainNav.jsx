@@ -17,7 +17,7 @@ import {
   HiChevronDown,
   HiChevronUp,
 } from "react-icons/hi2";
-import { PiHandSoap, PiPlant, PiSparkle } from "react-icons/pi";
+import { PiHandSoap, PiPlant, PiSparkle, PiSprayBottle } from "react-icons/pi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
 
 import styled from "styled-components";
@@ -178,6 +178,12 @@ function MainNav() {
           <StyledNavLink to="/additives">
             <HiOutlineBeaker />
             <span>Additifs</span>
+          </StyledNavLink>
+        </li>
+        <li>
+          <StyledNavLink to="/household-cleaners">
+            <PiSprayBottle />
+            <span>Nettoyants</span>
           </StyledNavLink>
         </li>
 

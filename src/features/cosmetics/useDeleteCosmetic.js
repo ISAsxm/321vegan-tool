@@ -8,11 +8,11 @@ export function useDeleteCosmetic() {
 
   const { isPending: isDeleting, mutate: deleteCosmetic } = useMutation({
     mutationFn: deleteCosmeticApi,
-    onSuccess: () => {
+    onSuccess: (data, id) => {
       toast.success("La marque de cosmétiques a bien été supprimée");
-      queryClient.removeQueries(cosmeticsKeys.detail);
+      queryClient.removeQueries(cosmeticsKeys.detail(id));
       queryClient.invalidateQueries({
-        queryKey: cosmeticsKeys.lists(),
+        queryKey: cosmeticsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

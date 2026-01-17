@@ -11,7 +11,7 @@ export function useUpdateCosmetic() {
     onSuccess: () => {
       toast.success("La marque de cosmétiques a bien été modifiée");
       queryClient.invalidateQueries({
-        queryKey: cosmeticsKeys.lists(),
+        queryKey: cosmeticsKeys.all(),
       });
     },
     onError: (err) => toast.error(err.message),

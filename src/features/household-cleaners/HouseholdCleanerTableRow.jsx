@@ -1,7 +1,7 @@
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
-import { useDeleteCosmetic } from "./useDeleteCosmetic";
+import { useDeleteHouseholdCleaner } from "./useDeleteHouseholdCleaner";
 
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
@@ -10,23 +10,25 @@ import NoDataItem from "@/ui/NoDataItem";
 import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
+import ButtonText from "@/ui/ButtonText";
 
-import UpdateCosmeticForm from "./UpdateCosmeticForm";
+import UpdateHouseholdCleanerForm from "./UpdateHouseholdCleanerForm";
 
 import { HiPencil, HiTrash } from "react-icons/hi2";
 
-function CosmeticTableRow({ cosmetic }) {
+function HouseholdCleanerTableRow({ householdCleaner }) {
   const { hasAccess } = useCurrentUserContext();
-  const { isDeleting, deleteCosmetic } = useDeleteCosmetic();
+  const { isDeleting, deleteHouseholdCleaner } = useDeleteHouseholdCleaner();
   const {
-    id: cosmeticId,
+    id: householdCleanerId,
     created_at,
     updated_at,
     brand_name,
     description,
+    source,
     is_vegan: isVegan,
     is_cruelty_free: isCrueltyFree,
-  } = cosmetic;
+  } = householdCleaner;
 
   return (
     <Table.Row>
@@ -48,11 +50,19 @@ function CosmeticTableRow({ cosmetic }) {
 
       <Stacked>{description || <NoDataItem>--</NoDataItem>}</Stacked>
 
+      {source ? (
+        <ButtonText as="a" href={source} target="_blank" rel="noreferrer">
+          {source}
+        </ButtonText>
+      ) : (
+        <NoDataItem>--</NoDataItem>
+      )}
+
       {hasAccess("contributor") && (
         <Modal>
           <Menus.Menu>
-            <Menus.Toggle id={cosmeticId} />
-            <Menus.List id={cosmeticId}>
+            <Menus.Toggle id={householdCleanerId} />
+            <Menus.List id={householdCleanerId}>
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
@@ -66,14 +76,16 @@ function CosmeticTableRow({ cosmetic }) {
           </Menus.Menu>
 
           <Modal.Window name="edit">
-            <UpdateCosmeticForm cosmeticToUpdate={cosmetic} />
+            <UpdateHouseholdCleanerForm
+              householdCleanerToUpdate={householdCleaner}
+            />
           </Modal.Window>
           <Modal.Window name="delete">
             <ConfirmAction
               variation="delete"
               title="Supprimer une marque"
               message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement cette marque ?"
-              onConfirm={() => deleteCosmetic(cosmeticId)}
+              onConfirm={() => deleteHouseholdCleaner(householdCleanerId)}
               disabled={isDeleting}
             />
           </Modal.Window>
@@ -83,4 +95,4 @@ function CosmeticTableRow({ cosmetic }) {
   );
 }
 
-export default CosmeticTableRow;
+export default HouseholdCleanerTableRow;
