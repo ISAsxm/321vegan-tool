@@ -8,9 +8,11 @@ import { useDeleteAdditive } from "./useDeleteAdditive";
 import Tag from "@/ui/Tag";
 import Table from "@/ui/Table";
 import Stacked from "@/ui/Stacked";
+import NoDataItem from "@/ui/NoDataItem";
 import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
+import ButtonText from "@/ui/ButtonText";
 
 import UpdateAdditiveForm from "./UpdateAdditiveForm";
 
@@ -34,13 +36,13 @@ function AdditiveTableRow({ additive }) {
     created_at,
     updated_at,
     status,
+    description,
+    source,
   } = additive;
 
   return (
     <Table.Row>
-      <Ref># {additiveId}</Ref>
-
-      <Stacked>{e_number}</Stacked>
+      <Ref>{e_number}</Ref>
 
       <Stacked>{name}</Stacked>
 
@@ -53,6 +55,16 @@ function AdditiveTableRow({ additive }) {
         <span>{formatDate(updated_at)}</span>
         <span>{formatDistanceFromNow(updated_at)}</span>
       </Stacked>
+
+      <Stacked>{description || <NoDataItem>--</NoDataItem>}</Stacked>
+
+      {source ? (
+        <ButtonText as="a" href={source} target="_blank" rel="noreferrer">
+          {source}
+        </ButtonText>
+      ) : (
+        <NoDataItem>--</NoDataItem>
+      )}
 
       <Tag type={ADDITIVES_STATUSES[status].color}>
         {ADDITIVES_STATUSES[status].label}

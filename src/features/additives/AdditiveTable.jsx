@@ -18,14 +18,12 @@ function AdditiveTable() {
 
   return (
     <Menus>
-      <Table columns="0.6fr 1fr 1.4fr 1.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="0.6fr 1fr 1.4fr 1.4fr 1.4fr 1.4fr 1fr 3.2rem">
         <Filters>
           <SortBy>
             <Table.Header>
-              <div>Id</div>
-
               <div>
-                E code
+                Code
                 <SortBy.Sort sortByField="e_number" />
                 <Filters.Filter>
                   <Filters.Toggle id="filterENumber" filterField="e_number" />
@@ -51,6 +49,10 @@ function AdditiveTable() {
                 Mise à jour
                 <SortBy.Sort sortByField="updated_at" />
               </div>
+
+              <div>description</div>
+
+              <div>source</div>
 
               <div>
                 Statut{" "}

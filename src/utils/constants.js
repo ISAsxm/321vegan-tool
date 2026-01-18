@@ -125,7 +125,6 @@ export const NON_VEGAN_INGREDIENTS = [
   "arômes naturels",
   "vitamin d",
   "vitamine d",
-  " D",
 ];
 /**
  * Used to highlight ingredients in product detail view
