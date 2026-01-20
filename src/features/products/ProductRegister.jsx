@@ -18,6 +18,7 @@ import Button from "@/ui/Button";
 import Tag from "@/ui/Tag";
 import DataItem from "@/ui/DataItem";
 import Spinner from "@/ui/Spinner";
+import Tooltip from "@/ui/Tooltip";
 
 import OffDataBox from "./OffDataBox";
 import RegisterProductForm from "./RegisterProductForm";
@@ -145,6 +146,21 @@ function ProductRegister() {
               />
             )}
           </DataItem>
+        </Section>
+
+        <Section>
+          {/* <Tooltip
+            content={`This feature helps you move faster by showing helpful tips and
+              smart suggestions.`}
+          >
+            <button>Tooltip</button>
+          </Tooltip> */}
+
+          {brandFromApi?.background
+            ? brandFromApi?.background
+            : product.brand?.background
+              ? product.brand?.background
+              : "background null"}
         </Section>
 
         <Section>
