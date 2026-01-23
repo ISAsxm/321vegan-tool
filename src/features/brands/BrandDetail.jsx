@@ -50,6 +50,7 @@ const InfoBox = styled.div`
   grid-template-areas:
     "name name parent"
     "logo logo email"
+    "bkg bkg bkg"
     "score score boycott";
   gap: 4rem;
   padding-top: 2rem;
@@ -67,9 +68,12 @@ const InfoBox = styled.div`
     grid-area: email;
   }
   & div:nth-child(5) {
-    grid-area: score;
+    grid-area: bkg;
   }
   & div:nth-child(6) {
+    grid-area: score;
+  }
+  & div:nth-child(7) {
     grid-area: boycott;
   }
 `;
@@ -101,6 +105,7 @@ function BrandDetail() {
     parent,
     score,
     boycott,
+    background,
   } = brand;
 
   const scoreColor = getScoresColor(score);
@@ -173,6 +178,14 @@ function BrandDetail() {
               type="horizontal"
             >
               {email || <NoDataItem>--</NoDataItem>}
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Informations générales :"
+              type="vertical"
+            >
+              {background || <NoDataItem>--</NoDataItem>}
             </DataItem>
 
             <DataItem
