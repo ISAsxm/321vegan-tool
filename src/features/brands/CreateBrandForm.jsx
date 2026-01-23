@@ -7,6 +7,7 @@ import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
+import Textarea from "@/ui/Textarea";
 import ImageUpload from "@/ui/ImageUpload";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
@@ -20,6 +21,7 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
       logo_path: null,
       boycott: false,
       email: null,
+      background: null,
     },
   });
   const { errors } = formState;
@@ -93,6 +95,17 @@ function CreateBrandForm({ prefillName, onCloseModal, onCreateOption }) {
         <ImageUpload
           id="logo_path"
           onUpload={logoField.onChange}
+          disabled={isCreating}
+        />
+      </FormRow>
+
+      <FormRow
+        label="Informations générales"
+        error={errors.background?.message}
+      >
+        <Textarea
+          id="background"
+          {...register("background")}
           disabled={isCreating}
         />
       </FormRow>

@@ -7,6 +7,7 @@ import Button from "@/ui/Button";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
+import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import ImageUpload from "@/ui/ImageUpload";
 import Checkbox from "@/ui/Checkbox";
@@ -47,7 +48,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           reset();
           onCloseModal?.();
         },
-      }
+      },
     );
   }
 
@@ -110,6 +111,17 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
           onUpload={logoField.onChange}
           disabled={isUpdating}
           defaultValue={logoField.value}
+        />
+      </FormRow>
+
+      <FormRow
+        label="Informations générales"
+        error={errors.background?.message}
+      >
+        <Textarea
+          id="background"
+          {...register("background")}
+          disabled={isUpdating}
         />
       </FormRow>
 

@@ -5,7 +5,8 @@ const TooltipContainer = styled.div`
   display: inline-block;
   cursor: help;
 
-  &:hover .tooltip {
+  &:hover .tooltip,
+  &:first-child + .tooltip {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
@@ -18,9 +19,7 @@ const StyledTooltip = styled.div`
   left: 50%;
   transform: translateX(-50%) translateY(10px);
   padding: 0.8rem 1.3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  white-space: nowrap;
   background-color: var(--color-grey-300);
   border-radius: 10px;
   box-shadow: var(--shadow-sm);
@@ -41,11 +40,11 @@ const StyledTooltip = styled.div`
   }
 `;
 
-function Tooltip({ children, content }) {
+function Tooltip({ children, content, id }) {
   return (
     <TooltipContainer>
       {children}
-      <StyledTooltip role="tooltip" className="tooltip">
+      <StyledTooltip role="tooltip" className="tooltip" id={id}>
         {content}
       </StyledTooltip>
     </TooltipContainer>

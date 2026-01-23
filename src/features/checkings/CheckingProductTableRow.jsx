@@ -13,6 +13,7 @@ import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import NoDataItem from "@/ui/NoDataItem";
 import SpinnerMini from "@/ui/SpinnerMini";
+import Tooltip from "@/ui/Tooltip";
 
 import CreateCheckingForm from "./CreateCheckingForm";
 import UpdateCheckingForm from "./UpdateCheckingForm";
@@ -39,6 +40,9 @@ const BrandData = styled.div`
 
   & > small {
     cursor: pointer;
+  }
+  &:hover svg {
+    color: var(--color-brand-600);
   }
 `;
 
@@ -70,12 +74,14 @@ function CheckingProductTableRow({ product }) {
           <BrandData>
             {brand.name}
             {brand.root_email && (
-              <small
-                title={brand.root_email}
-                onClick={() => copyToClipboard(brand.root_email)}
-              >
-                {isCopying ? <SpinnerMini size="xs" /> : <HiAtSymbol />}
-              </small>
+              <Tooltip content={brand.root_email} id="root_email">
+                <small
+                  aria-describedby="root_email"
+                  onClick={() => copyToClipboard(brand.root_email)}
+                >
+                  {isCopying ? <SpinnerMini size="xs" /> : <HiAtSymbol />}
+                </small>
+              </Tooltip>
             )}
           </BrandData>
         </Stacked>
