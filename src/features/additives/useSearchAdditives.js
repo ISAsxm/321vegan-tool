@@ -8,8 +8,8 @@ import { getSearchAdditives } from "@/services/apiAdditives";
 import { additivesKeys } from "./queryKeyFactory";
 
 const filterFields = [
-  { field: "e_number", operator: "__contains__", value: null },
-  { field: "name", operator: "___name__lookalike", value: null },
+  { field: "e_number", operator: "__contains", value: null },
+  { field: "name", operator: "__lookalike", value: null },
   { field: "status", operator: "", value: null },
 ];
 
