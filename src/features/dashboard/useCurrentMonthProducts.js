@@ -1,13 +1,18 @@
 import { useQuery } from "@tanstack/react-query";
 
-import { beforeToday } from "@/utils/helpers";
+import { getFirstDateOfMonth } from "@/utils/helpers";
 import { getSearchProducts } from "@/services/apiProducts";
 
 import { productsKeys } from "@/features/products/queryKeyFactory";
 
 export function useCurrentMonthProducts() {
   // FILTERS
-  const filters = [{ field: "created_at__ge", value: `${beforeToday(29)}` }];
+  const filters = [
+    {
+      field: "created_at__gt",
+      value: getFirstDateOfMonth().toISOString().slice(0, -1),
+    },
+  ];
   // SORT
   const sortBy = "created_at-asc";
 

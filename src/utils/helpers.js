@@ -83,6 +83,24 @@ export const getToday = function (options = {}) {
 };
 
 /**
+ * Return the first day of the month of the given date.
+ *
+ * @param {Date} date: optional parameters
+ * @return {Date}
+ * */
+export const getFirstDateOfMonth = (date = new Date()) =>
+  new Date(date.getFullYear(), date.getMonth(), 1);
+
+/**
+ * Return the last day of the month of the given date.
+ *
+ * @param {Date} date: optional parameters
+ * @return {Date}
+ * */
+export const getLastDateOfMonth = (date = new Date()) =>
+  new Date(date.getFullYear(), date.getMonth() + 1, 0);
+
+/**
  * Build an object from search params.
  *
  * @param {Array} allowedFilters: allowed filters to 'sanitize' the search params
@@ -112,7 +130,7 @@ export const buildURLSearchParams = function (
   filters = [],
   sortBy = "",
   page = null,
-  size = null
+  size = null,
 ) {
   const params = new URLSearchParams();
   // FILTER
@@ -174,7 +192,7 @@ export const sortByInputFirst = (input, data) => {
       c.label.toLowerCase().indexOf(input.toLowerCase()) == 0
         ? [[...a, c], b]
         : [a, [...b, c]],
-    [[], []]
+    [[], []],
   );
   return first.concat(others);
 };
