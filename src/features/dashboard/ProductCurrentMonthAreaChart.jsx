@@ -7,8 +7,12 @@ import {
   YAxis,
   ResponsiveContainer,
 } from "recharts";
-import { eachDayOfInterval, isSameDay, subDays } from "date-fns";
-import { formatDate } from "@/utils/helpers";
+import { eachDayOfInterval, isSameDay } from "date-fns";
+import {
+  formatDate,
+  getFirstDateOfMonth,
+  getLastDateOfMonth,
+} from "@/utils/helpers";
 
 import { useDarkMode } from "@/contexts/DarkModeContext";
 
@@ -40,18 +44,18 @@ function ProductCurrentMonthAreaChart({ products }) {
   const { isDarkMode } = useDarkMode();
 
   const allDates = eachDayOfInterval({
-    start: subDays(new Date(), 29),
-    end: new Date(),
+    start: getFirstDateOfMonth(),
+    end: getLastDateOfMonth(),
   });
   const data = allDates.map((date) => {
     return {
       label: formatDate(date.toISOString(), "dd MMM"),
       totalAdded: products.filter((p) =>
-        isSameDay(date, new Date(p.created_at))
+        isSameDay(date, new Date(p.created_at)),
       ).length,
       totalPublished: products.filter(
         (p) =>
-          p.state === "PUBLISHED" && isSameDay(date, new Date(p.updated_at))
+          p.state === "PUBLISHED" && isSameDay(date, new Date(p.updated_at)),
       ).length,
     };
   });

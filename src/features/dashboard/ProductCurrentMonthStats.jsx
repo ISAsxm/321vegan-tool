@@ -12,11 +12,11 @@ function ProductCurrentMonthStats({ products }) {
   const numToRegister = products.filter((p) => p.state === "CREATED").length;
   // Stat widget 2
   const numToContact = products.filter(
-    (p) => p.state === "NEED_CONTACT"
+    (p) => p.state === "NEED_CONTACT",
   ).length;
   // Stat widget 3
   const numToPublish = products.filter(
-    (p) => p.state === "WAITING_PUBLISH"
+    (p) => p.state === "WAITING_PUBLISH",
   ).length;
   // Stat widget 4
   const numOfPublished = products.filter((p) => p.state === "PUBLISHED").length;
