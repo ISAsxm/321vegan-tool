@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
@@ -21,8 +21,19 @@ import Spinner from "@/ui/Spinner";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import ProblemBox from "./ProblemBox";
 
-function RegisterProductForm({ productToCheckedIn, onClose }) {
+function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
+  const [brands, setBrands] = useState(
+    productToCheckedIn.brand
+      ? [
+          {
+            value: productToCheckedIn.brand.id,
+            label: productToCheckedIn.brand.name,
+            background: productToCheckedIn.brand.background,
+          },
+        ]
+      : [],
+  );
   const { isUpdating, updateProduct } = useUpdateProduct();
   const { isDeleting, deleteProduct } = useDeleteProduct();
   const { hasAccess } = useCurrentUserContext();
@@ -38,7 +49,12 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   const isPending = isUpdating || isDeleting;
 
-  const watchFields = watch(["state", "status", "problem_description"]);
+  const watchFields = watch([
+    "state",
+    "status",
+    "problem_description",
+    "brand_id",
+  ]);
   const { field: brandField } = useController({
     name: "brand_id",
     control,
@@ -66,7 +82,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
 
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
   const shouldShowProblemsField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
-    watchFields[1]
+    watchFields[1],
   );
   // Check if status should be locked when state is NEED_CONTACT
   const isStatusLocked = watchFields[0] === "NEED_CONTACT";
@@ -77,6 +93,21 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
       setValue("status", "MAYBE_VEGAN");
     }
   }, [watchFields, setValue]);
+
+  useEffect(() => {
+    onSelectBrand(brands.find((b) => b.value === watchFields[3]));
+  }, [watchFields, onSelectBrand, brands]);
+
+  async function getSearchedBrand(searchedName) {
+    try {
+      const searchedBrands = await getBrandsForSelect(searchedName);
+      setBrands(searchedBrands.data);
+      return searchedBrands;
+    } catch (error) {
+      setBrands([]);
+      console.error(error);
+    }
+  }
 
   function onSubmit(data) {
     if (!shouldShowProblemsField) {
@@ -89,7 +120,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
           reset();
           onClose?.();
         },
-      }
+      },
     );
   }
 
@@ -141,7 +172,7 @@ function RegisterProductForm({ productToCheckedIn, onClose }) {
         <Select
           name="brand_id"
           onChange={brandField.onChange}
-          getOptions={getBrandsForSelect}
+          getOptions={getSearchedBrand}
           defaultOptions={
             productToCheckedIn.brand
               ? [

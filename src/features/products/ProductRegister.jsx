@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { isToday } from "date-fns";
 
-import { useGoBack } from "@/hooks/useGoBack";
-import { formatDate } from "@/utils/helpers";
 import { PRODUCT_STATUSES } from "@/utils/constants";
+import { formatDate } from "@/utils/helpers";
+import { useGoBack } from "@/hooks/useGoBack";
+import { getBrandLookalike } from "@/services/apiBrands";
 import { getProductData } from "@/services/apiOpenFoodFacts";
 import { useProductByEan } from "./useProductByEan";
 
@@ -17,11 +18,13 @@ import ButtonText from "@/ui/ButtonText";
 import Button from "@/ui/Button";
 import Tag from "@/ui/Tag";
 import DataItem from "@/ui/DataItem";
+import HelpAction from "@/ui/HelpAction";
 import Spinner from "@/ui/Spinner";
 
+import IsItVeganHelper from "./IsItVeganHelper";
 import OffDataBox from "./OffDataBox";
 import RegisterProductForm from "./RegisterProductForm";
-import { getBrandLookalike } from "@/services/apiBrands";
+import RegisterProductAdmonition from "./RegisterProductAdmonition";
 
 import { PiPlant } from "react-icons/pi";
 import {
@@ -29,7 +32,13 @@ import {
   HiOutlineInformationCircle,
   HiMagnifyingGlass,
 } from "react-icons/hi2";
-import Admonition from "../../ui/Admonition";
+import styled from "styled-components";
+
+const HelperBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+`;
 
 function ProductRegister() {
   const { productEan } = useParams();
@@ -38,6 +47,7 @@ function ProductRegister() {
   const [errorOff, setErrorOff] = useState("");
   const [offProduct, setOffProduct] = useState({});
   const [brandFromApi, setBrandFromApi] = useState(null);
+  const [selectedBrand, setSelectedBrand] = useState();
   const goBack = useGoBack();
 
   useEffect(() => {
@@ -83,7 +93,6 @@ function ProductRegister() {
   } = offProduct || {};
 
   const offBrandName = brands || product_name?.split(" - ")[1] || "";
-  const background = brandFromApi?.background || product?.brand?.background;
 
   return (
     <>
@@ -122,15 +131,22 @@ function ProductRegister() {
                 {PRODUCT_STATUSES[status].label}
               </Tag>
             </DataItem>
-            <Button
-              as="a"
-              href={`http://www.google.com/search?q=${ean}`}
-              target="_blank"
-              rel="noreferrer"
-            >
-              <HiMagnifyingGlass />
-              Rechercher sur Google
-            </Button>
+
+            <HelperBox>
+              <Button
+                as="a"
+                href={`http://www.google.com/search?q=${ean}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <HiMagnifyingGlass />
+                Rechercher sur Google
+              </Button>
+
+              <HelpAction id="product-register-helper" variante="btn">
+                <IsItVeganHelper />
+              </HelpAction>
+            </HelperBox>
           </Row>
         </Section>
 
@@ -153,17 +169,9 @@ function ProductRegister() {
           </DataItem>
         </Section>
 
-        {background && (
-          <Section>
-            <Admonition variation="primary" icon="accent">
-              <h4>
-                Réponse générale de la marque{" "}
-                {brandFromApi?.name || product?.brand?.name || ""}
-              </h4>
-              {background}
-            </Admonition>
-          </Section>
-        )}
+        <Section>
+          <RegisterProductAdmonition brand={selectedBrand} />
+        </Section>
 
         <Section>
           <RegisterProductForm
@@ -174,6 +182,7 @@ function ProductRegister() {
               brandName: offBrandName.split(",")[0],
             }}
             onClose={goBack}
+            onSelectBrand={setSelectedBrand}
           />
         </Section>
       </DataBox>
