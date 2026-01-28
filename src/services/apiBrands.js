@@ -11,7 +11,7 @@ export async function getBrands() {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't load brands. Response status: ${error.response.status}`
+        `Couldn't load brands. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(`Couldn't load brands. Request error: ${error.request}`);
@@ -25,7 +25,7 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
   try {
     const params = buildURLSearchParams(filters, sortBy, page, size);
     const res = await axiosInstance.get(
-      [`${API_URL}/brands/search`, params].filter(Boolean).join("?")
+      [`${API_URL}/brands/search`, params].filter(Boolean).join("?"),
     );
     const data = await res.data;
     return { data: data.items, count: data.total };
@@ -33,11 +33,11 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't load searched brands. Response status: ${error.response.status}`
+        `Couldn't load searched brands. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't load searched brands. Request error: ${error.request}`
+        `Couldn't load searched brands. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't load searched brands. Error: ${error.message}`);
@@ -55,24 +55,28 @@ export async function getBrandsForSelect(searchName, operator = "lookalike") {
     const size = 100;
     const params = buildURLSearchParams(filters, sortBy, page, size);
     const res = await axiosInstance.get(
-      [`${API_URL}/brands/search`, params].filter(Boolean).join("?")
+      [`${API_URL}/brands/search`, params].filter(Boolean).join("?"),
     );
     const data = await res.data;
     return {
       data: sortByInputFirst(
         searchName,
-        data.items.map((item) => ({ value: item.id, label: item.name }))
+        data.items.map((item) => ({
+          value: item.id,
+          label: item.name,
+          background: item.background,
+        })),
       ),
     };
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't load searched brands. Response status: ${error.response.status}`
+        `Couldn't load searched brands. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't load searched brands. Request error: ${error.request}`
+        `Couldn't load searched brands. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't load searched brands. Error: ${error.message}`);
@@ -84,7 +88,7 @@ export async function getBrandLookalike(searchName) {
   try {
     const params = new URLSearchParams({ name: searchName }).toString();
     const res = await axiosInstance.get(
-      `${API_URL}/brands/lookalike?${params}`
+      `${API_URL}/brands/lookalike?${params}`,
     );
     const data = await res.data;
     return data;
@@ -92,15 +96,15 @@ export async function getBrandLookalike(searchName) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't find brand with name '${searchName}'. Response status: ${error.response.status}`
+        `Couldn't find brand with name '${searchName}'. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't find brand with name '${searchName}'. Request error: ${error.request}`
+        `Couldn't find brand with name '${searchName}'. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't find brand with name '${searchName}'. Error: ${error.message}`
+        `Couldn't find brand with name '${searchName}'. Error: ${error.message}`,
       );
     }
   }
@@ -115,11 +119,11 @@ export async function getBrand(id) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't find brand #${id}. Response status: ${error.response.status}`
+        `Couldn't find brand #${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't find brand #${id}. Request error: ${error.request}`
+        `Couldn't find brand #${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't find brand #${id}. Error: ${error.message}`);
@@ -138,7 +142,7 @@ export async function createBrand(brand) {
       if (error.response.status === 409)
         throw new Error(`Cette marque existe déjà.`);
       throw new Error(
-        `Couldn't create brand. Response status: ${error.response.status}`
+        `Couldn't create brand. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(`Couldn't create brand. Request error: ${error.request}`);
@@ -159,11 +163,11 @@ export async function updateBrand(id, brand) {
       if (error.response.status === 409)
         throw new Error(`Cette marque existe déjà.`);
       throw new Error(
-        `Couldn't update brand # ${id}. Response status: ${error.response.status}`
+        `Couldn't update brand # ${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't update brand # ${id}. Request error: ${error.request}`
+        `Couldn't update brand # ${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't update brand # ${id}. Error: ${error.message}`);
@@ -180,11 +184,11 @@ export async function deleteBrand(id) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't delete brand # ${id}. Response status: ${error.response.status}`
+        `Couldn't delete brand # ${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't delete brand # ${id}. Request error: ${error.request}`
+        `Couldn't delete brand # ${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't delete brand # ${id}. Error: ${error.message}`);
@@ -204,7 +208,7 @@ export async function uploadBrandLogo(id, logoFile) {
         headers: {
           "Content-Type": "multipart/form-data",
         },
-      }
+      },
     );
     const data = await res.data;
     return data;
@@ -212,15 +216,15 @@ export async function uploadBrandLogo(id, logoFile) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't upload logo for brand # ${id}. Response status: ${error.response.status}`
+        `Couldn't upload logo for brand # ${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't upload logo for brand # ${id}. Request error: ${error.request}`
+        `Couldn't upload logo for brand # ${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't upload logo for brand # ${id}. Error: ${error.message}`
+        `Couldn't upload logo for brand # ${id}. Error: ${error.message}`,
       );
     }
   }
@@ -235,15 +239,15 @@ export async function deleteBrandLogo(id) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't delete logo for brand # ${id}. Response status: ${error.response.status}`
+        `Couldn't delete logo for brand # ${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't delete logo for brand # ${id}. Request error: ${error.request}`
+        `Couldn't delete logo for brand # ${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't delete logo for brand # ${id}. Error: ${error.message}`
+        `Couldn't delete logo for brand # ${id}. Error: ${error.message}`,
       );
     }
   }
