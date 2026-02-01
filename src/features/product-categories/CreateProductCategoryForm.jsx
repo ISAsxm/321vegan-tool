@@ -8,6 +8,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Spinner from "@/ui/Spinner";
+import ImageUpload from "@/ui/ImageUpload";
 
 function CreateProductCategoryForm({ onCloseModal, onCreateOption }) {
   const { isCreating, createProductCategory } = useCreateProductCategory();
@@ -15,12 +16,18 @@ function CreateProductCategoryForm({ onCloseModal, onCreateOption }) {
     defaultValues: {
       parent_category_id: null,
       name: null,
+      image: null,
     },
   });
   const { errors } = formState;
 
   const { field: parentField } = useController({
     name: "parent_category_id",
+    control,
+  });
+
+  const { field: imageField } = useController({
+    name: "image",
     control,
   });
 
@@ -59,6 +66,14 @@ function CreateProductCategoryForm({ onCloseModal, onCreateOption }) {
           {...register("name", { required: "Ce champ est obligatoire" })}
           disabled={isCreating}
           required
+        />
+      </FormRow>
+
+      <FormRow label="Image" error={errors.image?.message}>
+        <ImageUpload
+          id="image"
+          onUpload={imageField.onChange}
+          disabled={isCreating}
         />
       </FormRow>
 

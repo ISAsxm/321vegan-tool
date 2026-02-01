@@ -9,6 +9,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Spinner from "@/ui/Spinner";
+import ImageUpload from "@/ui/ImageUpload";
 
 function UpdateProductCategoryForm({ productCategoryToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productCategoryToUpdate;
@@ -24,6 +25,12 @@ function UpdateProductCategoryForm({ productCategoryToUpdate, onCloseModal }) {
   const { field: parentField } = useController({
     name: "parent_category_id",
     control,
+  });
+
+  const { field: imageField } = useController({
+    name: "image",
+    control,
+    defaultValue: productCategoryToUpdate.image || null,
   });
 
   function onSubmit(data) {
@@ -77,6 +84,15 @@ function UpdateProductCategoryForm({ productCategoryToUpdate, onCloseModal }) {
           {...register("name", { required: "Ce champ est obligatoire" })}
           disabled={isUpdating}
           required
+        />
+      </FormRow>
+
+      <FormRow label="Image" error={errors.image?.message}>
+        <ImageUpload
+          id="image"
+          onUpload={imageField.onChange}
+          disabled={isUpdating}
+          defaultValue={imageField.value}
         />
       </FormRow>
 

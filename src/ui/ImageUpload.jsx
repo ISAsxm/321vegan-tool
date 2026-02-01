@@ -64,7 +64,7 @@ function ImageUpload({ defaultValue = null, disabled, onUpload }) {
     <div>
       {preview && (
         <PreviewBox>
-          <StyledImage src={preview} alt="Prévisualisation de l'image" />
+          <StyledImage src={preview} alt="Image" />
           <ResetButton onClick={() => handleSelectFile(null)}>
             <HiTrash />
           </ResetButton>

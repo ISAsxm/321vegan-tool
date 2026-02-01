@@ -164,6 +164,65 @@ export async function updateProductCategory(id, productCategory) {
   }
 }
 
+export async function uploadProductCategoryImage(id, imageFile) {
+  try {
+    const formData = new FormData();
+    formData.append("file", imageFile);
+
+    const res = await axiosInstance.post(
+      `${API_URL}/product-categories/${id}/upload-image`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't upload image for product category # ${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't upload image for product category # ${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't upload image for product category # ${id}. Error: ${error.message}`
+      );
+    }
+  }
+}
+
+export async function deleteProductCategoryImage(id) {
+  try {
+    const res = await axiosInstance.delete(
+      `${API_URL}/product-categories/${id}/image`
+    );
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't delete image for product category # ${id}. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't delete image for product category # ${id}. Request error: ${error.request}`
+      );
+    } else {
+      throw new Error(
+        `Couldn't delete image for product category # ${id}. Error: ${error.message}`
+      );
+    }
+  }
+}
+
 export async function deleteProductCategory(id) {
   try {
     const res = await axiosInstance.delete(
