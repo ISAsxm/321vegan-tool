@@ -4,10 +4,8 @@ import { isToday } from "date-fns";
 import { formatDate } from "@/utils/helpers";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useGoBack } from "@/hooks/useGoBack";
-import { useBrand } from "./useBrand";
-import { useDeleteBrand } from "./useDeleteBrand";
-import { useScoringCategories } from "@/features/scoring/categories/useScoringCategories";
-import { getScoresColor } from "@/features/scoring/brands/utils";
+import { usePartner } from "./usePartner";
+import { useDeletePartner } from "./useDeletePartner";
 
 import Row from "@/ui/Row";
 import Heading from "@/ui/Heading";
@@ -16,6 +14,7 @@ import Section from "@/ui/Section";
 import DataBox from "@/ui/DataBox";
 import DataItem from "@/ui/DataItem";
 import NoDataItem from "@/ui/NoDataItem";
+import ImageDetail from "@/ui/ImageDetail";
 import ButtonGroup from "@/ui/ButtonGroup";
 import ButtonText from "@/ui/ButtonText";
 import Button from "@/ui/Button";
@@ -24,18 +23,14 @@ import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Empty from "@/ui/Empty";
 import Spinner from "@/ui/Spinner";
-import ImageDetail from "@/ui/ImageDetail";
 
-import BrandScores from "@/features/scoring/brands/BrandScores";
-import ManageBrandScoresForm from "@/features/scoring/brands/ManageBrandScoresForm";
+import UpdatePartnerForm from "./UpdatePartnerForm";
 
-import UpdateBrandForm from "./UpdateBrandForm";
-
-import { HiOutlineBuildingOffice, HiOutlineCheckCircle } from "react-icons/hi2";
+import { HiOutlineCheckCircle } from "react-icons/hi2";
 
 import styled from "styled-components";
 
-const BrandDataBox = styled(DataBox)`
+const PartnerDataBox = styled(DataBox)`
   & > section:last-child {
     padding-top: 0;
     padding-bottom: 4rem;
@@ -49,81 +44,88 @@ const SmallBox = styled.div`
 const InfoBox = styled.div`
   display: grid;
   grid-template-areas:
-    "name name parent"
-    "logo logo email"
-    "bkg bkg bkg"
-    "score score boycott";
+    "category name name"
+    "code discount discount"
+    "is_active is_affiliate show_code_in_website"
+    "url url url"
+    "description description description";
   gap: 4rem;
   padding-top: 2rem;
 
   & div:first-child {
-    grid-area: name;
+    grid-area: category;
   }
   & div:nth-child(2) {
-    grid-area: parent;
+    grid-area: name;
   }
+
   & div:nth-child(3) {
-    grid-area: logo;
+    grid-area: code;
   }
   & div:nth-child(4) {
-    grid-area: email;
+    grid-area: discount;
   }
   & div:nth-child(5) {
-    grid-area: bkg;
+    grid-area: is_active;
   }
   & div:nth-child(6) {
-    grid-area: score;
+    grid-area: is_affiliate;
   }
   & div:nth-child(7) {
-    grid-area: boycott;
+    grid-area: show_code_in_website;
+  }
+  & div:nth-child(8) {
+    grid-area: url;
+  }
+  & div:nth-child(9) {
+    grid-area: description;
   }
 `;
 
-function BrandDetail() {
+function PartnerDetail() {
   const navigate = useNavigate();
   const goBack = useGoBack();
   const { hasAccess } = useCurrentUserContext();
-  const { isPending: isPendingBrand, brand, scores } = useBrand();
-  const { isDeleting, deleteBrand } = useDeleteBrand();
-  const {
-    isPending: isPendingCategories,
-    categories,
-    count: categoriesCount,
-  } = useScoringCategories();
-
-  const isPending = isPendingBrand || isPendingCategories;
+  const { isPending, partner } = usePartner();
+  const { isDeleting, deletePartner } = useDeletePartner();
 
   if (isPending) return <Spinner />;
 
-  if (!brand) return <Empty message="Marque inconnue" />;
+  if (!partner) return <Empty message="Entreprise partenaire inconnue" />;
 
   const {
-    id: brandId,
+    id: partnerId,
     created_at,
     updated_at,
     name,
-    email,
-    parent,
-    score,
-    boycott,
-    background,
+    url,
     logo_path,
-  } = brand;
-
-  const scoreColor = getScoresColor(score);
+    description,
+    discount_text,
+    discount_code,
+    is_affiliate,
+    show_code_in_website,
+    is_active,
+    category,
+  } = partner;
 
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Détail de la marque #{brandId}</Heading>
+        <Heading as="h1">
+          Détail de l'entreprise partenaire #{partnerId}
+        </Heading>
         <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
       </Row>
 
-      <BrandDataBox>
-        <HeaderDetail type={scoreColor}>
+      <PartnerDataBox>
+        <HeaderDetail type={is_active ? "green" : "red"}>
           <div>
-            <HiOutlineBuildingOffice />
-            <p>{name}</p>
+            <ImageDetail path={logo_path} alt={`Logo ${name}`} size={6} />
+            <p>
+              {name}
+              {is_affiliate ? " ⭐️" : ""}
+            </p>
           </div>
 
           <SmallBox>
@@ -146,6 +148,14 @@ function BrandDetail() {
           <InfoBox>
             <DataItem
               icon={<HiOutlineCheckCircle />}
+              label="Catégorie :"
+              type="horizontal"
+            >
+              {category ? category.name : <NoDataItem>--</NoDataItem>}
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
               label="Nom :"
               type="horizontal"
             >
@@ -154,72 +164,74 @@ function BrandDetail() {
 
             <DataItem
               icon={<HiOutlineCheckCircle />}
-              label="Maison mère :"
+              label="Code :"
               type="horizontal"
             >
-              {parent ? (
-                <ButtonText onClick={() => navigate(`/brands/${parent.id}`)}>
-                  {parent.name}
-                </ButtonText>
+              {discount_code || <NoDataItem>--</NoDataItem>}
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Réduction :"
+              type="horizontal"
+            >
+              {discount_text || <NoDataItem>--</NoDataItem>}
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Code actif :"
+              type="horizontal"
+            >
+              {is_active ? (
+                <Tag type="green">Oui</Tag>
               ) : (
-                <NoDataItem>--</NoDataItem>
+                <Tag type="red">Non</Tag>
               )}
             </DataItem>
 
             <DataItem
               icon={<HiOutlineCheckCircle />}
-              label="Logo :"
+              label="Code affilié :"
               type="horizontal"
             >
-              <ImageDetail path={logo_path} alt={`Logo ${name}`} size={8} />
+              {is_affiliate ? (
+                <Tag type="green">Oui</Tag>
+              ) : (
+                <Tag type="red">Non</Tag>
+              )}
             </DataItem>
 
             <DataItem
               icon={<HiOutlineCheckCircle />}
-              label="Adresse e-mail :"
+              label="Code affiché sur le site web :"
               type="horizontal"
             >
-              {email || <NoDataItem>--</NoDataItem>}
+              {show_code_in_website ? (
+                <Tag type="green">Oui</Tag>
+              ) : (
+                <Tag type="red">Non</Tag>
+              )}
             </DataItem>
 
             <DataItem
               icon={<HiOutlineCheckCircle />}
-              label="Informations générales :"
+              label="Site web :"
+              type="horizontal"
+            >
+              {url || <NoDataItem>--</NoDataItem>}
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Description :"
               type="vertical"
             >
-              {background || <NoDataItem>--</NoDataItem>}
-            </DataItem>
-
-            <DataItem
-              icon={<HiOutlineCheckCircle />}
-              label="Score éthique :"
-              type="horizontal"
-            >
-              <Tag type={scoreColor}>
-                {score !== null ? `${score}%` : "N/A"}
-              </Tag>
-            </DataItem>
-
-            <DataItem
-              icon={<HiOutlineCheckCircle />}
-              label="Boycott :"
-              type="horizontal"
-            >
-              {boycott ? (
-                <Tag type="red">Oui</Tag>
-              ) : (
-                <Tag type="green">Non</Tag>
-              )}
+              {description || <NoDataItem>--</NoDataItem>}
             </DataItem>
           </InfoBox>
         </Section>
-
-        {scores.length > 0 && (
-          <Section>
-            <BrandScores categories={categories} scores={scores} />
-          </Section>
-        )}
-      </BrandDataBox>
+      </PartnerDataBox>
 
       {hasAccess("contributor") && (
         <Modal>
@@ -228,19 +240,13 @@ function BrandDetail() {
               <Button $variation="accent">Éditer</Button>
             </Modal.Open>
 
-            {categoriesCount && hasAccess("contributor") && (
-              <Modal.Open opens="manage-brand-score">
-                <Button $variation="primary">
-                  {scores.length > 0 ? "Éditer" : "Créer"} le score éthique
+            {hasAccess("admin") && (
+              <Modal.Open opens="delete">
+                <Button $variation="danger" disabled={isDeleting}>
+                  Supprimer
                 </Button>
               </Modal.Open>
             )}
-
-            <Modal.Open opens="delete">
-              <Button $variation="danger" disabled={isDeleting}>
-                Supprimer
-              </Button>
-            </Modal.Open>
 
             <Button $variation="secondary" onClick={goBack}>
               Retour
@@ -248,24 +254,16 @@ function BrandDetail() {
           </ButtonGroup>
 
           <Modal.Window name="edit">
-            <UpdateBrandForm brandToUpdate={brand} />
-          </Modal.Window>
-
-          <Modal.Window name="manage-brand-score">
-            <ManageBrandScoresForm
-              brandId={brand.id}
-              categories={categories}
-              scores={scores}
-            />
+            <UpdatePartnerForm partnerToUpdate={partner} />
           </Modal.Window>
 
           <Modal.Window name="delete">
             <ConfirmAction
               variation="delete"
-              title="Supprimer une marque"
-              message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement cette marque ?"
+              title="Supprimer une entreprise partenaire"
+              message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement cette entreprise partenaire ?"
               onConfirm={() =>
-                deleteBrand(brandId, {
+                deletePartner(partnerId, {
                   onSettled: () => navigate(-1),
                 })
               }
@@ -278,4 +276,4 @@ function BrandDetail() {
   );
 }
 
-export default BrandDetail;
+export default PartnerDetail;

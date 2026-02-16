@@ -3,12 +3,12 @@ import { API_URL } from "@/utils/constants";
 import { HiPhoto } from "react-icons/hi2";
 import styled from "styled-components";
 
-const LogoContainer = styled.div`
+const ImageContainer = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const LogoImg = styled.img`
+const Img = styled.img`
   display: block;
   aspect-ratio: 1;
   object-fit: cover;
@@ -18,7 +18,7 @@ const LogoImg = styled.img`
   height: ${(props) => `${props.$size}rem`};
 `;
 
-const NoLogoPlaceholder = styled.div`
+const NoImagePlaceholder = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -35,23 +35,18 @@ const NoLogoPlaceholder = styled.div`
   }
 `;
 
-function BrandLogo({ brand, size = 4 }) {
-  const { logo_path, name } = brand;
+function ImageDetail({ path, alt = "Logo", size = 4 }) {
   return (
-    <LogoContainer>
-      {logo_path ? (
-        <LogoImg
-          src={`${API_URL}/${logo_path}`}
-          alt={`Logo ${name}`}
-          $size={size}
-        />
+    <ImageContainer>
+      {path ? (
+        <Img src={`${API_URL}/${path}`} alt={alt} $size={size} />
       ) : (
-        <NoLogoPlaceholder $size={size}>
+        <NoImagePlaceholder $size={size}>
           <HiPhoto />
-        </NoLogoPlaceholder>
+        </NoImagePlaceholder>
       )}
-    </LogoContainer>
+    </ImageContainer>
   );
 }
 
-export default BrandLogo;
+export default ImageDetail;

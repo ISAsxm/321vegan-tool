@@ -67,11 +67,9 @@ function HouseholdCleanerTableRow({ householdCleaner }) {
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
 
-              {hasAccess("admin") && (
-                <Modal.Open opens="delete">
-                  <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
-                </Modal.Open>
-              )}
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
+              </Modal.Open>
             </Menus.List>
           </Menus.Menu>
 

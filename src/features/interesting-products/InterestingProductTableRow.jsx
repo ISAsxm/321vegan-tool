@@ -50,39 +50,38 @@ function InterestingProductTableRow({ interestingProduct }) {
         <span>{formatDistanceFromNow(created_at)}</span>
       </Stacked>
 
-      <Modal>
-        <Menus.Menu>
-          <Menus.Toggle id={id} />
-          <Menus.List id={id}>
-            {hasAccess("contributor") && (
-              <>
-                <Modal.Open opens="edit">
-                  <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
-                </Modal.Open>
-                <Modal.Open opens="delete">
-                  <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
-                </Modal.Open>
-              </>
-            )}
-          </Menus.List>
-        </Menus.Menu>
+      {hasAccess("contributor") && (
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={id} />
+            <Menus.List id={id}>
+              <Modal.Open opens="edit">
+                <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
+              </Modal.Open>
 
-        <Modal.Window name="edit">
-          <UpdateInterestingProductForm
-            interestingProductToUpdate={interestingProduct}
-          />
-        </Modal.Window>
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
+              </Modal.Open>
+            </Menus.List>
+          </Menus.Menu>
 
-        <Modal.Window name="delete">
-          <ConfirmAction
-            variation="delete"
-            title="Supprimer un produit d'intérêt"
-            message="Êtes-vous sûr de vouloir supprimer ce produit d'intérêt ?"
-            onConfirm={() => deleteInterestingProduct(id)}
-            disabled={isDeleting}
-          />
-        </Modal.Window>
-      </Modal>
+          <Modal.Window name="edit">
+            <UpdateInterestingProductForm
+              interestingProductToUpdate={interestingProduct}
+            />
+          </Modal.Window>
+
+          <Modal.Window name="delete">
+            <ConfirmAction
+              variation="delete"
+              title="Supprimer un produit d'intérêt"
+              message="Êtes-vous sûr de vouloir supprimer ce produit d'intérêt ?"
+              onConfirm={() => deleteInterestingProduct(id)}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
+      )}
     </Table.Row>
   );
 }

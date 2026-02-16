@@ -10,11 +10,11 @@ import Menus from "@/ui/Menus";
 import Stacked from "@/ui/Stacked";
 import Tag from "@/ui/Tag";
 import NoDataItem from "@/ui/NoDataItem";
+import ImageDetail from "@/ui/ImageDetail";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 
 import UpdateBrandForm from "./UpdateBrandForm";
-import BrandLogo from "./BrandLogo";
 
 import { HiEye, HiPencil, HiTrash } from "react-icons/hi2";
 
@@ -31,11 +31,12 @@ function BrandTableRow({ brand }) {
     score,
     boycott,
     email,
+    logo_path,
   } = brand;
 
   return (
     <Table.Row>
-      <BrandLogo brand={brand} />
+      <ImageDetail path={logo_path} alt={`Logo ${name}`} />
 
       <Stacked>
         <span>{name}</span>
@@ -78,11 +79,9 @@ function BrandTableRow({ brand }) {
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
 
-              {hasAccess("admin") && (
-                <Modal.Open opens="delete">
-                  <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
-                </Modal.Open>
-              )}
+              <Modal.Open opens="delete">
+                <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
+              </Modal.Open>
             </Menus.List>
           </Menus.Menu>
 

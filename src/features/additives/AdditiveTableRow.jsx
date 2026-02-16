@@ -70,44 +70,42 @@ function AdditiveTableRow({ additive }) {
         {ADDITIVES_STATUSES[status].label}
       </Tag>
 
-      <Modal>
-        <Menus.Menu>
-          <Menus.Toggle id={additiveId} />
-          <Menus.List id={additiveId}>
-            <Menus.Button
-              icon={<HiEye />}
-              onClick={() => navigate(`/additives/${additiveId}`)}
-            >
-              Voir le détail
-            </Menus.Button>
+      {hasAccess("contributor") && (
+        <Modal>
+          <Menus.Menu>
+            <Menus.Toggle id={additiveId} />
+            <Menus.List id={additiveId}>
+              <Menus.Button
+                icon={<HiEye />}
+                onClick={() => navigate(`/additives/${additiveId}`)}
+              >
+                Voir le détail
+              </Menus.Button>
 
-            {hasAccess("contributor") && (
               <Modal.Open opens="edit">
                 <Menus.Button icon={<HiPencil />}>Éditer</Menus.Button>
               </Modal.Open>
-            )}
 
-            {hasAccess("admin") && (
               <Modal.Open opens="delete">
                 <Menus.Button icon={<HiTrash />}>Supprimer</Menus.Button>
               </Modal.Open>
-            )}
-          </Menus.List>
-        </Menus.Menu>
+            </Menus.List>
+          </Menus.Menu>
 
-        <Modal.Window name="edit">
-          <UpdateAdditiveForm additiveToUpdate={additive} />
-        </Modal.Window>
-        <Modal.Window name="delete">
-          <ConfirmAction
-            variation="delete"
-            title="Supprimer un additif"
-            message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement cet additif ?"
-            onConfirm={() => deleteAdditive(additiveId)}
-            disabled={isDeleting}
-          />
-        </Modal.Window>
-      </Modal>
+          <Modal.Window name="edit">
+            <UpdateAdditiveForm additiveToUpdate={additive} />
+          </Modal.Window>
+          <Modal.Window name="delete">
+            <ConfirmAction
+              variation="delete"
+              title="Supprimer un additif"
+              message="Cette action est irréversible. Êtes-vous sûr de vouloir supprimer définitivement cet additif ?"
+              onConfirm={() => deleteAdditive(additiveId)}
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
+      )}
     </Table.Row>
   );
 }

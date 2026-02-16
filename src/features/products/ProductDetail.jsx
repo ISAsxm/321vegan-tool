@@ -203,9 +203,13 @@ function ProductDetail() {
               type="horizontal"
             >
               {brand ? (
-                <ButtonText onClick={() => navigate(`/brands/${brand.id}`)}>
-                  {brand.name}
-                </ButtonText>
+                hasAccess("contributor") ? (
+                  <ButtonText onClick={() => navigate(`/brands/${brand.id}`)}>
+                    {brand.name}
+                  </ButtonText>
+                ) : (
+                  brand.name
+                )
               ) : (
                 <NoDataItem>--</NoDataItem>
               )}
