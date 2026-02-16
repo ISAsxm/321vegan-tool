@@ -7,7 +7,6 @@ import Heading from "@/ui/Heading";
 import ProductCurrentMonthStats from "./ProductCurrentMonthStats";
 import ErrorReportsStats from "./ErrorReportsStats";
 import ProductStatesAllTimeStats from "./ProductStatesAllTimeStats";
-import ProductStatesCurrentMonthStats from "./ProductStatesCurrentMonthStats";
 import ProductStatusesAllTimeStats from "./ProductStatusesAllTimeStats";
 import ProductCurrentMonthAreaChart from "./ProductCurrentMonthAreaChart";
 import ProductStatesCurrentMonthPieChart from "./ProductStatesCurrentMonthPieChart";
@@ -46,8 +45,6 @@ function DashboardLayout() {
         <StyledHeading as="h2">
           Statistiques du mois actuel (100 derniers produits)
         </StyledHeading>
-
-        <ProductStatesCurrentMonthStats />
 
         <ProductCurrentMonthStats products={products} />
 
