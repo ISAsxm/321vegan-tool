@@ -9,7 +9,7 @@ export function useCurrentMonthProducts() {
   // FILTERS
   const filters = [
     {
-      field: "created_at__gt",
+      field: "updated_at__gt",
       value: getFirstDateOfMonth().toISOString().slice(0, -1),
     },
   ];

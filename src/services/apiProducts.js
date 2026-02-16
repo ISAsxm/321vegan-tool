@@ -10,7 +10,9 @@ export async function countProducts(filters) {
       filters.map((f) => params.append(f.field, f.value));
     }
     const res = await axiosInstance.get(
-      [`${API_URL}/products/count`, params.toString()].filter(Boolean).join("?")
+      [`${API_URL}/products/count`, params.toString()]
+        .filter(Boolean)
+        .join("?"),
     );
     const data = res.data;
     return data.total;
@@ -18,11 +20,11 @@ export async function countProducts(filters) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't load products. Response status: ${error.response.status}`
+        `Couldn't load products. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't load products. Request error: ${error.request}`
+        `Couldn't load products. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't load products. Error: ${error.message}`);
@@ -39,11 +41,11 @@ export async function getProducts() {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't load products. Response status: ${error.response.status}`
+        `Couldn't load products. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't load products. Request error: ${error.request}`
+        `Couldn't load products. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't load products. Error: ${error.message}`);
@@ -55,7 +57,7 @@ export async function getSearchProducts({ filters, sortBy, page, size }) {
   try {
     const params = buildURLSearchParams(filters, sortBy, page, size);
     const res = await axiosInstance.get(
-      [`${API_URL}/products/search`, params].filter(Boolean).join("?")
+      [`${API_URL}/products/search`, params].filter(Boolean).join("?"),
     );
     const data = await res.data;
     return { data: data.items, count: data.total };
@@ -63,15 +65,15 @@ export async function getSearchProducts({ filters, sortBy, page, size }) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't load searched products. Response status: ${error.response.status}`
+        `Couldn't load searched products. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't load searched products. Request error: ${error.request}`
+        `Couldn't load searched products. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't load searched products. Error: ${error.message}`
+        `Couldn't load searched products. Error: ${error.message}`,
       );
     }
   }
@@ -86,11 +88,11 @@ export async function getProduct(id) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't find product #${id}. Response status: ${error.response.status}`
+        `Couldn't find product #${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't find product #${id}. Request error: ${error.request}`
+        `Couldn't find product #${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't find product #${id}. Error: ${error.message}`);
@@ -107,15 +109,15 @@ export async function getProductByEan(ean) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't find product by ean #${ean}. Response status: ${error.response.status}`
+        `Couldn't find product by ean #${ean}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't find product by ean #${ean}. Request error: ${error.request}`
+        `Couldn't find product by ean #${ean}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't find product by ean #${ean}. Error: ${error.message}`
+        `Couldn't find product by ean #${ean}. Error: ${error.message}`,
       );
     }
   }
@@ -132,11 +134,11 @@ export async function createProduct(product) {
       if (error.response.status === 409)
         throw new Error(`Ce produit existe déjà.`);
       throw new Error(
-        `Couldn't create product. Response status: ${error.response.status}`
+        `Couldn't create product. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't create product. Request error: ${error.request}`
+        `Couldn't create product. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't create product. Error: ${error.message}`);
@@ -155,15 +157,15 @@ export async function updateProduct(id, product) {
       if (error.response.status === 409)
         throw new Error(`Ce produit existe déjà.`);
       throw new Error(
-        `Couldn't update product # ${id}. Response status: ${error.response.status}`
+        `Couldn't update product # ${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't update product # ${id}. Request error: ${error.request}`
+        `Couldn't update product # ${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't update product # ${id}. Error: ${error.message}`
+        `Couldn't update product # ${id}. Error: ${error.message}`,
       );
     }
   }
@@ -178,15 +180,15 @@ export async function deleteProduct(id) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't delete product # ${id}. Response status: ${error.response.status}`
+        `Couldn't delete product # ${id}. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't delete product # ${id}. Request error: ${error.request}`
+        `Couldn't delete product # ${id}. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't delete product # ${id}. Error: ${error.message}`
+        `Couldn't delete product # ${id}. Error: ${error.message}`,
       );
     }
   }
