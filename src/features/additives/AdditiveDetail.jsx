@@ -180,15 +180,11 @@ function AdditiveDetail() {
               <Button $variation="accent">Éditer</Button>
             </Modal.Open>
 
-            {hasAccess("admin") && (
-              <>
-                <Modal.Open opens="delete">
-                  <Button $variation="danger" disabled={isDeleting}>
-                    Supprimer
-                  </Button>
-                </Modal.Open>
-              </>
-            )}
+            <Modal.Open opens="delete">
+              <Button $variation="danger" disabled={isDeleting}>
+                Supprimer
+              </Button>
+            </Modal.Open>
 
             <Button $variation="secondary" onClick={goBack}>
               Retour

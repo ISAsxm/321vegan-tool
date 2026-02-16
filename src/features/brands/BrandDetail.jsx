@@ -24,10 +24,11 @@ import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Empty from "@/ui/Empty";
 import Spinner from "@/ui/Spinner";
+import ImageDetail from "@/ui/ImageDetail";
+
 import BrandScores from "@/features/scoring/brands/BrandScores";
 import ManageBrandScoresForm from "@/features/scoring/brands/ManageBrandScoresForm";
 
-import BrandLogo from "./BrandLogo";
 import UpdateBrandForm from "./UpdateBrandForm";
 
 import { HiOutlineBuildingOffice, HiOutlineCheckCircle } from "react-icons/hi2";
@@ -106,6 +107,7 @@ function BrandDetail() {
     score,
     boycott,
     background,
+    logo_path,
   } = brand;
 
   const scoreColor = getScoresColor(score);
@@ -169,7 +171,7 @@ function BrandDetail() {
               label="Logo :"
               type="horizontal"
             >
-              <BrandLogo brand={brand} size={8} />
+              <ImageDetail path={logo_path} alt={`Logo ${name}`} size={8} />
             </DataItem>
 
             <DataItem
@@ -234,13 +236,11 @@ function BrandDetail() {
               </Modal.Open>
             )}
 
-            {hasAccess("admin") && (
-              <Modal.Open opens="delete">
-                <Button $variation="danger" disabled={isDeleting}>
-                  Supprimer
-                </Button>
-              </Modal.Open>
-            )}
+            <Modal.Open opens="delete">
+              <Button $variation="danger" disabled={isDeleting}>
+                Supprimer
+              </Button>
+            </Modal.Open>
 
             <Button $variation="secondary" onClick={goBack}>
               Retour

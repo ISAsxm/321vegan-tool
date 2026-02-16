@@ -19,18 +19,21 @@ import Additives from "@/pages/Additives";
 import ApiClients from "@/pages/ApiClients";
 import Brand from "@/pages/Brand";
 import Brands from "@/pages/Brands";
-import Cosmetics from "@/pages/Cosmetics";
-import HouseholdCleaners from "@/pages/HouseholdCleaners";
 import Checkings from "@/pages/Checkings";
+import Cosmetics from "@/pages/Cosmetics";
 import Dashboard from "@/pages/Dashboard";
 import ErrorReports from "@/pages/ErrorReports";
 import ForgotPassword from "@/pages/ForgotPassword";
+import HouseholdCleaners from "@/pages/HouseholdCleaners";
 import InterestingProducts from "@/pages/InterestingProducts";
 import Login from "@/pages/Login";
 import PageNotFound from "@/pages/PageNotFound";
+import Partner from "@/pages/Partner";
+import PartnerCategories from "@/pages/PartnerCategories";
+import Partners from "@/pages/Partners";
 import Product from "@/pages/Product";
-import Products from "@/pages/Products";
 import ProductCategories from "@/pages/ProductCategories";
+import Products from "@/pages/Products";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
@@ -107,7 +110,15 @@ function App() {
                 />
                 <Route path="categories" element={<ProductCategories />} />
                 <Route path="brands" element={<Brands />} />
-                <Route path="brands/:brandId" element={<Brand />} />
+                <Route
+                  path="brands/:brandId"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <Brand />
+                    </ProtectedRouteRole>
+                  }
+                />
+
                 <Route
                   path="products/register/:productEan"
                   element={
@@ -125,12 +136,44 @@ function App() {
                   }
                 />
                 <Route path="additives" element={<Additives />} />
-                <Route path="additives/:additiveId" element={<Additive />} />
+                <Route
+                  path="additives/:additiveId"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <Additive />
+                    </ProtectedRouteRole>
+                  }
+                />
                 <Route
                   path="household-cleaners"
                   element={<HouseholdCleaners />}
                 />
                 <Route path="cosmetics" element={<Cosmetics />} />
+                <Route
+                  path="partners/companies"
+                  element={
+                    <ProtectedRouteRole role="admin">
+                      <Partners />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="partners/companies/:partnerId"
+                  element={
+                    <ProtectedRouteRole role="admin">
+                      <Partner />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="partners/categories"
+                  element={
+                    <ProtectedRouteRole role="admin">
+                      <PartnerCategories />
+                    </ProtectedRouteRole>
+                  }
+                />
+
                 <Route
                   path="scoring/categories"
                   element={

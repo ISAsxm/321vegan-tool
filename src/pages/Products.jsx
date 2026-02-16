@@ -11,7 +11,7 @@ function Products() {
     <>
       <Row type="horizontal">
         <Heading as="h1">
-          <PiPlant /> Produits (tous)
+          <PiPlant /> Produits
         </Heading>
         <ProductListOperations />
       </Row>

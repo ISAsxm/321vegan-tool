@@ -14,6 +14,8 @@ import {
   HiOutlineRectangleGroup,
   HiOutlineCheckCircle,
   HiOutlineShieldCheck,
+  HiOutlinePercentBadge,
+  HiOutlineBuildingStorefront,
   HiChevronDown,
   HiChevronUp,
 } from "react-icons/hi2";
@@ -22,6 +24,10 @@ import { GiForkKnifeSpoon } from "react-icons/gi";
 
 import styled from "styled-components";
 import { useState } from "react";
+
+const StyledNav = styled.nav`
+  overflow-y: scroll;
+`;
 
 const NavList = styled.ul`
   display: flex;
@@ -110,7 +116,7 @@ function MainNav() {
   const [currentOpen, setCurrentOpen] = useState(null);
 
   return (
-    <nav>
+    <StyledNav>
       <NavList>
         <li>
           <StyledNavLink to="/dashboard">
@@ -196,6 +202,27 @@ function MainNav() {
           </StyledNavLink>
         </li>
 
+        {hasAccess("admin") && (
+          <NavSubItem
+            currentOpen={currentOpen}
+            onOpen={setCurrentOpen}
+            id="partners"
+            icon={<HiOutlinePercentBadge />}
+            title="Partenaires"
+          >
+            <NavList>
+              <li>
+                <NestedNavLink to="/partners/companies">
+                  <HiOutlineBuildingStorefront /> <span>Entreprises</span>
+                </NestedNavLink>
+                <NestedNavLink to="/partners/categories">
+                  <HiOutlineRectangleGroup /> <span>Catégories</span>
+                </NestedNavLink>
+              </li>
+            </NavList>
+          </NavSubItem>
+        )}
+
         {hasAccess("contributor") && (
           <NavSubItem
             currentOpen={currentOpen}
@@ -213,6 +240,7 @@ function MainNav() {
             </NavList>
           </NavSubItem>
         )}
+
         {hasAccess("admin") && (
           <NavSubItem
             currentOpen={currentOpen}
@@ -236,7 +264,7 @@ function MainNav() {
           </NavSubItem>
         )}
       </NavList>
-    </nav>
+    </StyledNav>
   );
 }
 
