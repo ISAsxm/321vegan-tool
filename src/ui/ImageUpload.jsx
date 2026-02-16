@@ -38,7 +38,12 @@ const ResetButton = styled(ButtonIcon).attrs({ type: "button" })`
   }
 `;
 
-function ImageUpload({ defaultValue = null, disabled, onUpload }) {
+function ImageUpload({
+  defaultValue = null,
+  disabled,
+  onUpload,
+  required = false,
+}) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const inputRef = useRef();
@@ -75,6 +80,7 @@ function ImageUpload({ defaultValue = null, disabled, onUpload }) {
         accept="image/*"
         onChange={(e) => handleSelectFile(e.target.files[0])}
         disabled={disabled}
+        required={required}
       />
     </div>
   );
