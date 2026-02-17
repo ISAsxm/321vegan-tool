@@ -29,7 +29,11 @@ function UserAvatar({ user }) {
       <Avatar
         src={`/${
           user.avatar ||
-          getRand(Object.values(USER_AVATARS).filter((i) => i !== "default"))
+          getRand(
+            Object.values(USER_AVATARS).filter(
+              (i) => i !== USER_AVATARS.default,
+            ),
+          )
         }`}
         alt=""
       />
