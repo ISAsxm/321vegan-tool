@@ -1,20 +1,39 @@
-import { useUntreatedErrorReportsCount } from "@/features/error-reports/useUntreatedErrorReportsCount";
+import { useErrorReportsCount } from "./useErrorReportsCount";
 
 import Stat from "./Stat";
 
-import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import { HiOutlineCheck, HiOutlineExclamationTriangle } from "react-icons/hi2";
+import styled from "styled-components";
 
+const StyledGroupStats = styled.div`
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.4rem;
+`;
 function ErrorReportsStats() {
-  const { isPending, untreatedCount } = useUntreatedErrorReportsCount();
+  const { isPending: isPendingUntreated, count: untreatedCount } =
+    useErrorReportsCount(false);
+  const { isPending: isPendingTreated, count: treatedCount } =
+    useErrorReportsCount(true);
 
   return (
-    <Stat
-      title="Erreurs non traitées"
-      color="yellow"
-      icon={<HiOutlineExclamationTriangle />}
-      value={untreatedCount}
-      isPending={isPending}
-    />
+    <StyledGroupStats>
+      <Stat
+        title="Erreurs non traitées"
+        color="yellow"
+        icon={<HiOutlineExclamationTriangle />}
+        value={untreatedCount}
+        isPending={isPendingUntreated}
+      />
+      <Stat
+        title="Erreurs traitées"
+        color="green"
+        icon={<HiOutlineCheck />}
+        value={treatedCount}
+        isPending={isPendingTreated}
+      />
+    </StyledGroupStats>
   );
 }
 
