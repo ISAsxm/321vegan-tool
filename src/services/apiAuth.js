@@ -16,7 +16,7 @@ export async function login({ email, password }) {
   } catch (error) {
     if (error.response) {
       throw new Error(
-        `Couldn't log in. Response status: ${error.response.status}`
+        `Couldn't log in. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(`Couldn't log in. Request error: ${error.request}`);
@@ -35,7 +35,7 @@ export async function logout() {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't log out. Response status: ${error.response.status}`
+        `Couldn't log out. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(`Couldn't log out. Request error: ${error.request}`);
@@ -54,11 +54,11 @@ export async function getCurrentUser() {
     if (error.response) {
       if (error.response.status === 401) throw error;
       throw new Error(
-        `Couldn't find current user. Response status: ${error.response.status}`
+        `Couldn't find current user. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't find current user. Request error: ${error.request}`
+        `Couldn't find current user. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't find current user. Error: ${error.message}`);
@@ -67,37 +67,26 @@ export async function getCurrentUser() {
 }
 
 export async function updateCurrentUser({ id, password, nickname, avatar }) {
-  // 1. Update password OR nickname
+  // 1. Update password OR nickname and avatar
   let updateData;
-  if (password) updateData = { password: password };
-  if (nickname) updateData = { nickname: nickname };
+  if (password) updateData = { id: id, password: password };
+  if (nickname)
+    updateData = { id: id, nickname: nickname, avatar: avatar || null };
   try {
     const res = await axiosInstance.put(`${API_URL}/me/`, updateData);
     const data = await res.data;
-
     return data;
-    // uncomment when there is a storage solution for files
-    // if (!avatar) return data;
-    // // 2. Upload avatar image
-    // const fileName = `avatar-${id}-${Math.random()}`;
-    // TODO upload file in bucket
-    // console.log(fileName);
-    // // 3. Update avatar in the user
-    // updateData = { avatar: fileName };
-    // const res2 = await axios.put(`${API_URL}/me/`, updateData);
-    // const data2 = await res2.data;
-    // return data2;
   } catch (error) {
     if (error.response) {
       if (error.response.status === 401) throw error;
       if (error.response.status === 409)
         throw new Error(`Ce pseudo existe déjà.`);
       throw new Error(
-        `Couldn't update current user. Response status: ${error.response.status}`
+        `Couldn't update current user. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't update current user. Request error: ${error.request}`
+        `Couldn't update current user. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't update current user. Error: ${error.message}`);
@@ -115,15 +104,15 @@ export async function requestPasswordReset(email) {
   } catch (error) {
     if (error.response) {
       throw new Error(
-        `Couldn't request password reset. Response status: ${error.response.status}`
+        `Couldn't request password reset. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't request password reset. Request error: ${error.request}`
+        `Couldn't request password reset. Request error: ${error.request}`,
       );
     } else {
       throw new Error(
-        `Couldn't request password reset. Error: ${error.message}`
+        `Couldn't request password reset. Error: ${error.message}`,
       );
     }
   }
@@ -135,14 +124,14 @@ export async function verifyPasswordResetToken(token) {
       `${API_URL}/auth/password-reset/verify-token`,
       {
         token,
-      }
+      },
     );
     const data = await res.data;
     return data;
   } catch (error) {
     if (error.response) {
       throw new Error(
-        `Invalid or expired token. Response status: ${error.response.status}`
+        `Invalid or expired token. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(`Couldn't verify token. Request error: ${error.request}`);
@@ -169,11 +158,11 @@ export async function confirmPasswordReset({ token, new_password }) {
         }
       }
       throw new Error(
-        `Couldn't reset password. Response status: ${error.response.status}`
+        `Couldn't reset password. Response status: ${error.response.status}`,
       );
     } else if (error.request) {
       throw new Error(
-        `Couldn't reset password. Request error: ${error.request}`
+        `Couldn't reset password. Request error: ${error.request}`,
       );
     } else {
       throw new Error(`Couldn't reset password. Error: ${error.message}`);

@@ -15,9 +15,19 @@ const variations = {
   `,
 };
 
+const wrap = {
+  wrap: css`
+    flex-wrap: wrap;
+  `,
+  nowrap: css`
+    flex-wrap: nowrap;
+  `,
+};
+
 const ButtonGroup = styled.div`
   display: flex;
   gap: 1.2rem;
+  ${(props) => wrap[props.$wrap || "nowrap"]}
   ${(props) => variations[props.$variation || "normal"]}
 `;
 

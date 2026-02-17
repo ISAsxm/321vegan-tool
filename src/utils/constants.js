@@ -1,6 +1,19 @@
 export const API_URL = import.meta.env.VITE_API_URL;
 export const PAGE_SIZE = 5;
 
+export const USER_AVATARS = {
+  default: "default-avatar.jpg",
+  canard: "canard.png",
+  cochon: "cochon.png",
+  lapin: "lapin.png",
+  mouton: "mouton.png",
+  poisson: "poisson.png",
+  poule: "poule.png",
+  vache: "vache.png",
+  ver: "ver.png",
+  chat: "chat.png",
+};
+
 export const USER_ROLES = {
   user: { color: "silver", label: "Utilisateurice", roles: ["user"] },
   contributor: {

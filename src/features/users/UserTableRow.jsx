@@ -1,9 +1,6 @@
-import { USER_ROLES } from "@/utils/constants";
-import {
-  formatDistanceFromNow,
-  formatDate,
-  getInitials,
-} from "@/utils/helpers";
+import { USER_ROLES, USER_AVATARS } from "@/utils/constants";
+
+import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 
 import { useDeleteUser } from "./useDeleteUser";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
@@ -33,28 +30,16 @@ const UserBox = styled.span`
   gap: 0.8rem;
 `;
 
-const UserAvatar = styled.span`
-  display: flex;
+const UserAvatar = styled.img`
+  display: block;
   width: 4rem;
-  height: 4rem;
   aspect-ratio: 1;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--color-brand-100);
+  object-fit: cover;
+  object-position: center;
   border-radius: var(--border-radius-sm);
   outline: 2px solid var(--color-grey-100);
+  background-color: var(--color-brand-100);
 `;
-
-// uncomment when there is a storage solution for files
-// const UserAvatar = styled.img`
-//   display: block;
-//   width: 4rem;
-//   aspect-ratio: 1;
-//   object-fit: cover;
-//   object-position: center;
-//   border-radius: var(--border-radius-sm);
-//   outline: 2px solid var(--color-grey-100);
-// `;
 
 function UserTableRow({ user }) {
   const { id: userId, nickname, email, is_active, role, created_at } = user;
@@ -66,13 +51,7 @@ function UserTableRow({ user }) {
       <Ref># {userId}</Ref>
 
       <UserBox>
-        {/* uncomment when there is a storage solution for files
-          <UserAvatar>
-            src={avatar || "default-avatar.jpg"}
-            alt={`Avatar of ${nickname}`}
-          /> 
-        */}
-        <UserAvatar>{getInitials(nickname)}</UserAvatar>
+        <UserAvatar src={user.avatar || USER_AVATARS.default} alt="" />
         <Stacked>
           <span>{nickname}</span>
           <span>{email}</span>

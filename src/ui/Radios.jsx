@@ -96,7 +96,14 @@ const LabelButton = styled.label`
 
 const RadiosContext = createContext();
 
-function Radios({ children, id, required, onChange, defaultValue = "" }) {
+function Radios({
+  children,
+  id,
+  required,
+  onChange,
+  defaultValue = "",
+  wrap = "nowrap",
+}) {
   const name = useRef(id);
   const isRequired = useRef(required);
   const [selectedValue, setSelectedValue] = useState(defaultValue);
@@ -112,7 +119,7 @@ function Radios({ children, id, required, onChange, defaultValue = "" }) {
 
   return (
     <RadiosContext value={{ selectedValue, select, name, isRequired }}>
-      <ButtonGroup id={id} className={required ? "required" : ""}>
+      <ButtonGroup id={id} className={required ? "required" : ""} $wrap={wrap}>
         {children}
       </ButtonGroup>
     </RadiosContext>
