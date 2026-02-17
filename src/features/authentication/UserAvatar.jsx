@@ -27,10 +27,10 @@ function UserAvatar({ user }) {
   return (
     <StyledUserAvatar>
       <Avatar
-        src={
+        src={`/${
           user.avatar ||
           getRand(Object.values(USER_AVATARS).filter((i) => i !== "default"))
-        }
+        }`}
         alt=""
       />
       <span>{user.nickname}</span>

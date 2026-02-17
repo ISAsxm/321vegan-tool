@@ -51,7 +51,7 @@ function UserTableRow({ user }) {
       <Ref># {userId}</Ref>
 
       <UserBox>
-        <UserAvatar src={user.avatar || USER_AVATARS.default} alt="" />
+        <UserAvatar src={`/${user.avatar || USER_AVATARS.default}`} alt="" />
         <Stacked>
           <span>{nickname}</span>
           <span>{email}</span>

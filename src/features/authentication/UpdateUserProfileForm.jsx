@@ -90,7 +90,7 @@ function UpdateUserProfileForm({ user }) {
               $size="large"
             >
               <StyledUserAvatar>
-                <Avatar src={o} alt="" />
+                <Avatar src={`/${o}`} alt="" />
               </StyledUserAvatar>
             </Radios.RadioButton>
           ))}
