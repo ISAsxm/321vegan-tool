@@ -196,3 +196,11 @@ export const sortByInputFirst = (input, data) => {
   );
   return first.concat(others);
 };
+
+/**
+ * Return a random element of a given array.
+ *
+ * @param {Array} list: the array from which you wish to retrieve a random element
+ * @return {any} a random element from the list
+ * */
+export const getRand = (list) => list[(list.length * Math.random()) | 0];

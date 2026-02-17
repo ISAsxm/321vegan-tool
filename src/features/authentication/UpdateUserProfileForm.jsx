@@ -1,32 +1,49 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-
+import { useEffect } from "react";
+import { useController, useForm } from "react-hook-form";
+import { USER_AVATARS } from "@/utils/constants";
 import { useUpdateCurrentUser } from "./useUpdateCurrentUser";
 
 import Button from "@/ui/Button";
-import FileInput from "@/ui/FileInput";
+import Radios from "@/ui/Radios";
 import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 
+import { StyledUserAvatar, Avatar } from "@/features/authentication/UserAvatar";
+
 function UpdateUserProfileForm({ user }) {
-  const { id, nickname, email } = user;
-  const [avatar, setAvatar] = useState("");
+  const { id, nickname, email, avatar } = user;
   const { isUpdating, updateCurrentUser } = useUpdateCurrentUser();
-  const { register, formState, handleSubmit, reset } = useForm({
-    defaultValues: { id, nickname, avatar },
-  });
+  const { register, formState, handleSubmit, reset, watch, setValue, control } =
+    useForm({
+      defaultValues: { id, nickname, avatar: avatar || USER_AVATARS.default },
+    });
   const { errors } = formState;
+
+  const watchFields = watch(["avatar"]);
+
+  const { field: avatarField } = useController({
+    name: "avatar",
+    control,
+  });
+
+  useEffect(() => {
+    if (watchFields[0] === USER_AVATARS.default) {
+      setValue("avatar", "");
+    }
+  }, [watchFields, setValue]);
 
   function onSubmit(data) {
     updateCurrentUser(
-      { ...data, id: id, avatar: avatar },
+      { ...data, id: id },
       {
         onSuccess: (data) => {
-          reset({ nickname: data.nickname });
-          setAvatar("");
+          reset({
+            nickname: data.nickname,
+            avatar: data.avatar || USER_AVATARS.default,
+          });
         },
-      }
+      },
     );
   }
 
@@ -53,15 +70,32 @@ function UpdateUserProfileForm({ user }) {
         />
       </FormRow>
 
-      {/* uncomment when there is a storage solution for files
-      <FormRow label="Avatar" hint="Information visible par toustes les utilisateurices">
-        <FileInput
+      <FormRow
+        label="Avatar"
+        hint="Information visible par toustes les utilisateurices"
+        error={errors.avatar?.message}
+      >
+        <Radios
           id="avatar"
-          accept="image/*"
-          onChange={(e) => setAvatar(e.target.files[0])}
-          disabled={isUpdating}
-        />
-      </FormRow> */}
+          onChange={avatarField.onChange}
+          defaultValue={watchFields[0]}
+          required={false}
+          wrap={"wrap"}
+        >
+          {Object.entries(USER_AVATARS).map(([key, o]) => (
+            <Radios.RadioButton
+              key={key}
+              value={key === "default" ? "" : o}
+              disabled={isUpdating}
+              $size="large"
+            >
+              <StyledUserAvatar>
+                <Avatar src={`/${o}`} alt="" />
+              </StyledUserAvatar>
+            </Radios.RadioButton>
+          ))}
+        </Radios>
+      </FormRow>
 
       <FormRow>
         <Button

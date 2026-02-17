@@ -1,4 +1,4 @@
-import { useCountProducts } from "@/features/products/useCountProducts";
+import { useCountProducts } from "./useCountProducts";
 
 import LoaderDots from "@/ui/LoaderDots";
 
