@@ -10,32 +10,26 @@ import { interestingProductsKeys } from "./queryKeyFactory";
 
 export function useUpdateInterestingProduct() {
   const queryClient = useQueryClient();
-  const { isPending: isUpdating, mutate: updateInterestingProductMutation } =
+  const { isPending: isUpdating, mutate: updateInterestingProduct } =
     useMutation({
       mutationFn: async ({ id, newData }) => {
         const { ean, name, image, type, category_id, brand_id } = newData;
         if (typeof image === "string" || image instanceof String) {
-          return await updateInterestingProductApi({
-            id,
-            newData: {
+          return await updateInterestingProductApi(id, {
+            ean,
+            name,
+            type,
+            category_id: category_id || null,
+            brand_id: brand_id || null,
+          });
+        } else {
+          return Promise.all([
+            updateInterestingProductApi(id, {
               ean,
               name,
               type,
               category_id: category_id || null,
               brand_id: brand_id || null,
-            },
-          });
-        } else {
-          return Promise.all([
-            updateInterestingProductApi({
-              id,
-              newData: {
-                ean,
-                name,
-                type,
-                category_id: category_id || null,
-                brand_id: brand_id || null,
-              },
             }),
             image
               ? uploadInterestingProductImage(id, image)
@@ -44,18 +38,13 @@ export function useUpdateInterestingProduct() {
         }
       },
       onSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: interestingProductsKeys.lists(),
+        toast.success("Le produit d'intérêt a bien été modifié");
+        return queryClient.invalidateQueries({
+          queryKey: interestingProductsKeys.all(),
         });
-        toast.success("Produit d'intérêt modifié avec succès");
       },
-      onError: (err) => {
-        toast.error(err.message);
-      },
+      onError: (err) => toast.error(err.message),
     });
 
-  return {
-    isUpdating,
-    updateInterestingProduct: updateInterestingProductMutation,
-  };
+  return { isUpdating, updateInterestingProduct };
 }

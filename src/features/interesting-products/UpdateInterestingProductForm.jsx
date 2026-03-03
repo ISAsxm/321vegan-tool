@@ -62,7 +62,7 @@ function UpdateInterestingProductForm({
           reset();
           onCloseModal?.();
         },
-      }
+      },
     );
   }
 
@@ -106,7 +106,7 @@ function UpdateInterestingProductForm({
           defaultOptions={Object.entries(INTERESTING_PRODUCT_TYPES).map(
             ([key, o]) => {
               return { value: key, label: o.label };
-            }
+            },
           )}
           required={true}
           disabled={isUpdating}

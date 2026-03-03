@@ -12,6 +12,8 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
+import ImageUpload from "@/ui/ImageUpload";
+
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
 function UpdateProductForm({ productToUpdate, onCloseModal }) {
@@ -51,6 +53,11 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     control,
     defaultValue: updateValues.has_non_vegan_old_receipe,
   });
+  const { field: imageField } = useController({
+    name: "image",
+    control,
+    defaultValue: productToUpdate.image || null,
+  });
 
   function onSubmit(data) {
     updateProduct(
@@ -60,7 +67,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
           reset();
           onCloseModal?.();
         },
-      }
+      },
     );
   }
 
@@ -168,7 +175,10 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+      <FormRow
+        label="Ancienne recette non vegan ?"
+        error={errors.has_non_vegan_old_receipe?.message}
+      >
         <Checkbox
           name="has_non_vegan_old_receipe"
           onChange={hasNonVeganOldReceipeField.onChange}
@@ -177,6 +187,15 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
           value={hasNonVeganOldReceipeField.value}
           $inputRef={hasNonVeganOldReceipeField.ref}
           disabled={isUpdating}
+        />
+      </FormRow>
+
+      <FormRow label="Image" error={errors.image?.message}>
+        <ImageUpload
+          id="image"
+          onUpload={imageField.onChange}
+          disabled={isUpdating}
+          defaultValue={imageField.value}
         />
       </FormRow>
 

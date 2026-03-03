@@ -1,5 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createProduct as createProductApi } from "@/services/apiProducts";
+import {
+  createProduct as createProductApi,
+  uploadProductImage,
+} from "@/services/apiProducts";
 import { productsKeys } from "./queryKeyFactory";
 import toast from "react-hot-toast";
 
@@ -7,7 +10,32 @@ export function useCreateProduct() {
   const queryClient = useQueryClient();
 
   const { isPending: isCreating, mutate: createProduct } = useMutation({
-    mutationFn: createProductApi,
+    mutationFn: async ({
+      state,
+      status,
+      brand_id,
+      ean,
+      name,
+      description,
+      biodynamic,
+      has_non_vegan_old_receipe,
+      image,
+    }) => {
+      let product = await createProductApi({
+        state,
+        status,
+        ean,
+        name,
+        description,
+        biodynamic,
+        has_non_vegan_old_receipe,
+        brand_id: brand_id || null,
+      });
+      if (image) {
+        product = await uploadProductImage(product.id, image);
+      }
+      return Promise.resolve(product);
+    },
     onSuccess: () => {
       toast.success("Le produit a bien été créé");
       queryClient.invalidateQueries({

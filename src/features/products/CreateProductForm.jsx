@@ -12,6 +12,7 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
+import ImageUpload from "@/ui/ImageUpload";
 
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
@@ -48,6 +49,10 @@ function CreateProductForm({ onCloseModal }) {
     name: "has_non_vegan_old_receipe",
     control,
     defaultValue: false,
+  });
+  const { field: imageField } = useController({
+    name: "image",
+    control,
   });
 
   function onSubmit(data) {
@@ -151,7 +156,10 @@ function CreateProductForm({ onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Ancienne recette non vegan ?" error={errors.has_non_vegan_old_receipe?.message}>
+      <FormRow
+        label="Ancienne recette non vegan ?"
+        error={errors.has_non_vegan_old_receipe?.message}
+      >
         <Checkbox
           name="has_non_vegan_old_receipe"
           onChange={hasNonVeganOldReceipeField.onChange}
@@ -159,6 +167,14 @@ function CreateProductForm({ onCloseModal }) {
           checked={hasNonVeganOldReceipeField.value}
           value={hasNonVeganOldReceipeField.value}
           $inputRef={hasNonVeganOldReceipeField.ref}
+          disabled={isCreating}
+        />
+      </FormRow>
+
+      <FormRow label="Image" error={errors.image?.message}>
+        <ImageUpload
+          id="image"
+          onUpload={imageField.onChange}
           disabled={isCreating}
         />
       </FormRow>
