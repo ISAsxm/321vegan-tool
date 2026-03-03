@@ -42,14 +42,21 @@ function ProductValidatorTool() {
     true,
   );
 
+  // Shuffle to reduce collision risk when multiple contributors validate at the same time
   function handleStart(statuses) {
     const filtered =
       statuses.length > 0
         ? products?.filter((p) => statuses.includes(p.status)) || []
         : products || [];
 
+    const shuffled = [...filtered];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+
     setSelectedStatuses(statuses);
-    setProductSnapshot(filtered);
+    setProductSnapshot(shuffled);
     setCurrentIndex(0);
     setPhase("validating");
   }
@@ -106,8 +113,7 @@ function ProductValidatorTool() {
       <CompletedContainer>
         <Heading as="h2">Vérification terminée</Heading>
         <CompletedText>
-          Vous avez traité {productSnapshot.length} produit
-          {productSnapshot.length !== 1 ? "s" : ""}. Merci infiniement pour votre contribution 💚
+          La session est terminée. Merci infiniement pour votre contribution 💚
         </CompletedText>
         <Button onClick={handleRestart}>Retour</Button>
       </CompletedContainer>

@@ -82,7 +82,14 @@ function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
     fetchProductData();
   }, [ean]);
 
-  if (isPending || isPendingOff) return <Spinner />;
+  // Check if the product has been verified while we are on validator mode
+  // Because we fetched the products at the start of the session
+  const isAlreadyVerified = !isPending && product && product.state !== "CREATED" && onCloseProp;
+  useEffect(() => {
+    if (isAlreadyVerified) onCloseProp();
+  }, [isAlreadyVerified, onCloseProp]);
+
+  if (isPending || isPendingOff || isAlreadyVerified) return <Spinner />;
 
   const { created_at, name, status, state } = product;
 
