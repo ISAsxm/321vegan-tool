@@ -5,6 +5,7 @@ import Button from "@/ui/Button";
 import Heading from "@/ui/Heading";
 import Spinner from "@/ui/Spinner";
 
+import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useValidatorProducts } from "./useValidatorProducts";
 import ValidatorSetup from "./ValidatorSetup";
 import ValidatorProgress from "./ValidatorProgress";
@@ -29,6 +30,8 @@ const CompletedText = styled.p`
 
 // 3 phases managed by the "phase" state : setup -> validating -> completed
 function ProductValidatorTool() {
+  const { hasAccess } = useCurrentUserContext();
+  const defaultState = hasAccess("admin") ? "PUBLISHED" : "WAITING_PUBLISH";
   const [phase, setPhase] = useState("setup");
   const [selectedStatuses, setSelectedStatuses] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -131,6 +134,7 @@ function ProductValidatorTool() {
         key={currentProduct.ean}
         ean={currentProduct.ean}
         onClose={handleProductComplete}
+        defaultState={defaultState}
       />
     </>
   );

@@ -40,7 +40,7 @@ const HelperBox = styled.div`
   gap: 1.2rem;
 `;
 
-function ProductRegister({ ean: eanProp, onClose: onCloseProp }) {
+function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
   const { productEan } = useParams();
   const ean = eanProp || productEan;
   const { isPending, product } = useProductByEan(ean);
@@ -181,6 +181,7 @@ function ProductRegister({ ean: eanProp, onClose: onCloseProp }) {
           <RegisterProductForm
             productToCheckedIn={{
               ...product,
+              ...(defaultState && { state: defaultState }),
               name: name || product_name,
               brand: brandFromApi || product.brand,
               brandName: offBrandName.split(",")[0],
