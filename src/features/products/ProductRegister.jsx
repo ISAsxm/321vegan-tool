@@ -40,23 +40,23 @@ const HelperBox = styled.div`
   gap: 1.2rem;
 `;
 
-function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
+function ProductRegister({ ean, onClose, defaultState }) {
   const { productEan } = useParams();
-  const ean = eanProp || productEan;
-  const { isPending, product } = useProductByEan(ean);
+  const finalEan = ean || productEan;
+  const { isPending, product } = useProductByEan(finalEan);
   const [isPendingOff, setIsPendingOff] = useState(false);
   const [errorOff, setErrorOff] = useState("");
   const [offProduct, setOffProduct] = useState({});
   const [brandFromApi, setBrandFromApi] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState();
   const goBack = useGoBack();
-  const handleClose = onCloseProp || goBack;
+  const handleClose = onClose || goBack;
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         setIsPendingOff(true);
-        const data = await getProductData(ean);
+        const data = await getProductData(finalEan);
         if (data) setOffProduct(data);
         // Fetch brand from API
         const brand =
@@ -74,20 +74,20 @@ function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
         }
       } catch (error) {
         console.error(error);
-        setErrorOff(`Ean ${ean} inconnu dans Open Food Facts`);
+        setErrorOff(`Ean ${finalEan} inconnu dans Open Food Facts`);
       } finally {
         setIsPendingOff(false);
       }
     };
     fetchProductData();
-  }, [ean]);
+  }, [finalEan]);
 
   // Check if the product has been verified while we are on validator mode
   // Because we fetched the products at the start of the session
-  const isAlreadyVerified = !isPending && product && product.state !== "CREATED" && onCloseProp;
+  const isAlreadyVerified = !isPending && product && product.state !== "CREATED" && onClose;
   useEffect(() => {
-    if (isAlreadyVerified) onCloseProp();
-  }, [isAlreadyVerified, onCloseProp]);
+    if (isAlreadyVerified) onClose();
+  }, [isAlreadyVerified, onClose]);
 
   if (isPending || isPendingOff || isAlreadyVerified) return <Spinner />;
 
@@ -106,8 +106,8 @@ function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Vérification du produit #{ean}</Heading>
-        {!onCloseProp && (
+        <Heading as="h1">Vérification du produit #{finalEan}</Heading>
+        {!onClose && (
           <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
         )}
       </Row>
@@ -117,7 +117,7 @@ function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
           <div>
             <PiPlant />
             <p>
-              Ean <span>{ean}</span>
+              Ean <span>{finalEan}</span>
             </p>
           </div>
 
@@ -146,7 +146,7 @@ function ProductRegister({ ean: eanProp, onClose: onCloseProp, defaultState }) {
             <HelperBox>
               <Button
                 as="a"
-                href={`http://www.google.com/search?q=${ean}`}
+                href={`http://www.google.com/search?q=${finalEan}`}
                 target="_blank"
                 rel="noreferrer"
               >
