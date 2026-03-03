@@ -34,6 +34,7 @@ import Partners from "@/pages/Partners";
 import Product from "@/pages/Product";
 import ProductCategories from "@/pages/ProductCategories";
 import Products from "@/pages/Products";
+import ProductValidator from "@/pages/ProductValidator";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
@@ -124,6 +125,14 @@ function App() {
                   element={
                     <ProtectedRouteRole role="contributor">
                       <Register />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="products/validator"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <ProductValidator />
                     </ProtectedRouteRole>
                   }
                 />

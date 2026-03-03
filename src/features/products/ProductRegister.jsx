@@ -40,21 +40,23 @@ const HelperBox = styled.div`
   gap: 1.2rem;
 `;
 
-function ProductRegister() {
+function ProductRegister({ ean: eanProp, onClose: onCloseProp }) {
   const { productEan } = useParams();
-  const { isPending, product } = useProductByEan(productEan);
+  const ean = eanProp || productEan;
+  const { isPending, product } = useProductByEan(ean);
   const [isPendingOff, setIsPendingOff] = useState(false);
   const [errorOff, setErrorOff] = useState("");
   const [offProduct, setOffProduct] = useState({});
   const [brandFromApi, setBrandFromApi] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState();
   const goBack = useGoBack();
+  const handleClose = onCloseProp || goBack;
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         setIsPendingOff(true);
-        const data = await getProductData(productEan);
+        const data = await getProductData(ean);
         if (data) setOffProduct(data);
         // Fetch brand from API
         const brand =
@@ -72,17 +74,17 @@ function ProductRegister() {
         }
       } catch (error) {
         console.error(error);
-        setErrorOff(`Ean ${productEan} inconnu dans Open Food Facts`);
+        setErrorOff(`Ean ${ean} inconnu dans Open Food Facts`);
       } finally {
         setIsPendingOff(false);
       }
     };
     fetchProductData();
-  }, [productEan]);
+  }, [ean]);
 
   if (isPending || isPendingOff) return <Spinner />;
 
-  const { created_at, ean, name, status, state } = product;
+  const { created_at, name, status, state } = product;
 
   const {
     brands,
@@ -97,8 +99,10 @@ function ProductRegister() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Vérification du produit #{productEan}</Heading>
-        <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
+        <Heading as="h1">Vérification du produit #{ean}</Heading>
+        {!onCloseProp && (
+          <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
+        )}
       </Row>
 
       <DataBox>
@@ -181,7 +185,7 @@ function ProductRegister() {
               brand: brandFromApi || product.brand,
               brandName: offBrandName.split(",")[0],
             }}
-            onClose={goBack}
+            onClose={handleClose}
             onSelectBrand={setSelectedBrand}
           />
         </Section>
