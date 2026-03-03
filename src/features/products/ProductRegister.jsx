@@ -40,21 +40,23 @@ const HelperBox = styled.div`
   gap: 1.2rem;
 `;
 
-function ProductRegister() {
+function ProductRegister({ ean, onClose, defaultState }) {
   const { productEan } = useParams();
-  const { isPending, product } = useProductByEan(productEan);
+  const finalEan = ean || productEan;
+  const { isPending, product } = useProductByEan(finalEan);
   const [isPendingOff, setIsPendingOff] = useState(false);
   const [errorOff, setErrorOff] = useState("");
   const [offProduct, setOffProduct] = useState({});
   const [brandFromApi, setBrandFromApi] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState();
   const goBack = useGoBack();
+  const handleClose = onClose || goBack;
 
   useEffect(() => {
     const fetchProductData = async () => {
       try {
         setIsPendingOff(true);
-        const data = await getProductData(productEan);
+        const data = await getProductData(finalEan);
         if (data) setOffProduct(data);
         // Fetch brand from API
         const brand =
@@ -72,17 +74,24 @@ function ProductRegister() {
         }
       } catch (error) {
         console.error(error);
-        setErrorOff(`Ean ${productEan} inconnu dans Open Food Facts`);
+        setErrorOff(`Ean ${finalEan} inconnu dans Open Food Facts`);
       } finally {
         setIsPendingOff(false);
       }
     };
     fetchProductData();
-  }, [productEan]);
+  }, [finalEan]);
 
-  if (isPending || isPendingOff) return <Spinner />;
+  // Check if the product has been verified while we are on validator mode
+  // Because we fetched the products at the start of the session
+  const isAlreadyVerified = !isPending && product && product.state !== "CREATED" && onClose;
+  useEffect(() => {
+    if (isAlreadyVerified) onClose();
+  }, [isAlreadyVerified, onClose]);
 
-  const { created_at, ean, name, status, state } = product;
+  if (isPending || isPendingOff || isAlreadyVerified) return <Spinner />;
+
+  const { created_at, name, status, state } = product;
 
   const {
     brands,
@@ -97,8 +106,10 @@ function ProductRegister() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Vérification du produit #{productEan}</Heading>
-        <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
+        <Heading as="h1">Vérification du produit #{finalEan}</Heading>
+        {!onClose && (
+          <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
+        )}
       </Row>
 
       <DataBox>
@@ -106,7 +117,7 @@ function ProductRegister() {
           <div>
             <PiPlant />
             <p>
-              Ean <span>{ean}</span>
+              Ean <span>{finalEan}</span>
             </p>
           </div>
 
@@ -135,7 +146,7 @@ function ProductRegister() {
             <HelperBox>
               <Button
                 as="a"
-                href={`http://www.google.com/search?q=${ean}`}
+                href={`http://www.google.com/search?q=${finalEan}`}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -177,11 +188,12 @@ function ProductRegister() {
           <RegisterProductForm
             productToCheckedIn={{
               ...product,
+              ...(defaultState && { state: defaultState }),
               name: name || product_name,
               brand: brandFromApi || product.brand,
               brandName: offBrandName.split(",")[0],
             }}
-            onClose={goBack}
+            onClose={handleClose}
             onSelectBrand={setSelectedBrand}
           />
         </Section>
