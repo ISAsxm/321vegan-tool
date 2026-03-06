@@ -54,6 +54,7 @@ function ProblemBox({ children, defaultValue, onChange }) {
     { label: "arômes", checked: false },
     { label: "arômes naturels", checked: false },
     { label: "vitamines", checked: false },
+    { label: "cire d'abeille", checked: false },
     { label: "ingrédients inconnus", checked: false },
   ]);
 
@@ -64,8 +65,8 @@ function ProblemBox({ children, defaultValue, onChange }) {
       ingredients.map((ingredient) =>
         ingredient.label === value
           ? { ...ingredient, checked: checked }
-          : ingredient
-      )
+          : ingredient,
+      ),
     );
     const valueToCheck = value
       .normalize("NFD")
@@ -81,7 +82,7 @@ function ProblemBox({ children, defaultValue, onChange }) {
           .toLowerCase()
           .normalize("NFD")
           .replace(/\p{Diacritic}/gu, "")
-          .replace(/\u0153/g, "oe") === valueToCheck
+          .replace(/\u0153/g, "oe") === valueToCheck,
     );
     if (checked && !isIncluded) {
       valuesArray.push(`${value.charAt(0).toUpperCase()}${value.slice(1)}`);
@@ -92,7 +93,7 @@ function ProblemBox({ children, defaultValue, onChange }) {
             .toLowerCase()
             .normalize("NFD")
             .replace(/\p{Diacritic}/gu, "")
-            .replace(/\u0153/g, "oe") !== valueToCheck
+            .replace(/\u0153/g, "oe") !== valueToCheck,
       );
     }
     onChange("problem_description", valuesArray.join(", "));

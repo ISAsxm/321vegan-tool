@@ -1,4 +1,5 @@
 export const API_URL = import.meta.env.VITE_API_URL;
+export const S3_STORAGE_URL = import.meta.env.VITE_S3_STORAGE_URL;
 export const PAGE_SIZE = 5;
 
 export const USER_AVATARS = {

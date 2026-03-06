@@ -9,6 +9,7 @@ import Stacked from "@/ui/Stacked";
 import NoDataItem from "@/ui/NoDataItem";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
+import ImageDetail from "@/ui/ImageDetail";
 
 import UpdateProductCategoryForm from "./UpdateProductCategoryForm";
 
@@ -30,11 +31,12 @@ function ProductCategoryTableRow({ productCategory }) {
     created_at,
     updated_at,
     parent,
+    image,
   } = productCategory;
 
   return (
     <Table.Row>
-      <Ref># {productCategoryId}</Ref>
+      <ImageDetail path={image} alt={`Logo ${name}`} />
 
       <Stacked>{name}</Stacked>
 

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import styled from "styled-components";
 
 import { PRODUCT_STATUSES } from "@/utils/constants";
 
@@ -7,6 +6,8 @@ import Button from "@/ui/Button";
 import Checkbox from "@/ui/Checkbox";
 import Heading from "@/ui/Heading";
 import Tag from "@/ui/Tag";
+
+import styled from "styled-components";
 
 const SetupContainer = styled.div`
   display: flex;
@@ -36,7 +37,7 @@ const CountText = styled.p`
 `;
 
 // This method is used to select product's status to validate.
-// It also shows the count of products for each status, and the total count of products to validate. 
+// It also shows the count of products for each status, and the total count of products to validate.
 function ValidatorSetup({ onStart, products, isPending }) {
   const [selectedStatuses, setSelectedStatuses] = useState([]);
 
@@ -57,29 +58,31 @@ function ValidatorSetup({ onStart, products, isPending }) {
     <SetupContainer>
       <Heading as="h2">Mode validation de produits</Heading>
       <p>
-        Sélectionnez les statuts des produits que vous souhaitez vérifier.
-        Les produits seront présentés un par un. <br />
-        Si aucun statut n'est sélectionné, tous les produits seront inclus dans la validation. <br />
+        Sélectionnez les statuts des produits que vous souhaitez vérifier. Les
+        produits seront présentés un par un. <br />
+        Si aucun statut n'est sélectionné, tous les produits seront inclus dans
+        la validation. <br />
         Merci pour votre contribution ! 💚
       </p>
 
       <StatusList>
-        {Object.entries(PRODUCT_STATUSES).filter(([key]) => key !== "NOT_FOUND").map(([key, { color, label }]) => {
-          const count =
-            products?.filter((p) => p.status === key).length || 0;
-          return (
-            <StatusItem key={key}>
-              <Checkbox
-                name={`status-${key}`}
-                checked={selectedStatuses.includes(key)}
-                onChange={() => handleToggle(key)}
-              >
-                <Tag type={color}>{label}</Tag>
-                <CountText>({count})</CountText>
-              </Checkbox>
-            </StatusItem>
-          );
-        })}
+        {Object.entries(PRODUCT_STATUSES)
+          .filter(([key]) => key !== "NOT_FOUND")
+          .map(([key, { color, label }]) => {
+            const count = products?.filter((p) => p.status === key).length || 0;
+            return (
+              <StatusItem key={key}>
+                <Checkbox
+                  name={`status-${key}`}
+                  checked={selectedStatuses.includes(key)}
+                  onChange={() => handleToggle(key)}
+                >
+                  <Tag type={color}>{label}</Tag>
+                  <CountText>({count})</CountText>
+                </Checkbox>
+              </StatusItem>
+            );
+          })}
       </StatusList>
 
       <CountText>

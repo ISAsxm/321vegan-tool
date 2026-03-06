@@ -2,17 +2,17 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 import {
-  createInterestingProduct,
+  createInterestingProduct as createInterestingProductApi,
   uploadInterestingProductImage,
 } from "@/services/apiInterestingProducts";
 import { interestingProductsKeys } from "./queryKeyFactory";
 
 export function useCreateInterestingProduct() {
   const queryClient = useQueryClient();
-  const { isPending: isCreating, mutate: createInterestingProductMutation } =
+  const { isPending: isCreating, mutate: createInterestingProduct } =
     useMutation({
       mutationFn: async ({ ean, name, image, type, category_id, brand_id }) => {
-        let product = await createInterestingProduct({
+        let product = await createInterestingProductApi({
           ean,
           name,
           type,
@@ -25,18 +25,13 @@ export function useCreateInterestingProduct() {
         return Promise.resolve(product);
       },
       onSuccess: () => {
+        toast.success("Le produit d'intérêt a bien été créé");
         queryClient.invalidateQueries({
-          queryKey: interestingProductsKeys.lists(),
+          queryKey: interestingProductsKeys.all(),
         });
-        toast.success("Produit d'intérêt créé avec succès");
       },
-      onError: (err) => {
-        toast.error(err.message);
-      },
+      onError: (err) => toast.error(err.message),
     });
 
-  return {
-    isCreating,
-    createInterestingProduct: createInterestingProductMutation,
-  };
+  return { isCreating, createInterestingProduct };
 }

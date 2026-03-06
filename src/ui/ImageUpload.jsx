@@ -40,6 +40,7 @@ const ResetButton = styled(ButtonIcon).attrs({ type: "button" })`
 
 function ImageUpload({
   defaultValue = null,
+  previewBaseUrl = API_URL,
   disabled,
   onUpload,
   required = false,
@@ -47,7 +48,9 @@ function ImageUpload({
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const inputRef = useRef();
-  const defaultPreview = defaultValue ? `${API_URL}/${defaultValue}` : null;
+  const defaultPreview = defaultValue
+    ? `${previewBaseUrl}/${defaultValue}`
+    : null;
 
   function handleSelectFile(value) {
     setSelectedFile(value);

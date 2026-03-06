@@ -35,11 +35,16 @@ const NoImagePlaceholder = styled.div`
   }
 `;
 
-function ImageDetail({ path, alt = "Logo", size = 4 }) {
+function ImageDetail({
+  path,
+  previewBaseUrl = API_URL,
+  alt = "Logo",
+  size = 4,
+}) {
   return (
     <ImageContainer>
       {path ? (
-        <Img src={`${API_URL}/${path}`} alt={alt} $size={size} />
+        <Img src={`${previewBaseUrl}/${path}`} alt={alt} $size={size} />
       ) : (
         <NoImagePlaceholder $size={size}>
           <HiPhoto />

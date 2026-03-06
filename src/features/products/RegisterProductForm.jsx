@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useController, useForm } from "react-hook-form";
 
-import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
+import {
+  PRODUCT_STATUSES,
+  PRODUCT_STATES,
+  S3_STORAGE_URL,
+} from "@/utils/constants";
 import { getBrandsForSelect } from "@/services/apiBrands";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useUpdateProduct } from "./useUpdateProduct";
@@ -18,6 +22,8 @@ import Radios from "@/ui/Radios";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
+import ImageUpload from "@/ui/ImageUpload";
+
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import ProblemBox from "./ProblemBox";
 
@@ -78,6 +84,11 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
     name: "has_non_vegan_old_receipe",
     control,
     defaultValue: checkedInValues.has_non_vegan_old_receipe,
+  });
+  const { field: imageField } = useController({
+    name: "image",
+    control,
+    defaultValue: checkedInValues.image || null,
   });
 
   // Show problems field only for MAYBE_VEGAN or NON_VEGAN status
@@ -267,6 +278,16 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
           value={hasNonVeganOldReceipeField.value}
           $inputRef={hasNonVeganOldReceipeField.ref}
           disabled={isPending}
+        />
+      </FormRow>
+
+      <FormRow label="Image" error={errors.image?.message}>
+        <ImageUpload
+          id="image"
+          onUpload={imageField.onChange}
+          disabled={isPending}
+          defaultValue={imageField.value}
+          previewBaseUrl={S3_STORAGE_URL}
         />
       </FormRow>
 
