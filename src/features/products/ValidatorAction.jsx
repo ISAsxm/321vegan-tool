@@ -3,15 +3,15 @@ import { HiOutlineDocumentCheck } from "react-icons/hi2";
 
 import Button from "@/ui/Button";
 
-function ValidatorButton() {
+function ValidatorAction() {
   const navigate = useNavigate();
 
   return (
-    <Button onClick={() => navigate("/products/validator")}>
+    <Button onClick={() => navigate("/verifications")}>
       <HiOutlineDocumentCheck />
       Vérifier
     </Button>
   );
 }
 
-export default ValidatorButton;
+export default ValidatorAction;

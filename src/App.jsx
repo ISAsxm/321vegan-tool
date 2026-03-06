@@ -34,7 +34,7 @@ import Partners from "@/pages/Partners";
 import Product from "@/pages/Product";
 import ProductCategories from "@/pages/ProductCategories";
 import Products from "@/pages/Products";
-import ProductValidator from "@/pages/ProductValidator";
+import Validator from "@/pages/Validator";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
@@ -129,10 +129,10 @@ function App() {
                   }
                 />
                 <Route
-                  path="products/validator"
+                  path="verifications"
                   element={
                     <ProtectedRouteRole role="contributor">
-                      <ProductValidator />
+                      <Validator />
                     </ProtectedRouteRole>
                   }
                 />

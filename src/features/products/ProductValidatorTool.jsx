@@ -37,10 +37,7 @@ function ProductValidatorTool() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [productSnapshot, setProductSnapshot] = useState([]);
 
-  const { isPending, products } = useValidatorProducts(
-    selectedStatuses,
-    true,
-  );
+  const { isPending, products } = useValidatorProducts(selectedStatuses, true);
 
   // Shuffle to reduce collision risk when multiple contributors validate at the same time
   function handleStart(statuses) {
@@ -111,7 +108,7 @@ function ProductValidatorTool() {
   if (phase === "completed") {
     return (
       <CompletedContainer>
-        <Heading as="h2">Vérification terminée</Heading>
+        <Heading as="h2">Validation terminée</Heading>
         <CompletedText>
           La session est terminée. Merci infiniement pour votre contribution 💚
         </CompletedText>
@@ -135,7 +132,6 @@ function ProductValidatorTool() {
         onSkip={handleSkip}
         onQuit={handleQuit}
       />
-      {}
       <ProductRegister
         key={currentProduct.ean}
         ean={currentProduct.ean}

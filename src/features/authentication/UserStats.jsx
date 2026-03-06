@@ -1,4 +1,4 @@
-import { HiCheckBadge, HiOutlineEnvelope } from "react-icons/hi2";
+import { HiOutlineDocumentCheck, HiOutlineEnvelope } from "react-icons/hi2";
 import styled, { css } from "styled-components";
 
 const types = {
@@ -52,7 +52,7 @@ function UserStats({ user, type = "horizontal" }) {
   return (
     <StyledUserStats type={type}>
       <StatItem>
-        <HiCheckBadge />
+        <HiOutlineDocumentCheck />
         <span>{productsModified}</span>
         <span>produit{productsModified > 1 ? "s" : ""}</span>
       </StatItem>

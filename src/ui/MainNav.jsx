@@ -14,6 +14,7 @@ import {
   HiOutlineRectangleGroup,
   HiOutlineCheckCircle,
   HiOutlineShieldCheck,
+  HiOutlineDocumentCheck,
   HiOutlinePercentBadge,
   HiOutlineBuildingStorefront,
   HiChevronDown,
@@ -124,6 +125,35 @@ function MainNav() {
             <span>Dashboard</span>
           </StyledNavLink>
         </li>
+
+        {hasAccess("contributor") && (
+          <NavSubItem
+            currentOpen={currentOpen}
+            onOpen={setCurrentOpen}
+            id="checkings"
+            icon={<HiOutlineCheckCircle />}
+            title="Vérification"
+          >
+            <NavList>
+              <li>
+                <NestedNavLink to="/verifications">
+                  <HiOutlineDocumentCheck /> <span>Validations</span>
+                </NestedNavLink>
+              </li>
+              <li>
+                <NestedNavLink to="/checkings">
+                  <HiOutlineEnvelope /> <span>Contacts</span>
+                </NestedNavLink>
+              </li>
+              <li>
+                <NestedNavLink to="/error-reports">
+                  <HiOutlineExclamationTriangle /> <span>Signalements</span>
+                </NestedNavLink>
+              </li>
+            </NavList>
+          </NavSubItem>
+        )}
+
         <NavSubItem
           currentOpen={currentOpen}
           onOpen={setCurrentOpen}
@@ -157,29 +187,6 @@ function MainNav() {
             </li>
           </NavList>
         </NavSubItem>
-
-        {hasAccess("contributor") && (
-          <NavSubItem
-            currentOpen={currentOpen}
-            onOpen={setCurrentOpen}
-            id="checkings"
-            icon={<HiOutlineCheckCircle />}
-            title="Vérification"
-          >
-            <NavList>
-              <li>
-                <NestedNavLink to="/checkings">
-                  <HiOutlineEnvelope /> <span>Contacts</span>
-                </NestedNavLink>
-              </li>
-              <li>
-                <NestedNavLink to="/error-reports">
-                  <HiOutlineExclamationTriangle /> <span>Signalements</span>
-                </NestedNavLink>
-              </li>
-            </NavList>
-          </NavSubItem>
-        )}
 
         <li>
           <StyledNavLink to="/additives">

@@ -1,6 +1,6 @@
 import DataItem from "@/ui/DataItem";
 
-import { HiCheckBadge, HiOutlineEnvelope } from "react-icons/hi2";
+import { HiOutlineDocumentCheck, HiOutlineEnvelope } from "react-icons/hi2";
 import styled from "styled-components";
 
 const StyledUserProfileStats = styled.div`
@@ -22,7 +22,7 @@ function UserProfileStats({ user }) {
   return (
     <StyledUserProfileStats>
       <DataItem
-        icon={<HiCheckBadge />}
+        icon={<HiOutlineDocumentCheck />}
         label="Produits modifiés :"
         type="horizontal"
       >

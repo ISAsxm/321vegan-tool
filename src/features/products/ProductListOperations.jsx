@@ -5,14 +5,14 @@ import AddAction from "@/ui/AddAction";
 import ExportAction from "@/ui/ExportAction";
 
 import CreateProductForm from "./CreateProductForm";
-import ValidatorButton from "./ValidatorButton";
+import ValidatorAction from "./ValidatorAction";
 
 function ProductListOperations() {
   const { hasAccess } = useCurrentUserContext();
 
   return (
     <ListOperations>
-      {hasAccess("contributor") && <ValidatorButton />}
+      {hasAccess("contributor") && <ValidatorAction />}
       {hasAccess("admin") && <ExportAction />}
       <AddAction
         id="product-create-form"

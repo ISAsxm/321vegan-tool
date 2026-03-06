@@ -56,7 +56,7 @@ function ValidatorSetup({ onStart, products, isPending }) {
 
   return (
     <SetupContainer>
-      <Heading as="h2">Mode validation de produits</Heading>
+      <Heading as="h2">Vérification des produits scannés</Heading>
       <p>
         Sélectionnez les statuts des produits que vous souhaitez vérifier. Les
         produits seront présentés un par un. <br />
@@ -76,6 +76,7 @@ function ValidatorSetup({ onStart, products, isPending }) {
                   name={`status-${key}`}
                   checked={selectedStatuses.includes(key)}
                   onChange={() => handleToggle(key)}
+                  disabled={count <= 0}
                 >
                   <Tag type={color}>{label}</Tag>
                   <CountText>({count})</CountText>

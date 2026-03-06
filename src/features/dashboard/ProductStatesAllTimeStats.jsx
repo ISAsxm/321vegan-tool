@@ -4,6 +4,7 @@ import StatCount from "./StatCount";
 
 import {
   HiOutlineDocumentCheck,
+  HiOutlineEnvelope,
   HiOutlineCheck,
   HiOutlinePaperAirplane,
   HiOutlineClock,
@@ -21,7 +22,7 @@ const StyledGroupStats = styled.div`
 
 const ICON_COMPONENTS = {
   CREATED: <HiOutlineDocumentCheck />,
-  NEED_CONTACT: <HiOutlinePaperAirplane />,
+  NEED_CONTACT: <HiOutlineEnvelope />,
   WAITING_BRAND_REPLY: <HiOutlineClock />,
   WAITING_PUBLISH: <HiOutlineSparkles />,
   PUBLISHED: <HiOutlineCheck />,

@@ -3,13 +3,14 @@ import { PRODUCT_STATUSES } from "@/utils/constants";
 import StatCount from "./StatCount";
 
 import {
+  HiOutlineExclamationCircle,
   HiOutlineQuestionMarkCircle,
   HiOutlineXCircle,
   HiOutlineCheckCircle,
 } from "react-icons/hi2";
 
 const ICON_COMPONENTS = {
-  NOT_FOUND: <HiOutlineQuestionMarkCircle />,
+  NOT_FOUND: <HiOutlineExclamationCircle />,
   MAYBE_VEGAN: <HiOutlineQuestionMarkCircle />,
   VEGAN: <HiOutlineCheckCircle />,
   NON_VEGAN: <HiOutlineXCircle />,
