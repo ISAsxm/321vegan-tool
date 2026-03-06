@@ -2,7 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { isToday } from "date-fns";
 
 import { formatDate } from "@/utils/helpers";
-import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
+import {
+  PRODUCT_STATUSES,
+  PRODUCT_STATES,
+  S3_STORAGE_URL,
+} from "@/utils/constants";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useGoBack } from "@/hooks/useGoBack";
 import { useProduct } from "./useProduct";
@@ -24,6 +28,7 @@ import DataItem from "@/ui/DataItem";
 import NoDataItem from "@/ui/NoDataItem";
 import Empty from "@/ui/Empty";
 import Spinner from "@/ui/Spinner";
+import ImageZoom from "@/ui/ImageZoom";
 
 import UpdateProductForm from "./UpdateProductForm";
 import CheckingTable from "@/features/checkings/CheckingTable";
@@ -53,7 +58,8 @@ const InfoBox = styled.div`
     "name name brand"
     "description description description"
     "old old biodynamic"
-    "problem problem problem";
+    "problem problem problem"
+    "img img img";
   gap: 4rem;
 
   & div:first-child {
@@ -80,9 +86,12 @@ const InfoBox = styled.div`
   & div:nth-child(8) {
     grid-area: biodynamic;
   }
+  & div:nth-child(9) {
+    grid-area: problem;
+  }
 
   & div:last-child {
-    grid-area: problem;
+    grid-area: img;
     padding-bottom: 4rem;
   }
 `;
@@ -123,6 +132,7 @@ function ProductDetail() {
     checkings,
     has_non_vegan_old_receipe,
     biodynamic,
+    image,
   } = product;
 
   return (
@@ -248,6 +258,22 @@ function ProductDetail() {
               type="horizontal"
             >
               {problem_description || <NoDataItem>--</NoDataItem>}
+            </DataItem>
+
+            <DataItem
+              icon={<HiOutlineCheckCircle />}
+              label="Photo :"
+              type="horizontal"
+            >
+              {image ? (
+                <ImageZoom
+                  src={`${S3_STORAGE_URL}/${image}`}
+                  height={40}
+                  width={80}
+                />
+              ) : (
+                <NoDataItem>--</NoDataItem>
+              )}
             </DataItem>
           </InfoBox>
         </Section>

@@ -1,6 +1,7 @@
-import styled from "styled-components";
 import Button from "@/ui/Button";
 import Row from "@/ui/Row";
+
+import styled from "styled-components";
 
 const ProgressContainer = styled.div`
   display: flex;

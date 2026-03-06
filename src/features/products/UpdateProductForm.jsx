@@ -1,6 +1,10 @@
 import { useController, useForm } from "react-hook-form";
 
-import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
+import {
+  PRODUCT_STATUSES,
+  PRODUCT_STATES,
+  S3_STORAGE_URL,
+} from "@/utils/constants";
 import { getBrandsForSelect } from "@/services/apiBrands";
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 import { useUpdateProduct } from "./useUpdateProduct";
@@ -196,6 +200,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
           onUpload={imageField.onChange}
           disabled={isUpdating}
           defaultValue={imageField.value}
+          previewBaseUrl={S3_STORAGE_URL}
         />
       </FormRow>
 

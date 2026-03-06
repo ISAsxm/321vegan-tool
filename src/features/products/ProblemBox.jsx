@@ -54,6 +54,7 @@ function ProblemBox({ children, defaultValue, onChange }) {
     { label: "arômes", checked: false },
     { label: "arômes naturels", checked: false },
     { label: "vitamines", checked: false },
+    { label: "cire d'abeille", checked: false },
     { label: "ingrédients inconnus", checked: false },
   ]);
 

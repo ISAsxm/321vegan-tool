@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { isToday } from "date-fns";
 
-import { PRODUCT_STATUSES } from "@/utils/constants";
+import { PRODUCT_STATUSES, S3_STORAGE_URL } from "@/utils/constants";
 import { formatDate } from "@/utils/helpers";
 import { useGoBack } from "@/hooks/useGoBack";
 import { getBrandLookalike } from "@/services/apiBrands";
@@ -18,8 +18,10 @@ import ButtonText from "@/ui/ButtonText";
 import Button from "@/ui/Button";
 import Tag from "@/ui/Tag";
 import DataItem from "@/ui/DataItem";
+import NoDataItem from "@/ui/NoDataItem";
 import HelpAction from "@/ui/HelpAction";
 import Spinner from "@/ui/Spinner";
+import ImageZoom from "@/ui/ImageZoom";
 
 import IsItVeganHelper from "./IsItVeganHelper";
 import OffDataBox from "./OffDataBox";
@@ -31,6 +33,7 @@ import {
   HiMiniQrCode,
   HiOutlineInformationCircle,
   HiMagnifyingGlass,
+  HiPhoto,
 } from "react-icons/hi2";
 import styled from "styled-components";
 
@@ -84,14 +87,15 @@ function ProductRegister({ ean, onClose, defaultState }) {
 
   // Check if the product has been verified while we are on validator mode
   // Because we fetched the products at the start of the session
-  const isAlreadyVerified = !isPending && product && product.state !== "CREATED" && onClose;
+  const isAlreadyVerified =
+    !isPending && product && product.state !== "CREATED" && onClose;
   useEffect(() => {
     if (isAlreadyVerified) onClose();
   }, [isAlreadyVerified, onClose]);
 
   if (isPending || isPendingOff || isAlreadyVerified) return <Spinner />;
 
-  const { created_at, name, status, state } = product;
+  const { created_at, name, status, state, image } = product;
 
   const {
     brands,
@@ -107,9 +111,7 @@ function ProductRegister({ ean, onClose, defaultState }) {
     <>
       <Row type="horizontal">
         <Heading as="h1">Vérification du produit #{finalEan}</Heading>
-        {!onClose && (
-          <ButtonText onClick={goBack}>&larr; Retour</ButtonText>
-        )}
+        {!onClose && <ButtonText onClick={goBack}>&larr; Retour</ButtonText>}
       </Row>
 
       <DataBox>
@@ -159,6 +161,24 @@ function ProductRegister({ ean, onClose, defaultState }) {
               </HelpAction>
             </HelperBox>
           </Row>
+        </Section>
+
+        <Section>
+          <DataItem
+            icon={<HiPhoto />}
+            label="Photo fournie"
+            type={image ? "vertical" : "horizontal"}
+          >
+            {image ? (
+              <ImageZoom
+                src={`${S3_STORAGE_URL}/${image}`}
+                height={30}
+                width={60}
+              />
+            ) : (
+              <NoDataItem>--</NoDataItem>
+            )}
+          </DataItem>
         </Section>
 
         <Section>
