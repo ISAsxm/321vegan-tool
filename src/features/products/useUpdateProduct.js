@@ -44,6 +44,7 @@ export function useUpdateProduct() {
             ean,
             name,
             description,
+            problem_description,
             biodynamic,
             has_non_vegan_old_receipe,
             brand_id: brand_id || null,
