@@ -100,8 +100,6 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
     watchFields[1],
   );
 
-  const shouldShowNameAndBrand = watchFields[1] !== "NOT_FOUND";
-
   // Check if status should be locked when state is NEED_CONTACT
   const isStatusLocked = watchFields[0] === "NEED_CONTACT";
 
@@ -186,32 +184,30 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
         </Radios>
       </FormRow>
 
-      {shouldShowNameAndBrand && (
-        <FormRow label="Marque" error={errors.brand_id?.message}>
-          <Select
-            name="brand_id"
-            onChange={brandField.onChange}
-            getOptions={getSearchedBrand}
-            defaultOptions={
-              productToCheckedIn.brand
-                ? [
-                    {
-                      value: productToCheckedIn.brand.id,
-                      label: productToCheckedIn.brand.name,
-                    },
-                  ]
-                : []
-            }
-            defaultValue={[brandField.value]}
-            disabled={isUpdating}
-            isSearchable={true}
-            isNullable={true}
-            createComponent={
-              <CreateBrandForm prefillName={productToCheckedIn.brandName} />
-            }
-          />
-        </FormRow>
-      )}
+      <FormRow label="Marque" error={errors.brand_id?.message}>
+        <Select
+          name="brand_id"
+          onChange={brandField.onChange}
+          getOptions={getSearchedBrand}
+          defaultOptions={
+            productToCheckedIn.brand
+              ? [
+                  {
+                    value: productToCheckedIn.brand.id,
+                    label: productToCheckedIn.brand.name,
+                  },
+                ]
+              : []
+          }
+          defaultValue={[brandField.value]}
+          disabled={isUpdating}
+          isSearchable={true}
+          isNullable={true}
+          createComponent={
+            <CreateBrandForm prefillName={productToCheckedIn.brandName} />
+          }
+        />
+      </FormRow>
 
       <FormRow label="EAN" error={errors.ean?.message}>
         <Input
@@ -224,19 +220,17 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
         />
       </FormRow>
 
-      {shouldShowNameAndBrand && (
-        <FormRow label="Nom" error={errors.name?.message}>
-          <Input
-            type="text"
-            id="name"
-            {...register("name", {
-              required:
-                watchFields[1] !== "NOT_FOUND" ? "Le nom est obligatoire" : false,
-            })}
-            disabled={isPending}
-          />
-        </FormRow>
-      )}
+      <FormRow label="Nom" error={errors.name?.message}>
+        <Input
+          type="text"
+          id="name"
+          {...register("name", {
+            required:
+              watchFields[1] !== "NOT_FOUND" ? "Le nom est obligatoire" : false,
+          })}
+          disabled={isPending}
+        />
+      </FormRow>
 
       <FormRow label="Description" error={errors.description?.message}>
         <Textarea
