@@ -12,43 +12,16 @@ export function useUpdateProduct() {
 
   const { isPending: isUpdating, mutate: updateProduct } = useMutation({
     mutationFn: async ({ id, newData }) => {
-      const {
-        state,
-        status,
-        brand_id,
-        ean,
-        name,
-        description,
-        problem_description,
-        biodynamic,
-        has_non_vegan_old_receipe,
-        image,
-      } = newData;
+      const { image } = newData;
+      const newProductData = {
+        ...newData,
+        brand_id: newData?.brand_id || newData?.brand?.id || null,
+      };
       if (typeof image === "string" || image instanceof String) {
-        return await updateProductApi(id, {
-          state,
-          status,
-          ean,
-          name,
-          description,
-          problem_description,
-          biodynamic,
-          has_non_vegan_old_receipe,
-          brand_id: brand_id || null,
-        });
+        return await updateProductApi(id, newProductData);
       } else {
         return Promise.all([
-          updateProductApi(id, {
-            state,
-            status,
-            ean,
-            name,
-            description,
-            problem_description,
-            biodynamic,
-            has_non_vegan_old_receipe,
-            brand_id: brand_id || null,
-          }),
+          updateProductApi(id, newProductData),
           image ? uploadProductImage(id, image) : deleteProductImage(id),
         ]);
       }

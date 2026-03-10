@@ -36,10 +36,10 @@ function CreateCheckingForm({ product, onCloseModal }) {
                 reset();
                 onCloseModal?.();
               },
-            }
+            },
           );
         },
-      }
+      },
     );
   }
 

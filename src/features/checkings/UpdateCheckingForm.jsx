@@ -48,7 +48,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
   });
 
   const showProblemField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
-    watchFields[0]
+    watchFields[0],
   );
 
   function onSubmit(data) {
@@ -74,10 +74,10 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
                 reset();
                 onCloseModal?.();
               },
-            }
+            },
           );
         },
-      }
+      },
     );
   }
 
