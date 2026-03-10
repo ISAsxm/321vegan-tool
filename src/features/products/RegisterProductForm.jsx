@@ -64,6 +64,10 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
   const { field: brandField } = useController({
     name: "brand_id",
     control,
+    rules: {
+      required:
+        watchFields[1] !== "NOT_FOUND" ? "La marque est obligatoire" : false,
+    },
   });
   const { field: stateField } = useController({
     name: "state",
@@ -95,6 +99,7 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
   const shouldShowProblemsField = ["MAYBE_VEGAN", "NON_VEGAN"].includes(
     watchFields[1],
   );
+
   // Check if status should be locked when state is NEED_CONTACT
   const isStatusLocked = watchFields[0] === "NEED_CONTACT";
 
@@ -219,7 +224,10 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
         <Input
           type="text"
           id="name"
-          {...register("name")}
+          {...register("name", {
+            required:
+              watchFields[1] !== "NOT_FOUND" ? "Le nom est obligatoire" : false,
+          })}
           disabled={isPending}
         />
       </FormRow>
