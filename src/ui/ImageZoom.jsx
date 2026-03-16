@@ -1,5 +1,10 @@
 import { useRef, useState, useCallback, useMemo } from "react";
-
+import ButtonIcon from "./ButtonIcon";
+import {
+  AiOutlineZoomIn,
+  AiOutlineRotateLeft,
+  AiOutlineRotateRight,
+} from "react-icons/ai";
 import styled, { css } from "styled-components";
 
 const ImageZoomContainer = styled.figure`
@@ -30,29 +35,21 @@ const StyledImageZoom = styled.img`
   display: block;
 `;
 
-const Controls = styled.div`
+const Controls = styled.figcaption`
   position: absolute;
   bottom: 0.5rem;
   right: 0.5rem;
   display: flex;
+  align-items: center;
   gap: 0.4rem;
   z-index: 5;
-
-  button {
-    border: none;
-    background: rgba(0,0,0,0.6);
-    color: white;
-    padding: 0.3rem 0.5rem;
-    border-radius: 4px;
-    cursor: pointer;
-  }
 `;
 
 const RotationWrapper = styled.div`
   display: inline-block;
   width: 100%;
   height: 100%;
-  transform: rotate(${props => props.rotation}deg);
+  transform: rotate(${(props) => props.$rotation}deg);
   transition: transform 0.2s ease;
 `;
 
@@ -79,36 +76,35 @@ const ImageZoom = ({ src, width, height, alt = "", scaleInit = 1.5 }) => {
     }
   }, []);
 
+  const [rotation, setRotation] = useState(0);
 
-const [rotation, setRotation] = useState(0);
+  const calculatePosition = useCallback(
+    (clientX, clientY) => {
+      if (!containerRef.current) return;
 
-const calculatePosition = useCallback(
-  (clientX, clientY) => {
-    if (!containerRef.current) return;
+      const rect = containerRef.current.getBoundingClientRect();
 
-    const rect = containerRef.current.getBoundingClientRect();
+      const x = (clientX - rect.left) / rect.width;
+      const y = (clientY - rect.top) / rect.height;
 
-    const x = (clientX - rect.left) / rect.width;
-    const y = (clientY - rect.top) / rect.height;
+      const r = rotation % 360;
+      const rad = (r * Math.PI) / 180;
 
-    const r = (rotation % 360);
-    const rad = (r * Math.PI) / 180;
+      const cx = 0.5;
+      const cy = 0.5;
+      const dx = x - cx;
+      const dy = y - cy;
 
-    const cx = 0.5;
-    const cy = 0.5;
-    const dx = (x - cx);
-    const dy = (y - cy);
+      const rotatedX = cx + (dx * Math.cos(-rad) - dy * Math.sin(-rad));
+      const rotatedY = cy + (dx * Math.sin(-rad) + dy * Math.cos(-rad));
 
-    const rotatedX = cx + (dx * Math.cos(-rad) - dy * Math.sin(-rad));
-    const rotatedY = cy + (dx * Math.sin(-rad) + dy * Math.cos(-rad));
+      const finalX = Math.max(0, Math.min(1, rotatedX)) * 100;
+      const finalY = Math.max(0, Math.min(1, rotatedY)) * 100;
 
-    const finalX = Math.max(0, Math.min(1, rotatedX)) * 100;
-    const finalY = Math.max(0, Math.min(1, rotatedY)) * 100;
-
-    updateMousePosition(finalX, finalY);
-  },
-  [updateMousePosition, rotation]
-);
+      updateMousePosition(finalX, finalY);
+    },
+    [updateMousePosition, rotation],
+  );
 
   const handleMouseEnter = useCallback(() => {
     setIsZoomed(true);
@@ -148,7 +144,7 @@ const calculatePosition = useCallback(
       transformOrigin: `${positionX}% ${positionY}%`,
       transform: isZoomed ? `scale(${zoomScale})` : "scale(1)",
     }),
-    [positionX, positionY, isZoomed, zoomScale]
+    [positionX, positionY, isZoomed, zoomScale],
   );
 
   return (
@@ -161,21 +157,28 @@ const calculatePosition = useCallback(
       onMouseMove={handleMouseMove}
       onClick={handleIncreaseScale}
     >
-      <RotationWrapper rotation={rotation}>
+      <RotationWrapper $rotation={rotation}>
         <StyledImageZoom src={src} alt={alt} style={imageStyle} />
       </RotationWrapper>
 
       <Controls>
-        <button
-          onClick={e => { e.stopPropagation(); setRotation((r) => r - 90); }}
+        <ButtonIcon onClick={handleIncreaseScale}>
+          <AiOutlineZoomIn />
+        </ButtonIcon>
+        <ButtonIcon
+          onClick={() => {
+            setRotation((r) => r - 90);
+          }}
         >
-          ↺
-        </button>
-        <button
-          onClick={e => { e.stopPropagation(); setRotation((r) => r + 90); }}
+          <AiOutlineRotateLeft />
+        </ButtonIcon>
+        <ButtonIcon
+          onClick={() => {
+            setRotation((r) => r + 90);
+          }}
         >
-          ↻
-        </button>
+          <AiOutlineRotateRight />
+        </ButtonIcon>
       </Controls>
     </ImageZoomContainer>
   );
