@@ -166,14 +166,16 @@ const ImageZoom = ({ src, width, height, alt = "", scaleInit = 1.5 }) => {
           <AiOutlineZoomIn />
         </ButtonIcon>
         <ButtonIcon
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setRotation((r) => r - 90);
           }}
         >
           <AiOutlineRotateLeft />
         </ButtonIcon>
         <ButtonIcon
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation();
             setRotation((r) => r + 90);
           }}
         >
