@@ -30,6 +30,32 @@ const StyledImageZoom = styled.img`
   display: block;
 `;
 
+const Controls = styled.div`
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 5;
+
+  button {
+    border: none;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    padding: 0.3rem 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+`;
+
+const RotationWrapper = styled.div`
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  transform: rotate(${props => props.rotation}deg);
+  transition: transform 0.2s ease;
+`;
+
 const ImageZoom = ({ src, width, height, alt = "", scaleInit = 1.5 }) => {
   const containerRef = useRef(null);
   const temporizerRef = useRef(null);
@@ -53,22 +79,36 @@ const ImageZoom = ({ src, width, height, alt = "", scaleInit = 1.5 }) => {
     }
   }, []);
 
-  const calculatePosition = useCallback(
-    (clientX, clientY) => {
-      if (!containerRef.current) return;
-      const rect = containerRef.current.getBoundingClientRect();
-      const x = Math.max(
-        0,
-        Math.min(100, ((clientX - rect.left) / rect.width) * 100),
-      );
-      const y = Math.max(
-        0,
-        Math.min(100, ((clientY - rect.top) / rect.height) * 100),
-      );
-      updateMousePosition(x, y);
-    },
-    [updateMousePosition],
-  );
+
+const [rotation, setRotation] = useState(0);
+
+const calculatePosition = useCallback(
+  (clientX, clientY) => {
+    if (!containerRef.current) return;
+
+    const rect = containerRef.current.getBoundingClientRect();
+
+    const x = (clientX - rect.left) / rect.width;
+    const y = (clientY - rect.top) / rect.height;
+
+    const r = (rotation % 360);
+    const rad = (r * Math.PI) / 180;
+
+    const cx = 0.5;
+    const cy = 0.5;
+    const dx = (x - cx);
+    const dy = (y - cy);
+
+    const rotatedX = cx + (dx * Math.cos(-rad) - dy * Math.sin(-rad));
+    const rotatedY = cy + (dx * Math.sin(-rad) + dy * Math.cos(-rad));
+
+    const finalX = Math.max(0, Math.min(1, rotatedX)) * 100;
+    const finalY = Math.max(0, Math.min(1, rotatedY)) * 100;
+
+    updateMousePosition(finalX, finalY);
+  },
+  [updateMousePosition, rotation]
+);
 
   const handleMouseEnter = useCallback(() => {
     setIsZoomed(true);
@@ -108,7 +148,7 @@ const ImageZoom = ({ src, width, height, alt = "", scaleInit = 1.5 }) => {
       transformOrigin: `${positionX}% ${positionY}%`,
       transform: isZoomed ? `scale(${zoomScale})` : "scale(1)",
     }),
-    [positionX, positionY, isZoomed, zoomScale],
+    [positionX, positionY, isZoomed, zoomScale]
   );
 
   return (
@@ -121,7 +161,22 @@ const ImageZoom = ({ src, width, height, alt = "", scaleInit = 1.5 }) => {
       onMouseMove={handleMouseMove}
       onClick={handleIncreaseScale}
     >
-      <StyledImageZoom src={src} alt={alt} style={imageStyle} />
+      <RotationWrapper rotation={rotation}>
+        <StyledImageZoom src={src} alt={alt} style={imageStyle} />
+      </RotationWrapper>
+
+      <Controls>
+        <button
+          onClick={e => { e.stopPropagation(); setRotation((r) => r - 90); }}
+        >
+          ↺
+        </button>
+        <button
+          onClick={e => { e.stopPropagation(); setRotation((r) => r + 90); }}
+        >
+          ↻
+        </button>
+      </Controls>
     </ImageZoomContainer>
   );
 };
