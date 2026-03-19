@@ -9,7 +9,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 
@@ -106,7 +106,7 @@ function UpdateBrandForm({ brandToUpdate, onCloseModal }) {
       </FormRow>
 
       <FormRow label="Logo" error={errors.logo_path?.message}>
-        <ImageUpload
+        <ImageUploader
           id="logo_path"
           onUpload={logoField.onChange}
           disabled={isUpdating}

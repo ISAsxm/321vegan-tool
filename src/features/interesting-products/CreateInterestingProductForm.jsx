@@ -10,7 +10,7 @@ import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import CreateProductCategoryForm from "@/features/product-categories/CreateProductCategoryForm";
@@ -97,7 +97,7 @@ function CreateInterestingProductForm({ onCloseModal }) {
           defaultOptions={Object.entries(INTERESTING_PRODUCT_TYPES).map(
             ([key, o]) => {
               return { value: key, label: o.label };
-            }
+            },
           )}
           required={true}
           disabled={isCreating}
@@ -129,7 +129,7 @@ function CreateInterestingProductForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="Image" error={errors.image?.message}>
-        <ImageUpload
+        <ImageUploader
           id="image"
           onUpload={imageField.onChange}
           disabled={isCreating}

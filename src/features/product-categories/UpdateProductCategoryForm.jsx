@@ -9,7 +9,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Spinner from "@/ui/Spinner";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 
 function UpdateProductCategoryForm({ productCategoryToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productCategoryToUpdate;
@@ -41,7 +41,7 @@ function UpdateProductCategoryForm({ productCategoryToUpdate, onCloseModal }) {
           reset();
           onCloseModal?.();
         },
-      }
+      },
     );
   }
 
@@ -88,7 +88,7 @@ function UpdateProductCategoryForm({ productCategoryToUpdate, onCloseModal }) {
       </FormRow>
 
       <FormRow label="Image" error={errors.image?.message}>
-        <ImageUpload
+        <ImageUploader
           id="image"
           onUpload={imageField.onChange}
           disabled={isUpdating}

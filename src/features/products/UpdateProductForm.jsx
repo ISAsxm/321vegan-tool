@@ -16,7 +16,7 @@ import Input from "@/ui/Input";
 import Textarea from "@/ui/Textarea";
 import Select from "@/ui/Select";
 import Checkbox from "@/ui/Checkbox";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 
@@ -195,7 +195,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
       </FormRow>
 
       <FormRow label="Image" error={errors.image?.message}>
-        <ImageUpload
+        <ImageUploader
           id="image"
           onUpload={imageField.onChange}
           disabled={isUpdating}
