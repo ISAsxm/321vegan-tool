@@ -8,7 +8,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Spinner from "@/ui/Spinner";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 
 function CreateProductCategoryForm({ onCloseModal, onCreateOption }) {
   const { isCreating, createProductCategory } = useCreateProductCategory();
@@ -70,7 +70,7 @@ function CreateProductCategoryForm({ onCloseModal, onCreateOption }) {
       </FormRow>
 
       <FormRow label="Image" error={errors.image?.message}>
-        <ImageUpload
+        <ImageUploader
           id="image"
           onUpload={imageField.onChange}
           disabled={isCreating}

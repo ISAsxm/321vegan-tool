@@ -8,7 +8,7 @@ import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
 import Textarea from "@/ui/Textarea";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 import Checkbox from "@/ui/Checkbox";
 import Spinner from "@/ui/Spinner";
 
@@ -112,7 +112,7 @@ function CreatePartnerForm({ onCloseModal }) {
       </FormRow>
 
       <FormRow label="Logo" error={errors.logo_path?.message}>
-        <ImageUpload
+        <ImageUploader
           id="logo_path"
           onUpload={logoField.onChange}
           disabled={isCreating}

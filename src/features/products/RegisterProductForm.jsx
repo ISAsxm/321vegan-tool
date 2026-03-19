@@ -22,7 +22,7 @@ import Radios from "@/ui/Radios";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import Spinner from "@/ui/Spinner";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import ProblemBox from "./ProblemBox";
@@ -290,7 +290,7 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
       </FormRow>
 
       <FormRow label="Image" error={errors.image?.message}>
-        <ImageUpload
+        <ImageUploader
           id="image"
           onUpload={imageField.onChange}
           disabled={isPending}

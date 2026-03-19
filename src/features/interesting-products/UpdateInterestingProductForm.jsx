@@ -10,7 +10,7 @@ import Form from "@/ui/Form";
 import FormRow from "@/ui/FormRow";
 import Input from "@/ui/Input";
 import Select from "@/ui/Select";
-import ImageUpload from "@/ui/ImageUpload";
+import ImageUploader from "@/ui/ImageUploader";
 
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import CreateProductCategoryForm from "@/features/product-categories/CreateProductCategoryForm";
@@ -162,7 +162,7 @@ function UpdateInterestingProductForm({
       </FormRow>
 
       <FormRow label="Image" error={errors.image?.message}>
-        <ImageUpload
+        <ImageUploader
           id="image"
           onUpload={imageField.onChange}
           disabled={isUpdating}
@@ -171,7 +171,11 @@ function UpdateInterestingProductForm({
       </FormRow>
 
       <FormRow>
-        <Button $variation="secondary" type="reset" onClick={() => reset()}>
+        <Button
+          $variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Annuler
         </Button>
         <Button disabled={isUpdating}>Modifier</Button>
