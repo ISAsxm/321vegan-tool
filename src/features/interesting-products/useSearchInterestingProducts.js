@@ -8,11 +8,11 @@ import { getSearchInterestingProducts } from "@/services/apiInterestingProducts"
 import { interestingProductsKeys } from "./queryKeyFactory";
 
 const filterFields = [
-  { field: "ean", value: null },
+  { field: "eans", operator: "__any", value: null },
   { field: "name", operator: "__contains", value: null },
   { field: "type", value: null },
   { field: "brand", operator: "___name__lookalike", value: null },
-  { field: "category", operator: "___name__lookalike", value: null },
+  { field: "category", operator: "___name__contains", value: null },
 ];
 
 export function useSearchInterestingProducts() {

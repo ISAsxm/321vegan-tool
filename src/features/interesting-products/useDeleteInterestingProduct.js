@@ -11,7 +11,7 @@ export function useDeleteInterestingProduct() {
       mutationFn: deleteInterestingProduct,
       onSuccess: () => {
         queryClient.invalidateQueries({
-          queryKey: interestingProductsKeys.lists(),
+          queryKey: interestingProductsKeys.all(),
         });
         toast.success("Produit d'intérêt supprimé avec succès");
       },

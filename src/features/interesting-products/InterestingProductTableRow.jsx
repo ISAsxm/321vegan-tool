@@ -10,38 +10,50 @@ import Menus from "@/ui/Menus";
 import Modal from "@/ui/Modal";
 import ConfirmAction from "@/ui/ConfirmAction";
 import NoDataItem from "@/ui/NoDataItem";
+import ImageDetail from "@/ui/ImageDetail";
 
 import UpdateInterestingProductForm from "./UpdateInterestingProductForm";
-import InterestingProductImage from "./InterestingProductImage";
 
 import { HiPencil, HiTrash } from "react-icons/hi2";
-import styled from "styled-components";
-
-const Ref = styled.div`
-  font-weight: 600;
-  color: var(--color-grey-600);
-`;
 
 function InterestingProductTableRow({ interestingProduct }) {
-  const { id, name, ean, type, brand_name, category_name, created_at } =
-    interestingProduct;
+  const {
+    id,
+    name,
+    ean,
+    type,
+    brand_name,
+    category_name,
+    category,
+    created_at,
+    alternative_eans,
+    image,
+  } = interestingProduct;
   const { isDeleting, deleteInterestingProduct } =
     useDeleteInterestingProduct();
   const { hasAccess } = useCurrentUserContext();
 
   return (
     <Table.Row>
-      <Ref>{ean}</Ref>
+      <Stacked>
+        <span>{ean}</span>
+        <span>{alternative_eans.join(",\n")}</span>
+      </Stacked>
 
       <Stacked>{name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 
-      <InterestingProductImage interestingProduct={interestingProduct} />
+      <ImageDetail path={image} alt={`Image ${name}`} />
 
       <Tag type={INTERESTING_PRODUCT_TYPES[type]?.color || "silver"}>
         {INTERESTING_PRODUCT_TYPES[type]?.label || type}
       </Tag>
 
-      <Stacked>{category_name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
+      <Stacked>
+        <span>{category_name || <NoDataItem>Inconnue</NoDataItem>}</span>
+        {category && (
+          <span>{category.category_tree.slice(0, -1).join(", ")}</span>
+        )}
+      </Stacked>
 
       <Stacked>{brand_name || <NoDataItem>Inconnue</NoDataItem>}</Stacked>
 

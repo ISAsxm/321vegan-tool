@@ -11,11 +11,20 @@ export function useCreateInterestingProduct() {
   const queryClient = useQueryClient();
   const { isPending: isCreating, mutate: createInterestingProduct } =
     useMutation({
-      mutationFn: async ({ ean, name, image, type, category_id, brand_id }) => {
+      mutationFn: async ({
+        ean,
+        alternative_products,
+        name,
+        image,
+        type,
+        category_id,
+        brand_id,
+      }) => {
         let product = await createInterestingProductApi({
           ean,
           name,
           type,
+          alternative_products: alternative_products || [],
           category_id: category_id || null,
           brand_id: brand_id || null,
         });

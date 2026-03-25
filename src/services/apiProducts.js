@@ -250,3 +250,38 @@ export async function deleteProductImage(id) {
     }
   }
 }
+
+export async function getProductsForSelect(filters = []) {
+  try {
+    const sortBy = "name-asc";
+    const page = 1;
+    const size = 100;
+    const params = buildURLSearchParams(filters, sortBy, page, size);
+    const res = await axiosInstance.get(
+      [`${API_URL}/products/search`, params].filter(Boolean).join("?"),
+    );
+    const data = await res.data;
+    return {
+      data: data.items.map((item) => ({
+        value: item.id,
+        label: item.name,
+        ean: item.ean,
+      })),
+    };
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load searched products for select. Response status: ${error.response.status}`,
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't load searched products for select. Request error: ${error.request}`,
+      );
+    } else {
+      throw new Error(
+        `Couldn't load searched products for select. Error: ${error.message}`,
+      );
+    }
+  }
+}
