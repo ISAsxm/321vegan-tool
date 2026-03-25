@@ -13,12 +13,21 @@ export function useUpdateInterestingProduct() {
   const { isPending: isUpdating, mutate: updateInterestingProduct } =
     useMutation({
       mutationFn: async ({ id, newData }) => {
-        const { ean, name, image, type, category_id, brand_id } = newData;
+        const {
+          ean,
+          name,
+          type,
+          alternative_products,
+          category_id,
+          brand_id,
+          image,
+        } = newData;
         if (typeof image === "string" || image instanceof String) {
           return await updateInterestingProductApi(id, {
             ean,
             name,
             type,
+            alternative_products: alternative_products || [],
             category_id: category_id || null,
             brand_id: brand_id || null,
           });
@@ -28,6 +37,7 @@ export function useUpdateInterestingProduct() {
               ean,
               name,
               type,
+              alternative_products: alternative_products || [],
               category_id: category_id || null,
               brand_id: brand_id || null,
             }),

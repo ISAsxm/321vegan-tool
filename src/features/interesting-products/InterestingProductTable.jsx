@@ -24,13 +24,13 @@ function InterestingProductTable() {
               <div>
                 Ean
                 <Filters.Filter>
-                  <Filters.Toggle id="filterEan" filterField="ean" />
-                  <Filters.Search id="filterEan" filterField="ean" />
+                  <Filters.Toggle id="filterEan" filterField="eans" />
+                  <Filters.Search id="filterEan" filterField="eans" />
                 </Filters.Filter>
               </div>
 
               <div>
-                Nom
+                Dénomination
                 <SortBy.Sort sortByField="name" />
                 <Filters.Filter>
                   <Filters.Toggle id="filterName" filterField="name" />
@@ -52,7 +52,7 @@ function InterestingProductTable() {
                       ...Object.entries(INTERESTING_PRODUCT_TYPES).map(
                         ([key, o]) => {
                           return { value: key, label: o.label };
-                        }
+                        },
                       ),
                     ]}
                   />

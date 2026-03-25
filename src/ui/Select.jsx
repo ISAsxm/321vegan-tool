@@ -1,4 +1,4 @@
-import { cloneElement, useEffect, useRef, useState } from "react";
+import { cloneElement, useCallback, useEffect, useRef, useState } from "react";
 
 import { useClickOutside } from "@/hooks/useClickOutside";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -228,7 +228,7 @@ const Select = ({
   const [selectedValue, setSelectedValue] = useState(
     isMulti
       ? [...options.filter((opt) => defaultValue.includes(opt.value))]
-      : options.find((opt) => opt.value === defaultValue[0])
+      : options.find((opt) => opt.value === defaultValue[0]),
   );
   const searchRef = useRef();
   const inputRef = useClickOutside(() => setShowPicker(false), false);
@@ -237,8 +237,8 @@ const Select = ({
     setOptions((options) =>
       [...new Set([...options, ...opts])].filter(
         (value, index, self) =>
-          index === self.findIndex((opt) => opt.value === value.value)
-      )
+          index === self.findIndex((opt) => opt.value === value.value),
+      ),
     );
   }
 
@@ -249,13 +249,13 @@ const Select = ({
           ? selectedValue
           : []
         : selectedValue
-        ? [selectedValue]
-        : []
+          ? [selectedValue]
+          : [],
     );
   }
 
   function unselectOption(option) {
-    if (option.disabled) return;
+    if (disabled || option.disabled) return;
     return isMulti
       ? selectedValue.filter((o) => o.value !== option.value)
       : null;
@@ -271,13 +271,13 @@ const Select = ({
     return selectedValue.value === option.value;
   }
 
-  function getChoices() {
+  const getChoices = useCallback(() => {
     if (!getOptions) {
       if (!searchValue) {
         return options;
       }
       return options.filter(
-        (o) => o.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0
+        (o) => o.label.toLowerCase().indexOf(searchValue.toLowerCase()) >= 0,
       );
     }
 
@@ -289,7 +289,7 @@ const Select = ({
     return selectedValue
       ? [...new Set([...options, ...[selectedValue]])]
       : options;
-  }
+  }, [getOptions, isMulti, options, searchValue, selectedValue]);
 
   function handleToggle() {
     if (disabled) return;
@@ -315,6 +315,7 @@ const Select = ({
   }
 
   function handleUnselectOption(option) {
+    if (disabled || option.disabled) return;
     const newValue = unselectOption(option);
     setSelectedValue(newValue);
     onChange(isMulti ? newValue.map((o) => o.value) : newValue);
@@ -383,7 +384,7 @@ const Select = ({
                   }}
                 >
                   {o.label}
-                  <HiXMark />
+                  {!disabled && <HiXMark />}
                 </MultiValuesItem>
               ))}
             </MultiValuesContainer>
