@@ -192,7 +192,7 @@ function ImageUploader({
   }, [selectedFile, defaultPreview]);
 
   return (
-    <StyledImageUploader $disabled={disabled} tabindex="0">
+    <StyledImageUploader $disabled={disabled} tabIndex="0">
       <UploadBox
         onPaste={handlePasteFile}
         onDrop={handleDropFile}
