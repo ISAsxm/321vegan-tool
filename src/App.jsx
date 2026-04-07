@@ -34,11 +34,12 @@ import Partners from "@/pages/Partners";
 import Product from "@/pages/Product";
 import ProductCategories from "@/pages/ProductCategories";
 import Products from "@/pages/Products";
-import Validator from "@/pages/Validator";
 import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
+import ShopReviews from "@/pages/ShopReviews";
 import Users from "@/pages/Users";
+import Validator from "@/pages/Validator";
 
 import ProtectedRoute from "@/ui/ProtectedRoute";
 import ProtectedRouteRole from "@/ui/ProtectedRouteRole";
@@ -196,6 +197,14 @@ function App() {
                   element={
                     <ProtectedRouteRole role="contributor">
                       <ErrorReports />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="shop-reviews"
+                  element={
+                    <ProtectedRouteRole role="admin">
+                      <ShopReviews />
                     </ProtectedRouteRole>
                   }
                 />

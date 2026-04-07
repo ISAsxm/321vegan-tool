@@ -1,14 +1,15 @@
-import { useErrorReportsCount } from "./useErrorReportsCount";
+import { useShopReviewsCount } from "./useShopReviewsCount";
 
 import Heading from "@/ui/Heading";
 import Stat from "./Stat";
 import DashboardBox from "./DashboardBox";
 
-import { HiOutlineExclamationTriangle } from "react-icons/hi2";
+import { MdOutlineReviews } from "react-icons/md";
+
 import styled from "styled-components";
 
 const StyledDashboardBox = styled(DashboardBox)`
-  grid-column: 1 / span 2;
+  grid-column: 3 / span 2;
 `;
 
 const GroupStats = styled.div`
@@ -16,28 +17,27 @@ const GroupStats = styled.div`
   grid-template-columns: repeat(2, 1fr);
   gap: 2.4rem;
 `;
-
-function ErrorReportsStats() {
+function ShopReviewsStats() {
   const { isPending: isPendingUntreated, count: untreatedCount } =
-    useErrorReportsCount(false);
+    useShopReviewsCount("PENDING");
   const { isPending: isPendingTreated, count: treatedCount } =
-    useErrorReportsCount(true);
+    useShopReviewsCount("PENDING", "__ne");
 
   return (
     <StyledDashboardBox>
-      <Heading as="h2">Erreurs signalées</Heading>
+      <Heading as="h2">Avis sur les magasins</Heading>
       <GroupStats>
         <Stat
-          title="Erreurs non traitées"
+          title="Avis non traités"
           color="yellow"
-          icon={<HiOutlineExclamationTriangle />}
+          icon={<MdOutlineReviews />}
           value={untreatedCount}
           isPending={isPendingUntreated}
         />
         <Stat
-          title="Erreurs traitées"
+          title="Avis traités"
           color="green"
-          icon={<HiOutlineExclamationTriangle />}
+          icon={<MdOutlineReviews />}
           value={treatedCount}
           isPending={isPendingTreated}
         />
@@ -46,4 +46,4 @@ function ErrorReportsStats() {
   );
 }
 
-export default ErrorReportsStats;
+export default ShopReviewsStats;

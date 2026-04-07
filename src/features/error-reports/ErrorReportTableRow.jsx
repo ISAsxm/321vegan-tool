@@ -9,48 +9,16 @@ import Tag from "@/ui/Tag";
 import Stacked from "@/ui/Stacked";
 import ButtonText from "@/ui/ButtonText";
 import Modal from "@/ui/Modal";
+import Tooltip from "@/ui/Tooltip";
 import ConfirmAction from "@/ui/ConfirmAction";
+import ButtonAction from "@/ui/ButtonAction";
 
 import { HiCheck, HiXMark } from "react-icons/hi2";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const Ref = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
-`;
-
-const ActionButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.6rem;
-  border: none;
-  border-radius: var(--border-radius-sm);
-  transition: all 0.2s;
-
-  & svg {
-    width: 2.2rem;
-    height: 2.2rem;
-  }
-
-  ${(props) =>
-    props.$variation === "danger"
-      ? css`
-          color: var(--color-red-100);
-          background-color: var(--color-red-700);
-
-          &:hover {
-            background-color: var(--color-red-800);
-          }
-        `
-      : css`
-          color: var(--color-green-100);
-          background-color: var(--color-green-700);
-
-          &:hover {
-            background-color: var(--color-green-800);
-          }
-        `}
 `;
 
 function ErrorReportTableRow({ errorReport }) {
@@ -85,7 +53,7 @@ function ErrorReportTableRow({ errorReport }) {
         <ButtonText
           onClick={() =>
             navigate(
-              product ? `/products/${product.id}` : `/products?ean=${ean}`
+              product ? `/products/${product.id}` : `/products?ean=${ean}`,
             )
           }
         >
@@ -112,17 +80,21 @@ function ErrorReportTableRow({ errorReport }) {
       <Tag type={statusInfo.color}>{statusInfo.label}</Tag>
 
       <Modal>
-        <Modal.Open opens="handle">
-          <ActionButton
-            $variation={handled ? "danger" : "confirm"}
-            disabled={isUpdating}
-            title={
-              handled ? "Marquer comme non traité" : "Marquer comme traité"
-            }
-          >
-            {handled ? <HiXMark /> : <HiCheck />}
-          </ActionButton>
-        </Modal.Open>
+        <Tooltip
+          content={
+            handled ? "Marquer comme non traité" : "Marquer comme traité"
+          }
+          id={`handle-${ean}`}
+        >
+          <Modal.Open opens="handle">
+            <ButtonAction
+              $variation={handled ? "danger" : "confirm"}
+              disabled={isUpdating}
+            >
+              {handled ? <HiXMark /> : <HiCheck />}
+            </ButtonAction>
+          </Modal.Open>
+        </Tooltip>
 
         <Modal.Window name="handle">
           <ConfirmAction

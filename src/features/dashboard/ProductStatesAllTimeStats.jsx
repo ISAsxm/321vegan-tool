@@ -1,23 +1,23 @@
 import { PRODUCT_STATES } from "@/utils/constants";
 
+import Heading from "@/ui/Heading";
+
+import DashboardBox from "./DashboardBox";
 import StatCount from "./StatCount";
 
 import {
   HiOutlineDocumentCheck,
   HiOutlineEnvelope,
   HiOutlineCheck,
-  HiOutlinePaperAirplane,
   HiOutlineClock,
   HiOutlineSparkles,
 } from "react-icons/hi2";
 
 import styled from "styled-components";
 
-const StyledGroupStats = styled.div`
-  grid-column: 1 / -1;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 2.4rem;
+const GroupStats = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const ICON_COMPONENTS = {
@@ -30,17 +30,20 @@ const ICON_COMPONENTS = {
 
 function ProductStatesAllTimeStats() {
   return (
-    <StyledGroupStats>
-      {Object.entries(PRODUCT_STATES).map(([key, o]) => (
-        <StatCount
-          key={key}
-          title={o.label}
-          color={o.color}
-          icon={ICON_COMPONENTS[key]}
-          filters={[{ field: "state", value: key }]}
-        />
-      ))}
-    </StyledGroupStats>
+    <DashboardBox>
+      <Heading as="h2">États des produits</Heading>
+      <GroupStats>
+        {Object.entries(PRODUCT_STATES).map(([key, o]) => (
+          <StatCount
+            key={key}
+            title={o.label}
+            color={o.color}
+            icon={ICON_COMPONENTS[key]}
+            filters={[{ field: "state", value: key }]}
+          />
+        ))}
+      </GroupStats>
+    </DashboardBox>
   );
 }
 

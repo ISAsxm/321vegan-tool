@@ -70,6 +70,11 @@ export const ADDITIVES_STATUSES = {
   MAYBE_VEGAN: { color: "yellow", label: "Ça dépend" },
 };
 
+export const SHOP_REVIEWS_STATUSES = {
+  PENDING: { color: "silver", label: "En attente" },
+  APPROVED: { color: "green", label: "Validé" },
+  REJECTED: { color: "red", label: "Rejeté" },
+};
 /** Used to highlight ingredients in product detail view */
 export const NON_VEGAN_INGREDIENTS = [
   "egg",
