@@ -26,6 +26,7 @@ const variations = {
   confirm: "confirm",
   brand: "primary",
   info: "indigo",
+  warning: "warning",
 };
 
 function ConfirmAction({

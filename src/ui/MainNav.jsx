@@ -22,6 +22,7 @@ import {
 } from "react-icons/hi2";
 import { PiHandSoap, PiPlant, PiSparkle, PiSprayBottle } from "react-icons/pi";
 import { GiForkKnifeSpoon } from "react-icons/gi";
+import { MdOutlineReviews } from "react-icons/md";
 
 import styled from "styled-components";
 import { useState } from "react";
@@ -150,6 +151,14 @@ function MainNav() {
                   <HiOutlineExclamationTriangle /> <span>Signalements</span>
                 </NestedNavLink>
               </li>
+
+              {hasAccess("admin") && (
+                <li>
+                  <NestedNavLink to="/shop-reviews">
+                    <MdOutlineReviews /> <span>Avis</span>
+                  </NestedNavLink>
+                </li>
+              )}
             </NavList>
           </NavSubItem>
         )}

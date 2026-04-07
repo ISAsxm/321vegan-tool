@@ -1,6 +1,5 @@
-import Heading from "@/ui/Heading";
-
 import ErrorReportsStats from "./ErrorReportsStats";
+import ShopReviewsStats from "./ShopReviewsStats";
 import ProductStatesAllTimeStats from "./ProductStatesAllTimeStats";
 import ProductStatusesAllTimeStats from "./ProductStatusesAllTimeStats";
 
@@ -8,32 +7,17 @@ import styled from "styled-components";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: repeat(4, 1fr);
   gap: 2.4rem;
-`;
-
-const StyledHeading = styled(Heading)`
-  grid-column: 1 / -1;
-`;
-
-const Section = styled.div`
-  grid-column: 1 / -1;
-  display: contents;
 `;
 
 function DashboardLayout() {
   return (
     <StyledDashboardLayout>
-      <Section>
-        <StyledHeading as="h2">Erreurs signalées</StyledHeading>
-        <ErrorReportsStats />
-
-        <StyledHeading as="h2">États des produits</StyledHeading>
-        <ProductStatesAllTimeStats />
-
-        <StyledHeading as="h2">Statuts des produits</StyledHeading>
-        <ProductStatusesAllTimeStats />
-      </Section>
+      <ErrorReportsStats />
+      <ShopReviewsStats />
+      <ProductStatesAllTimeStats />
+      <ProductStatusesAllTimeStats />
     </StyledDashboardLayout>
   );
 }
