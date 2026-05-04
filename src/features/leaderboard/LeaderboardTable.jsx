@@ -1,32 +1,18 @@
 import styled from "styled-components";
-import { USER_AVATARS } from "@/utils/constants";
 import { useLeaderboard } from "./useLeaderboard";
 import Table from "@/ui/Table";
 import Spinner from "@/ui/Spinner";
+import Heading from "@/ui/Heading";
+import { Avatar, StyledUserAvatar } from "@/features/authentication/UserAvatar";
+import { USER_AVATARS } from "@/utils/constants";
+
+const RANK_COLORS = ["#FFD700", "#C0C0C0", "#CD7F32"];
 
 const Rank = styled.div`
   font-size: 1.6rem;
   font-weight: 700;
-  color: var(--color-grey-500);
+  color: ${({ $index }) => RANK_COLORS[$index] ?? "var(--color-grey-500)"};
   width: 3rem;
-`;
-
-const UserBox = styled.div`
-  display: grid;
-  grid-template-columns: 3.6rem 1fr;
-  align-items: center;
-  gap: 0.8rem;
-`;
-
-const UserAvatar = styled.img`
-  display: block;
-  width: 3.6rem;
-  aspect-ratio: 1;
-  object-fit: cover;
-  object-position: center;
-  border-radius: var(--border-radius-sm);
-  outline: 2px solid var(--color-grey-100);
-  background-color: var(--color-brand-100);
 `;
 
 const Count = styled.div`
@@ -36,13 +22,6 @@ const Count = styled.div`
   text-align: right;
 `;
 
-const Title = styled.h2`
-  font-size: 1.6rem;
-  font-weight: 600;
-  color: var(--color-grey-700);
-  margin-bottom: 1.2rem;
-`;
-
 function LeaderboardTable({ sortby, title, countLabel }) {
   const { isPending, users } = useLeaderboard(sortby);
 
@@ -50,7 +29,7 @@ function LeaderboardTable({ sortby, title, countLabel }) {
 
   return (
     <div>
-      <Title>{title}</Title>
+      <Heading as="h3">{title}</Heading>
       <Table columns="3rem 1fr 8rem">
         <Table.Header>
           <div>Rang</div>
@@ -61,14 +40,11 @@ function LeaderboardTable({ sortby, title, countLabel }) {
           data={users}
           render={(user, index) => (
             <Table.Row key={user.id}>
-              <Rank>{index + 1}</Rank>
-              <UserBox>
-                <UserAvatar
-                  src={`/${user.avatar || USER_AVATARS.default}`}
-                  alt=""
-                />
+              <Rank $index={index}>{index + 1}</Rank>
+              <StyledUserAvatar>
+                <Avatar src={`/${user.avatar || USER_AVATARS.default}`} alt="" />
                 <span>{user.nickname}</span>
-              </UserBox>
+              </StyledUserAvatar>
               <Count>
                 {sortby === "nb_checkings"
                   ? user.nb_checkings
