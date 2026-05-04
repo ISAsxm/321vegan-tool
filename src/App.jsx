@@ -39,6 +39,7 @@ import Register from "@/pages/Register";
 import ResetPassword from "@/pages/ResetPassword";
 import ScoringCategories from "@/pages/ScoringCategories";
 import Users from "@/pages/Users";
+import Leaderboard from "@/pages/Leaderboard";
 
 import ProtectedRoute from "@/ui/ProtectedRoute";
 import ProtectedRouteRole from "@/ui/ProtectedRouteRole";
@@ -188,6 +189,14 @@ function App() {
                   element={
                     <ProtectedRouteRole role="contributor">
                       <ScoringCategories />
+                    </ProtectedRouteRole>
+                  }
+                />
+                <Route
+                  path="leaderboard"
+                  element={
+                    <ProtectedRouteRole role="contributor">
+                      <Leaderboard />
                     </ProtectedRouteRole>
                   }
                 />

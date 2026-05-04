@@ -23,7 +23,7 @@ function UserProfileStats({ user }) {
     <StyledUserProfileStats>
       <DataItem
         icon={<HiOutlineDocumentCheck />}
-        label="Produits modifiés :"
+        label="Produits traités :"
         type="horizontal"
       >
         <strong>{productsModified}</strong>

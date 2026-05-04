@@ -244,6 +244,11 @@ function MainNav() {
                   <HiOutlineRectangleGroup /> <span>Catégories</span>
                 </NestedNavLink>
               </li>
+              <li>
+                <NestedNavLink to="/leaderboard">
+                  <HiOutlineTrophy /> <span>Classement</span>
+                </NestedNavLink>
+              </li>
             </NavList>
           </NavSubItem>
         )}

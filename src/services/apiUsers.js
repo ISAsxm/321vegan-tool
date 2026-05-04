@@ -110,6 +110,26 @@ export async function updateUser(id, user) {
   }
 }
 
+export async function getLeaderboard(sortby, limit = 20) {
+  try {
+    const res = await axiosInstance.get(
+      `${API_URL}/users/leaderboard?sortby=${sortby}&limit=${limit}`
+    );
+    return res.data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401) throw error;
+      throw new Error(
+        `Couldn't load leaderboard. Response status: ${error.response.status}`
+      );
+    } else if (error.request) {
+      throw new Error(`Couldn't load leaderboard. Request error: ${error.request}`);
+    } else {
+      throw new Error(`Couldn't load leaderboard. Error: ${error.message}`);
+    }
+  }
+}
+
 export async function deleteUser(id) {
   try {
     const res = await axiosInstance.delete(`${API_URL}/users/${id}`);

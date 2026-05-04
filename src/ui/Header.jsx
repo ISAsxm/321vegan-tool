@@ -1,9 +1,9 @@
 import { useCurrentUserContext } from "@/contexts/CurrentUserContext";
 
 import HeaderMenu from "./HeaderMenu";
-
 import UserAvatar from "@/features/authentication/UserAvatar";
 import UserStats from "@/features/authentication/UserStats";
+import LeaderboardLink from "@/features/leaderboard/LeaderboardLink";
 
 import styled from "styled-components";
 
@@ -21,6 +21,7 @@ function Header() {
   const { currentUser } = useCurrentUserContext();
   return (
     <StyledHeader>
+      <LeaderboardLink />
       <UserStats user={currentUser} />
       <UserAvatar user={currentUser} />
       <HeaderMenu />

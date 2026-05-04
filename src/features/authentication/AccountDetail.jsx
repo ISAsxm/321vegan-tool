@@ -1,3 +1,4 @@
+import { HiOutlineUser } from "react-icons/hi2";
 import { useCurrentUser } from "./useCurrentUser";
 import { useGoBack } from "@/hooks/useGoBack";
 
@@ -10,8 +11,7 @@ import Spinner from "@/ui/Spinner";
 import UpdateUserProfileForm from "./UpdateUserProfileForm";
 import UpdatePasswordForm from "./UpdatePasswordForm";
 import UserProfileStats from "./UserProfileStats";
-
-import { HiOutlineUser } from "react-icons/hi2";
+import LeaderboardLink from "@/features/leaderboard/LeaderboardLink";
 
 function AccountDetail() {
   const goBack = useGoBack();
@@ -29,7 +29,10 @@ function AccountDetail() {
       </Row>
 
       <Row type="vertical">
-        <Heading as="h3">Contributions</Heading>
+        <Row type="horizontal">
+          <Heading as="h3">Contributions</Heading>
+          <LeaderboardLink />
+        </Row>
         <UserProfileStats user={user} />
       </Row>
 
