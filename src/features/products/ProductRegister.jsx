@@ -8,6 +8,10 @@ import { useGoBack } from "@/hooks/useGoBack";
 import { getBrandLookalike } from "@/services/apiBrands";
 import { getProductData } from "@/services/apiOpenFoodFacts";
 import { useProductByEan } from "./useProductByEan";
+import googleLogo from "@/assets/engine_logos/Google_logo.png";
+import qwantLogo from "@/assets/engine_logos/Qwant_logo.png";
+import ecosiaLogo from "@/assets/engine_logos/Ecosia_logo.png";
+import duckDuckGoLogo from "@/assets/engine_logos/DuckDuckGo_logo.png";
 
 import Row from "@/ui/Row";
 import Heading from "@/ui/Heading";
@@ -22,6 +26,7 @@ import NoDataItem from "@/ui/NoDataItem";
 import HelpAction from "@/ui/HelpAction";
 import Spinner from "@/ui/Spinner";
 import ImageZoom from "@/ui/ImageZoom";
+import Select from "@/ui/Select";
 
 import IsItVeganHelper from "./IsItVeganHelper";
 import OffDataBox from "./OffDataBox";
@@ -43,6 +48,91 @@ const HelperBox = styled.div`
   gap: 1.2rem;
 `;
 
+const SearchAction = styled.div`
+  display: flex;
+  align-items: stretch;
+  gap: 0.6rem;
+`;
+
+const SearchEngineSelect = styled.div`
+  width: 9rem;
+
+  [role="listbox"] {
+    gap: 0.6rem;
+  }
+`;
+
+const SearchEngineLogo = styled.img`
+  display: block;
+  width: 100%;
+  max-width: 4rem;
+  height: 2rem;
+  object-fit: contain;
+`;
+
+const SearchEngineLogoLabel = styled.span`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const VisuallyHidden = styled.span`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
+// to move if we ever use it somewhere else at some point
+const SEARCH_ENGINES = [
+  {
+    value: "google",
+    label: "Google",
+    logoSrc: googleLogo,
+    buildUrl: (query) => `https://www.google.com/search?q=${query}`,
+  },
+  {
+    value: "qwant",
+    label: "Qwant",
+    logoSrc: qwantLogo,
+    buildUrl: (query) => `https://www.qwant.com/?q=${query}`,
+  },
+  {
+    value: "ecosia",
+    label: "Ecosia",
+    logoSrc: ecosiaLogo,
+    buildUrl: (query) => `https://www.ecosia.org/search?q=${query}`,
+  },
+  {
+    value: "duckduckgo",
+    label: "DuckDuckGo",
+    logoSrc: duckDuckGoLogo,
+    buildUrl: (query) => `https://duckduckgo.com/?q=${query}`,
+  },
+];
+
+const DEFAULT_SEARCH_ENGINE = "google";
+const SEARCH_ENGINE_STORAGE_KEY = "product-register-search-engine";
+const isValidSearchEngine = (engine) =>
+  SEARCH_ENGINES.some(({ value }) => value === engine);
+
+const SEARCH_ENGINE_OPTIONS = SEARCH_ENGINES.map(
+  ({ value, label, logoSrc }) => ({
+    value,
+    label: (
+      <SearchEngineLogoLabel>
+        <SearchEngineLogo src={logoSrc} alt="" />
+        <VisuallyHidden>{label}</VisuallyHidden>
+      </SearchEngineLogoLabel>
+    ),
+  }),
+);
+
 function ProductRegister({ ean, onClose, defaultState }) {
   const { productEan } = useParams();
   const finalEan = ean || productEan;
@@ -52,8 +142,23 @@ function ProductRegister({ ean, onClose, defaultState }) {
   const [offProduct, setOffProduct] = useState({});
   const [brandFromApi, setBrandFromApi] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState();
+  const [selectedSearchEngine, setSelectedSearchEngine] = useState(() => {
+    const storedSearchEngine = localStorage.getItem(SEARCH_ENGINE_STORAGE_KEY);
+    return isValidSearchEngine(storedSearchEngine)
+      ? storedSearchEngine
+      : DEFAULT_SEARCH_ENGINE;
+  });
   const goBack = useGoBack();
   const handleClose = onClose || goBack;
+
+  function handleSearchEngineChange(searchEngine) {
+    const nextSearchEngine = isValidSearchEngine(searchEngine)
+      ? searchEngine
+      : DEFAULT_SEARCH_ENGINE;
+
+    setSelectedSearchEngine(nextSearchEngine);
+    localStorage.setItem(SEARCH_ENGINE_STORAGE_KEY, nextSearchEngine);
+  }
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -106,6 +211,10 @@ function ProductRegister({ ean, onClose, defaultState }) {
   } = offProduct || {};
 
   const offBrandName = brands || product_name?.split(" - ")[1] || "";
+  const searchEngine =
+    SEARCH_ENGINES.find((engine) => engine.value === selectedSearchEngine) ||
+    SEARCH_ENGINES[0];
+  const searchQuery = encodeURIComponent(finalEan);
 
   return (
     <>
@@ -146,15 +255,27 @@ function ProductRegister({ ean, onClose, defaultState }) {
             </DataItem>
 
             <HelperBox>
-              <Button
-                as="a"
-                href={`http://www.google.com/search?q=${finalEan}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <HiMagnifyingGlass />
-                Rechercher sur Google
-              </Button>
+              <SearchAction>
+                <Button
+                  as="a"
+                  href={searchEngine.buildUrl(searchQuery)}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <HiMagnifyingGlass />
+                  Rechercher sur {searchEngine.label}
+                </Button>
+
+                <SearchEngineSelect>
+                  <Select
+                    name="search-engine"
+                    defaultOptions={SEARCH_ENGINE_OPTIONS}
+                    defaultValue={[selectedSearchEngine]}
+                    onChange={handleSearchEngineChange}
+                    align="right"
+                  />
+                </SearchEngineSelect>
+              </SearchAction>
 
               <HelpAction id="product-register-helper" variante="btn">
                 <IsItVeganHelper />
