@@ -1,7 +1,11 @@
 import { memo } from "react";
-import Highlighter from "react-highlight-words";
 
-import { NON_VEGAN_INGREDIENTS, NON_VEGAN_E_NUMBERS } from "@/utils/constants";
+import {
+  MAYBE_VEGAN_E_NUMBERS,
+  MAYBE_VEGAN_INGREDIENTS,
+  NON_VEGAN_E_NUMBERS,
+  NON_VEGAN_INGREDIENTS,
+} from "@/utils/constants";
 
 import DataItem from "@/ui/DataItem";
 import NoDataItem from "@/ui/NoDataItem";
@@ -55,6 +59,87 @@ const OffDescriptionBox = styled.div`
   }
 `;
 
+const TextContent = styled.span`
+  flex: 1;
+  min-width: 0;
+  line-height: inherit;
+`;
+
+const Highlight = styled.mark`
+  border-radius: var(--border-radius-tiny);
+  background-color: ${(props) =>
+    props.$variant === "non-vegan"
+      ? "var(--color-red-100)"
+      : "var(--color-yellow-100)"};
+  color: ${(props) =>
+    props.$variant === "non-vegan"
+      ? "var(--color-red-800)"
+      : "var(--color-yellow-800)"};
+`;
+
+const NON_VEGAN_SEARCH_WORDS = [
+  ...NON_VEGAN_INGREDIENTS,
+  ...NON_VEGAN_E_NUMBERS,
+];
+
+const MAYBE_VEGAN_SEARCH_WORDS = [
+  ...MAYBE_VEGAN_INGREDIENTS,
+  ...MAYBE_VEGAN_E_NUMBERS,
+];
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+// dynamic regex based on the vegan/maybe/not vegan ingredients in constants.js
+function buildHighlightRegex(searchWords) {
+  const escapedWords = searchWords
+    .filter(Boolean)
+    .sort((a, b) => b.length - a.length)
+    .map(escapeRegExp);
+
+  return new RegExp(`(${escapedWords.join("|")})`, "gi");
+}
+
+function HighlightedText({ text, nonVeganWords, maybeVeganWords }) {
+  const nonVeganWordsSet = new Set(
+    nonVeganWords.map((word) => word.toLowerCase()),
+  );
+  const maybeVeganWordsSet = new Set(
+    maybeVeganWords.map((word) => word.toLowerCase()),
+  );
+  const highlightRegex = buildHighlightRegex([
+    ...nonVeganWords,
+    ...maybeVeganWords,
+  ]);
+
+  return (
+    <TextContent>
+      {text.split(highlightRegex).map((part, index) => {
+        const normalizedPart = part.toLowerCase();
+
+        if (nonVeganWordsSet.has(normalizedPart)) {
+          return (
+            <Highlight key={`${part}-${index}`} $variant="non-vegan">
+              {part}
+            </Highlight>
+          );
+        }
+
+        if (maybeVeganWordsSet.has(normalizedPart)) {
+          return (
+            <Highlight key={`${part}-${index}`} $variant="maybe-vegan">
+              {part}
+            </Highlight>
+          );
+        }
+
+        return part;
+      })}
+    </TextContent>
+  );
+}
+
 const OffDataBox = memo(function OffDataBox({
   imageSrc,
   ingredients,
@@ -87,11 +172,10 @@ const OffDataBox = memo(function OffDataBox({
           type="horizontal"
         >
           {ingredients ? (
-            <Highlighter
-              highlightClassName="highlightClass"
-              searchWords={[...NON_VEGAN_INGREDIENTS, ...NON_VEGAN_E_NUMBERS]}
-              autoEscape={true}
-              textToHighlight={ingredients}
+            <HighlightedText
+              text={ingredients}
+              nonVeganWords={NON_VEGAN_SEARCH_WORDS}
+              maybeVeganWords={MAYBE_VEGAN_SEARCH_WORDS}
             />
           ) : (
             <NoDataItem>Non disponible</NoDataItem>
@@ -100,11 +184,10 @@ const OffDataBox = memo(function OffDataBox({
 
         <DataItem icon={<HiOutlineBeaker />} label="Additifs" type="horizontal">
           {additives ? (
-            <Highlighter
-              highlightClassName="highlightClass"
-              searchWords={NON_VEGAN_E_NUMBERS}
-              autoEscape={true}
-              textToHighlight={additives.map((a) => a.split(":")[1]).join(", ")}
+            <HighlightedText
+              text={additives.map((a) => a.split(":")[1]).join(", ")}
+              nonVeganWords={NON_VEGAN_E_NUMBERS}
+              maybeVeganWords={MAYBE_VEGAN_E_NUMBERS}
             />
           ) : (
             <NoDataItem>Non disponible</NoDataItem>
