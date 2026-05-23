@@ -54,7 +54,14 @@ const HelperBox = styled.div`
 const SearchAction = styled.div`
   display: flex;
   align-items: stretch;
-  gap: 0.6rem;
+  border-radius: var(--border-radius-sm);
+  box-shadow: var(--shadow-sm);
+
+  & > a {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: none;
+  }
 `;
 
 function ProductRegister({ ean, onClose, defaultState }) {
