@@ -1,10 +1,15 @@
 import { memo } from "react";
-import Highlighter from "react-highlight-words";
 
-import { NON_VEGAN_INGREDIENTS, NON_VEGAN_E_NUMBERS } from "@/utils/constants";
+import {
+  MAYBE_VEGAN_E_NUMBERS,
+  MAYBE_VEGAN_INGREDIENTS,
+  NON_VEGAN_E_NUMBERS,
+  NON_VEGAN_INGREDIENTS,
+} from "@/utils/constants";
 
 import DataItem from "@/ui/DataItem";
 import NoDataItem from "@/ui/NoDataItem";
+import TextHighlighter from "@/ui/TextHighlighter";
 
 import { MdOutlineImageNotSupported } from "react-icons/md";
 import {
@@ -55,6 +60,16 @@ const OffDescriptionBox = styled.div`
   }
 `;
 
+const NON_VEGAN_SEARCH_WORDS = [
+  ...NON_VEGAN_INGREDIENTS,
+  ...NON_VEGAN_E_NUMBERS,
+];
+
+const MAYBE_VEGAN_SEARCH_WORDS = [
+  ...MAYBE_VEGAN_INGREDIENTS,
+  ...MAYBE_VEGAN_E_NUMBERS,
+];
+
 const OffDataBox = memo(function OffDataBox({
   imageSrc,
   ingredients,
@@ -87,11 +102,10 @@ const OffDataBox = memo(function OffDataBox({
           type="horizontal"
         >
           {ingredients ? (
-            <Highlighter
-              highlightClassName="highlightClass"
-              searchWords={[...NON_VEGAN_INGREDIENTS, ...NON_VEGAN_E_NUMBERS]}
-              autoEscape={true}
-              textToHighlight={ingredients}
+            <TextHighlighter
+              text={ingredients}
+              nonVeganWords={NON_VEGAN_SEARCH_WORDS}
+              maybeVeganWords={MAYBE_VEGAN_SEARCH_WORDS}
             />
           ) : (
             <NoDataItem>Non disponible</NoDataItem>
@@ -100,11 +114,10 @@ const OffDataBox = memo(function OffDataBox({
 
         <DataItem icon={<HiOutlineBeaker />} label="Additifs" type="horizontal">
           {additives ? (
-            <Highlighter
-              highlightClassName="highlightClass"
-              searchWords={NON_VEGAN_E_NUMBERS}
-              autoEscape={true}
-              textToHighlight={additives.map((a) => a.split(":")[1]).join(", ")}
+            <TextHighlighter
+              text={additives.map((a) => a.split(":")[1]).join(", ")}
+              nonVeganWords={NON_VEGAN_E_NUMBERS}
+              maybeVeganWords={MAYBE_VEGAN_E_NUMBERS}
             />
           ) : (
             <NoDataItem>Non disponible</NoDataItem>
