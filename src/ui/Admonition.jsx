@@ -41,6 +41,11 @@ const variations = {
     border-color: var(--color-indigo-800);
     color: var(--color-indigo-800);
   `,
+  general_info: css`
+    background-color: var(--color-blue-100);
+    border-color: var(--color-blue-800);
+    color: var(--color-blue-800);
+  `,
   warning: css`
     background-color: var(--color-yellow-100);
     border-color: var(--color-yellow-800);
