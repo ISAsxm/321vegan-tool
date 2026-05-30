@@ -5,7 +5,6 @@ import { isToday } from "date-fns";
 import { PRODUCT_STATUSES, S3_STORAGE_URL } from "@/utils/constants";
 import { formatDate } from "@/utils/helpers";
 import { useGoBack } from "@/hooks/useGoBack";
-import { useLocalStorageState } from "@/hooks/useLocalStorageState";
 import { getBrandLookalike } from "@/services/apiBrands";
 import { getProductData } from "@/services/apiOpenFoodFacts";
 import { useProductByEan } from "./useProductByEan";
@@ -16,7 +15,6 @@ import HeaderDetail from "@/ui/HeaderDetail";
 import Section from "@/ui/Section";
 import DataBox from "@/ui/DataBox";
 import ButtonText from "@/ui/ButtonText";
-import Button from "@/ui/Button";
 import Tag from "@/ui/Tag";
 import DataItem from "@/ui/DataItem";
 import NoDataItem from "@/ui/NoDataItem";
@@ -28,19 +26,12 @@ import IsItVeganHelper from "./IsItVeganHelper";
 import OffDataBox from "./OffDataBox";
 import RegisterProductForm from "./RegisterProductForm";
 import RegisterProductAdmonition from "./RegisterProductAdmonition";
-import SearchEngineSelect from "./SearchEngineSelect";
-import {
-  DEFAULT_SEARCH_ENGINE,
-  getSearchEngine,
-  getValidSearchEngine,
-  SEARCH_ENGINE_STORAGE_KEY,
-} from "./searchEngineConfig";
+import SearchProductAction from "./SearchProductAction";
 
 import { PiPlant } from "react-icons/pi";
 import {
   HiMiniQrCode,
   HiOutlineInformationCircle,
-  HiMagnifyingGlass,
   HiPhoto,
 } from "react-icons/hi2";
 import styled from "styled-components";
@@ -49,19 +40,6 @@ const HelperBox = styled.div`
   display: flex;
   align-items: center;
   gap: 1.2rem;
-`;
-
-const SearchAction = styled.div`
-  display: flex;
-  align-items: stretch;
-  border-radius: var(--border-radius-sm);
-  box-shadow: var(--shadow-sm);
-
-  & > a {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-    box-shadow: none;
-  }
 `;
 
 function ProductRegister({ ean, onClose, defaultState }) {
@@ -73,19 +51,8 @@ function ProductRegister({ ean, onClose, defaultState }) {
   const [offProduct, setOffProduct] = useState({});
   const [brandFromApi, setBrandFromApi] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState();
-  const [selectedSearchEngine, setSelectedSearchEngine] = useLocalStorageState(
-    DEFAULT_SEARCH_ENGINE,
-    SEARCH_ENGINE_STORAGE_KEY,
-  );
   const goBack = useGoBack();
   const handleClose = onClose || goBack;
-  const validSearchEngine = getValidSearchEngine(selectedSearchEngine);
-
-  useEffect(() => {
-    if (validSearchEngine !== selectedSearchEngine) {
-      setSelectedSearchEngine(validSearchEngine);
-    }
-  }, [selectedSearchEngine, setSelectedSearchEngine, validSearchEngine]);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -138,8 +105,6 @@ function ProductRegister({ ean, onClose, defaultState }) {
   } = offProduct || {};
 
   const offBrandName = brands || product_name?.split(" - ")[1] || "";
-  const searchEngine = getSearchEngine(validSearchEngine);
-  const searchQuery = encodeURIComponent(finalEan);
 
   return (
     <>
@@ -180,22 +145,7 @@ function ProductRegister({ ean, onClose, defaultState }) {
             </DataItem>
 
             <HelperBox>
-              <SearchAction>
-                <Button
-                  as="a"
-                  href={searchEngine.buildUrl(searchQuery)}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  <HiMagnifyingGlass />
-                  Rechercher sur {searchEngine.label}
-                </Button>
-
-                <SearchEngineSelect
-                  value={validSearchEngine}
-                  onChange={setSelectedSearchEngine}
-                />
-              </SearchAction>
+              <SearchProductAction ean={finalEan} />
 
               <HelpAction id="product-register-helper" variante="btn">
                 <IsItVeganHelper />
