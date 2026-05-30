@@ -48,9 +48,13 @@ const SearchAction = styled.div`
 `;
 
 const SearchEngineSelect = styled.div`
-  width: 17.4rem;
+  flex: 0 0 auto;
+  width: fit-content;
+  min-width: 11.2rem;
 
   & > div {
+    width: fit-content;
+    min-width: 100%;
     height: 100%;
     color: var(--color-brand-10);
     background-color: var(--color-brand-600);
@@ -67,7 +71,7 @@ const SearchEngineSelect = styled.div`
 
   [role="listbox"] {
     height: 100%;
-    grid-template-columns: 1fr 1.6rem;
+    grid-template-columns: max-content 1.6rem;
     gap: 0.8rem;
     padding: 1.2rem 1.6rem;
   }
@@ -79,7 +83,8 @@ const SearchEngineSelect = styled.div`
   }
 
   & > div > div:not([role="listbox"]) {
-    width: 100%;
+    width: max-content;
+    min-width: 100%;
     right: 0;
     left: auto;
   }
