@@ -56,17 +56,10 @@ const SearchEngineSelect = styled.div`
     width: fit-content;
     min-width: 100%;
     height: 100%;
-    color: var(--color-brand-10);
-    background-color: var(--color-brand-600);
-    border: none;
     border-left: 1px solid var(--color-brand-700);
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
     box-shadow: none;
-
-    &:hover {
-      background-color: var(--color-brand-700);
-    }
   }
 
   [role="listbox"] {
@@ -150,6 +143,7 @@ function SearchProductAction({ ean }) {
           defaultValue={[validSearchEngine]}
           onChange={handleSearchEngineChange}
           align="right"
+          variation="brand"
         />
       </SearchEngineSelect>
     </SearchAction>
