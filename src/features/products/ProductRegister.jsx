@@ -15,7 +15,6 @@ import HeaderDetail from "@/ui/HeaderDetail";
 import Section from "@/ui/Section";
 import DataBox from "@/ui/DataBox";
 import ButtonText from "@/ui/ButtonText";
-import Button from "@/ui/Button";
 import Tag from "@/ui/Tag";
 import DataItem from "@/ui/DataItem";
 import NoDataItem from "@/ui/NoDataItem";
@@ -27,12 +26,12 @@ import IsItVeganHelper from "./IsItVeganHelper";
 import OffDataBox from "./OffDataBox";
 import RegisterProductForm from "./RegisterProductForm";
 import RegisterProductAdmonition from "./RegisterProductAdmonition";
+import SearchProductAction from "./SearchProductAction";
 
 import { PiPlant } from "react-icons/pi";
 import {
   HiMiniQrCode,
   HiOutlineInformationCircle,
-  HiMagnifyingGlass,
   HiPhoto,
 } from "react-icons/hi2";
 import styled from "styled-components";
@@ -146,15 +145,7 @@ function ProductRegister({ ean, onClose, defaultState }) {
             </DataItem>
 
             <HelperBox>
-              <Button
-                as="a"
-                href={`http://www.google.com/search?q=${finalEan}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <HiMagnifyingGlass />
-                Rechercher sur Google
-              </Button>
+              <SearchProductAction ean={finalEan} />
 
               <HelpAction id="product-register-helper" variante="btn">
                 <IsItVeganHelper />

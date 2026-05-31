@@ -17,12 +17,45 @@ import { GiCheckMark } from "react-icons/gi";
 
 import styled, { css } from "styled-components";
 
+const containerVariations = {
+  default: css`
+    border: 1px solid var(--color-grey-300);
+    background-color: var(--color-grey-0);
+  `,
+  brand: css`
+    color: var(--color-brand-10);
+    border: 1px solid var(--color-brand-700);
+    background-color: var(--color-brand-600);
+
+    &:hover {
+      background-color: var(--color-brand-700);
+    }
+  `,
+};
+
+const optionVariations = {
+  default: css`
+    &:hover {
+      background-color: var(--color-grey-50);
+    }
+  `,
+  brand: css`
+    &:hover {
+      background-color: var(--color-brand-50);
+    }
+
+    .dark-mode & {
+      &:hover {
+        background-color: var(--color-brand-800);
+      }
+    }
+  `,
+};
+
 export const SelectContainer = styled.div`
   font-size: 1.4rem;
   font-weight: 500;
-  border: 1px solid var(--color-grey-300);
   border-radius: var(--border-radius-sm);
-  background-color: var(--color-grey-0);
   box-shadow: var(--shadow-sm);
 
   cursor: pointer;
@@ -31,6 +64,7 @@ export const SelectContainer = styled.div`
   display: flex;
   align-items: stretch;
   width: 100%;
+  ${(props) => containerVariations[props.$variation || "default"]}
 
   ${(props) =>
     props.$isDisabled &&
@@ -95,6 +129,7 @@ export const SelectAddAction = styled.span`
 export const SelectPicker = styled.div`
   border: 1px solid var(--color-grey-300);
   background-color: var(--color-grey-0);
+  color: var(--color-grey-700);
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-md);
   position: absolute;
@@ -135,9 +170,7 @@ export const SelectOption = styled.div`
   gap: 1rem;
   text-wrap: balance;
 
-  &:hover {
-    background-color: var(--color-grey-50);
-  }
+  ${(props) => optionVariations[props.$variation || "default"]}
 
   & svg {
     color: transparent;
@@ -146,7 +179,9 @@ export const SelectOption = styled.div`
   ${(props) =>
     props.$isHilighted &&
     css`
-      background-color: var(--color-grey-50);
+      background-color: ${props.$variation === "brand"
+        ? "var(--color-brand-50)"
+        : "var(--color-grey-50)"};
 
       & svg:first-of-type {
         color: var(--color-brand-600);
@@ -154,6 +189,13 @@ export const SelectOption = styled.div`
       & svg:nth-of-type(2) {
         color: var(--color-red-700);
       }
+
+      ${props.$variation === "brand" &&
+      css`
+        .dark-mode & {
+          background-color: var(--color-brand-800);
+        }
+      `}
     `}
 
   ${(props) =>
@@ -219,6 +261,7 @@ const Select = ({
   isMulti = false,
   isNullable = false,
   align = "left",
+  variation = "default",
 }) => {
   const debounce = useDebounce(1000);
   const [showPicker, setShowPicker] = useState(false);
@@ -362,6 +405,7 @@ const Select = ({
   return (
     <SelectContainer
       $isDisabled={disabled}
+      $variation={variation}
       className={required ? "required" : ""}
       id={name}
     >
@@ -439,6 +483,7 @@ const Select = ({
                 key={option.value}
                 $isHilighted={isSelected(option)}
                 $disabled={option.disabled}
+                $variation={variation}
                 role="option"
               >
                 <GiCheckMark />
