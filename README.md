@@ -67,8 +67,11 @@ It covers the client-side React code only.
 
 #### External Services
 
-This application uses third-party services such as [OpenFoodFacts](https://world.openfoodfacts.org/).  
-These services are external and proprietary; their server-side code is not included in this repository and is not covered by the AGPLv3 license.
+This application uses [Open Food Facts](https://world.openfoodfacts.org/) as a third-party service, which is an **open-source and open-data** project. Their data is freely available under open licenses.
+
+The server-side code of these external services is not included in this repository and is not covered by the AGPLv3 license.
+
+Other third-party services that are proprietary are also not included in this repository and not covered by the AGPLv3 license.
 
 Only the code developed by the 321 Vegan team and included in this repository is subject to AGPLv3 terms.
 
