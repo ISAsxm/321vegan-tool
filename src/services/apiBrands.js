@@ -1,4 +1,4 @@
-import { buildURLSearchParams, sortByInputFirst } from "@/utils/helpers";
+import { buildURLSearchParams } from "@/utils/helpers";
 import { API_URL } from "@/utils/constants";
 import axiosInstance from "@/services/axiosInstance";
 
@@ -45,28 +45,17 @@ export async function getSearchBrands({ filters, sortBy, page, size }) {
   }
 }
 
-export async function getBrandsForSelect(searchName, operator = "lookalike") {
+export async function getBrandsForSelect(searchName) {
   try {
-    const filters = searchName
-      ? [{ field: `name__${operator}`, value: searchName }]
-      : [];
-    const sortBy = "name-asc";
-    const page = 1;
-    const size = 100;
-    const params = buildURLSearchParams(filters, sortBy, page, size);
-    const res = await axiosInstance.get(
-      [`${API_URL}/brands/search`, params].filter(Boolean).join("?"),
-    );
+    const params = new URLSearchParams({ name: searchName, page: 1, size: 100 }).toString();
+    const res = await axiosInstance.get(`${API_URL}/brands/search/ranked?${params}`);
     const data = await res.data;
     return {
-      data: sortByInputFirst(
-        searchName,
-        data.items.map((item) => ({
-          value: item.id,
-          label: item.name,
-          background: item.background,
-        })),
-      ),
+      data: data.items.map((item) => ({
+        value: item.id,
+        label: item.name,
+        background: item.background,
+      })),
     };
   } catch (error) {
     if (error.response) {
