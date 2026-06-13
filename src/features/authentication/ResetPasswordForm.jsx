@@ -60,7 +60,7 @@ function ResetPasswordForm() {
               message: "Le mot de passe doit contenir au moins 8 caractères",
             },
             pattern: {
-              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/,
+              value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^a-zA-Z\d])/,
               message: "Le mot de passe doit contenir au moins une minuscule, une majuscule, un chiffre et un caractère spécial",
             },
           })}
