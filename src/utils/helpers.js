@@ -68,6 +68,21 @@ export const formatDistanceFromNow = (dateStr) =>
   });
 
 /**
+ * Returns the given date as a local datetime string usable as the value
+ * of an `<input type="datetime-local">` (i.e. "yyyy-MM-ddTHH:mm").
+ *
+ * Unlike `toISOString()` (which is UTC), this keeps the local timezone so
+ * the input shows the user's local time.
+ *
+ * @param {Date} date: the date to format (defaults to now)
+ * @return {String} the local datetime string truncated to minutes
+ * */
+export const toDatetimeLocal = (date = new Date()) =>
+  new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+    .toISOString()
+    .slice(0, 16);
+
+/**
  * Return the distance between the given date and now in words.
  *
  * @param {Object} options: optional parameters to get the today date

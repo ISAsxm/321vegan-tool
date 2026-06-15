@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 
+import { toDatetimeLocal } from "@/utils/helpers";
 import { useCreateChecking } from "./useCreateChecking";
 import { useUpdateProduct } from "@/features/products/useUpdateProduct";
 
@@ -58,7 +59,7 @@ function CreateCheckingForm({ product, onCloseModal }) {
             valueAsDate: true,
             required: "Ce champ est obligatoire",
           })}
-          defaultValue={new Date().toISOString().substring(0, 16)}
+          defaultValue={toDatetimeLocal()}
           disabled={isPending}
           required
         />
