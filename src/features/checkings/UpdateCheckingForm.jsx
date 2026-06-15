@@ -1,6 +1,7 @@
 import { useController, useForm } from "react-hook-form";
 
 import { CHECKING_STATUSES } from "@/utils/constants";
+import { toDatetimeLocal } from "@/utils/helpers";
 import { useUpdateProduct } from "@/features/products/useUpdateProduct";
 import { useUpdateChecking } from "./useUpdateChecking";
 
@@ -20,7 +21,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
   const { register, formState, handleSubmit, reset, control, watch } = useForm({
     defaultValues: {
       status: null,
-      responded_on: new Date().toISOString().substring(0, 16),
+      responded_on: toDatetimeLocal(),
       problem_description: updateValues.response,
       biodynamic: product.biodynamic,
       has_non_vegan_old_receipe: product.has_non_vegan_old_receipe,
@@ -93,7 +94,7 @@ function UpdateCheckingForm({ checkingToUpdate, product, onCloseModal }) {
             valueAsDate: true,
             required: "Ce champ est obligatoire",
           })}
-          defaultValue={new Date().toISOString().substring(0, 16)}
+          defaultValue={toDatetimeLocal()}
           disabled={isPending}
           required
         />
