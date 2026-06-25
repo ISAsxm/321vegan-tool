@@ -12,7 +12,7 @@ import Input from "@/ui/Input";
 import { StyledUserAvatar, Avatar } from "@/features/authentication/UserAvatar";
 
 function UpdateUserProfileForm({ user }) {
-  const { id, nickname, email, avatar } = user;
+  const { id, nickname, avatar } = user;
   const { isUpdating, updateCurrentUser } = useUpdateCurrentUser();
   const { register, formState, handleSubmit, reset, watch, setValue, control } =
     useForm({
@@ -49,13 +49,6 @@ function UpdateUserProfileForm({ user }) {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow
-        label="Adresse e-mail"
-        hint="Information uniquement visible par les administrateurices"
-      >
-        <Input value={email} disabled />
-      </FormRow>
-
       <FormRow
         label="Pseudo"
         error={errors.nickname?.message}

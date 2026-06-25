@@ -94,6 +94,55 @@ export async function updateCurrentUser({ id, password, nickname, avatar }) {
   }
 }
 
+export async function requestEmailChange({ new_email, current_password }) {
+  try {
+    const res = await axiosInstance.patch(`${API_URL}/me/email`, {
+      new_email,
+      current_password,
+    });
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      if (error.response.status === 401)
+        throw new Error(`Mot de passe incorrect.`);
+      if (error.response.status === 409)
+        throw new Error(`Cette adresse e-mail est déjà utilisée.`);
+      throw new Error(
+        `Couldn't request email change. Response status: ${error.response.status}`,
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't request email change. Request error: ${error.request}`,
+      );
+    } else {
+      throw new Error(`Couldn't request email change. Error: ${error.message}`);
+    }
+  }
+}
+
+export async function confirmEmailChange(token) {
+  try {
+    const res = await axios.get(`${API_URL}/me/email/confirm`, {
+      params: { token },
+    });
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    if (error.response) {
+      throw new Error(
+        `Invalid or expired token. Response status: ${error.response.status}`,
+      );
+    } else if (error.request) {
+      throw new Error(
+        `Couldn't confirm email change. Request error: ${error.request}`,
+      );
+    } else {
+      throw new Error(`Couldn't confirm email change. Error: ${error.message}`);
+    }
+  }
+}
+
 export async function requestPasswordReset(email) {
   try {
     const res = await axios.post(`${API_URL}/auth/password-reset/request`, {

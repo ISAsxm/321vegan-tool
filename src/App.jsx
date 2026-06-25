@@ -27,6 +27,7 @@ import ForgotPassword from "@/pages/ForgotPassword";
 import HouseholdCleaners from "@/pages/HouseholdCleaners";
 import InterestingProducts from "@/pages/InterestingProducts";
 import Login from "@/pages/Login";
+import ConfirmEmailChange from "@/pages/ConfirmEmailChange";
 import PageNotFound from "@/pages/PageNotFound";
 import Partner from "@/pages/Partner";
 import PartnerCategories from "@/pages/PartnerCategories";
@@ -230,6 +231,10 @@ function App() {
               <Route path="login" element={<Login />} />
               <Route path="forgot-password" element={<ForgotPassword />} />
               <Route path="reset-password" element={<ResetPassword />} />
+              <Route
+                path="confirm-email-change"
+                element={<ConfirmEmailChange />}
+              />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>
