@@ -1,18 +1,9 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import ResetPasswordForm from "@/features/authentication/ResetPasswordForm";
+import AuthLayout from "@/ui/AuthLayout";
 import Logo from "@/ui/Logo";
 import Heading from "@/ui/Heading";
-
-const ResetPasswordLayout = styled.main`
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 48rem;
-  align-content: center;
-  justify-content: center;
-  gap: 3.2rem;
-  background-color: var(--color-grey-50);
-`;
 
 const Description = styled.p`
   text-align: center;
@@ -34,7 +25,7 @@ const BackLink = styled.p`
 
 function ResetPassword() {
   return (
-    <ResetPasswordLayout>
+    <AuthLayout>
       <Logo />
       <Heading as="h4">Réinitialiser le mot de passe</Heading>
       <Description>
@@ -44,7 +35,7 @@ function ResetPassword() {
       <BackLink>
         <Link to="/login">Retour à la connexion</Link>
       </BackLink>
-    </ResetPasswordLayout>
+    </AuthLayout>
   );
 }
 
