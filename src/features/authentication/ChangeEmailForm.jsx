@@ -28,7 +28,6 @@ function ChangeEmailForm({ user }) {
     <Form onSubmit={handleSubmit(onSubmit)}>
       <FormRow
         label="Adresse e-mail actuelle"
-        hint="Information uniquement visible par les administrateurices"
       >
         <Input value={user.email} disabled />
       </FormRow>
