@@ -14,8 +14,8 @@ function ConfirmEmailChangeForm() {
       <div>
         <h2>Lien invalide</h2>
         <p>
-          Le lien de confirmation est invalide. Veuillez réessayer depuis votre
-          profil.
+          Le lien de confirmation est invalide. Veuillez réessayer. Contactez-nous
+          si ça persiste !
         </p>
       </div>
     );
