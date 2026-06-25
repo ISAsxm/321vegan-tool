@@ -8,6 +8,7 @@ import Divider from "@/ui/Divider";
 import Spinner from "@/ui/Spinner";
 
 import UpdateUserProfileForm from "./UpdateUserProfileForm";
+import ChangeEmailForm from "./ChangeEmailForm";
 import UpdatePasswordForm from "./UpdatePasswordForm";
 import UserProfileStats from "./UserProfileStats";
 
@@ -38,6 +39,13 @@ function AccountDetail() {
       <Row type="vertical">
         <Heading as="h3">Informations du profil</Heading>
         <UpdateUserProfileForm user={user} />
+      </Row>
+
+      <Divider />
+
+      <Row type="vertical">
+        <Heading as="h3">Adresse e-mail</Heading>
+        <ChangeEmailForm user={user} />
       </Row>
 
       <Divider />
