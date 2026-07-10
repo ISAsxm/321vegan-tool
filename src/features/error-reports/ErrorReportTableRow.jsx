@@ -105,9 +105,7 @@ function ErrorReportTableRow({ errorReport }) {
             <ConfirmAction
               variation="delete"
               title="Marquer comme non traité"
-              message={`Êtes-vous sûr de vouloir marquer comme non traité ce signalement d'erreur ?${
-                response ? " La réponse enregistrée sera supprimée." : ""
-              }`}
+              message="Êtes-vous sûr de vouloir marquer comme non traité ce signalement d'erreur. La réponse enregistrée sera supprimée."
               onConfirm={() => handleMarkUntreated()}
               disabled={isUpdating}
             />
