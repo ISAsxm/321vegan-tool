@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDistanceFromNow, formatDate } from "@/utils/helpers";
 
 import { useUpdateErrorReport } from "./useUpdateErrorReport";
+import HandleErrorReportForm from "./HandleErrorReportForm";
 
 import Table from "@/ui/Table";
 import Tag from "@/ui/Tag";
@@ -29,6 +30,7 @@ function ErrorReportTableRow({ errorReport }) {
     comment,
     contact,
     handled,
+    response,
     created_at,
     updated_at,
     product,
@@ -40,10 +42,10 @@ function ErrorReportTableRow({ errorReport }) {
     ? { color: "green", label: "Traité" }
     : { color: "yellow", label: "Non traité" };
 
-  function handleToggleStatus() {
+  function handleMarkUntreated() {
     updateErrorReport({
       id: errorReportId,
-      newData: { ...errorReport, handled: !handled },
+      newData: { ...errorReport, handled: false, response: null },
     });
   }
 
@@ -62,6 +64,8 @@ function ErrorReportTableRow({ errorReport }) {
       </Ref>
 
       <Stacked>{comment}</Stacked>
+
+      <Stacked>{response}</Stacked>
 
       <Stacked>
         <span>{contact}</span>
@@ -97,17 +101,19 @@ function ErrorReportTableRow({ errorReport }) {
         </Tooltip>
 
         <Modal.Window name="handle">
-          <ConfirmAction
-            variation={handled ? "delete" : "confirm"}
-            title={
-              handled ? "Marquer comme non traité" : "Marquer comme traité"
-            }
-            message={`Êtes-vous sûr de vouloir ${
-              handled ? "marquer comme non traité" : "marquer comme traité"
-            } ce signalement d'erreur ?`}
-            onConfirm={() => handleToggleStatus()}
-            disabled={isUpdating}
-          />
+          {handled ? (
+            <ConfirmAction
+              variation="delete"
+              title="Marquer comme non traité"
+              message={`Êtes-vous sûr de vouloir marquer comme non traité ce signalement d'erreur ?${
+                response ? " La réponse enregistrée sera supprimée." : ""
+              }`}
+              onConfirm={() => handleMarkUntreated()}
+              disabled={isUpdating}
+            />
+          ) : (
+            <HandleErrorReportForm errorReport={errorReport} />
+          )}
         </Modal.Window>
       </Modal>
     </Table.Row>
