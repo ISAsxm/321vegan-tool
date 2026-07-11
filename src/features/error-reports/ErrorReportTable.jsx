@@ -13,7 +13,7 @@ function ErrorReportTable() {
   if (isPending) return <Spinner />;
 
   return (
-    <Table columns="1.8fr 2fr 1.4fr 1.4fr 1.4fr 1.4fr 3.2rem">
+    <Table columns="1.6fr 2fr 2fr 1.2fr 1.4fr 1.4fr 1.2fr 3.2rem">
       <Filters>
         <SortBy>
           <Table.Header>
@@ -32,6 +32,8 @@ function ErrorReportTable() {
                 <Filters.Search id="filterComment" filterField="comment" />
               </Filters.Filter>
             </div>
+
+            <div>Réponse</div>
 
             <div>
               Contact
