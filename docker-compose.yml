@@ -6,3 +6,5 @@ services:
       target: production
     ports:
       - "3001:80"
+    restart: unless-stopped
+
