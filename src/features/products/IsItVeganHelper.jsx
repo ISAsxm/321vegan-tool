@@ -44,14 +44,13 @@ const problems = [
   "les alcools fort : le processus de clarification (collage) peut comporter des auxiliaires technologiques d'origine animale",
   "les bières : le processus de clarification (collage) peut comporter des auxiliaires technologiques d'origine animale, elles peuvent également contenir du lactose ou du miel",
   "les cidres : le processus de filtration peut comporter des auxiliaires technologiques d'origine animale",
-  "les jus de pommes, d'oranges, de raisins et de fruits concentrés : le processus de filtration peut comporter des auxiliaires technologiques d'origine animale, ils peuvent également être enrichi en oméga-3 venant d'huile de poisson ou en vitamines D issue de laine de mouton (lanoline)",
+  "les jus de pommes : le processus de filtration peut comporter des auxiliaires technologiques d'origine animale",
   "les cocos : des singes peuvent être utilisés pour la récolte",
   "les truffes : des chiens ou des cochons peuvent être utilisés pour la récolte",
   "la margarine : peut contenir du babeurre ou être enrichie en lactose, en oméga-3 venant d'huile de poisson et en vitamines D issue de laine de mouton (lanoline)",
   "les pommes et agrumes : non bio peuvent être enduites de cire d'abeille ou de shellac",
   "les bananes : non bio sont toujours enduites de chitosane (produit servant à ralentir la maturation composé de l’exosquelette des crustacés ou de l’endosquelette des calmars)",
   "le café : Kopi Luwak (Indonésie, exploitation des civettes), Coatis (Pérou, exploitation des coatis), Jacu (Brésil, exploitation des jacu bird), Black Ivory (Thaïlande, exploitation des éléphant.e.s)",
-  "le riz : peut provenir de rizières qui servent à élever des crevettes",
 ];
 
 function IsItVeganHelper({ onCloseModal }) {
