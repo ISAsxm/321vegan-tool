@@ -37,8 +37,8 @@ const Error = styled.span`
 `;
 
 const TEMPLATES = {
-  simpleProblem: `Bonjour,\n\nJe souhaite savoir si le produit {{ NAME }} (code-barres {{ EAN }}) est adapté à un régime alimentaire végétalien.\nIl contient {{ PROBLEM_DESCRIPTION }}, un composant pouvant être d’origine animale ou végétale.\nPouvez-vous me confirmer son origine ?\n\nMerci par avance pour votre retour.\n\nCordialement,\n{{ USERNAME }}`,
-  multiProblem: `Bonjour,\n\nJe souhaite savoir si le produit {{ NAME }} (code-barres {{ EAN }}) est adapté à un régime alimentaire végétalien.\nIl contient {{ PROBLEM_DESCRIPTION }}, des composants pouvant être d’origine animale ou végétale.\nPouvez-vous me confirmer leurs origines ?\n\nMerci par avance pour votre retour.\n\nCordialement,\n{{ USERNAME }}`,
+  simpleProblem: `Bonjour,\n\nJe souhaiterais savoir si le produit {{ NAME }} (code-barres {{ EAN }}) est adapté à un régime alimentaire végétalien.\nEn effet, il contient l'ingrédient suivant : "{{ PROBLEM_DESCRIPTION }}", un composant pouvant être d’origine animale ou végétale.\nPouvez-vous, s'il vous plait, m'indiquer s'il est d'origine animale ou non ?\n\nMerci d'avance pour votre retour.\n\nCordialement,\n{{ USERNAME }}`,
+  multiProblem: `Bonjour,\n\nJe souhaiterais savoir si le produit {{ NAME }} (code-barres {{ EAN }}) est adapté à un régime alimentaire végétalien.\nEn effet, il contient les ingrédients suivants : "{{ PROBLEM_DESCRIPTION }}", des composants pouvant être d’origine animale ou végétale.\nPouvez-vous, s'il vous plait, m'indiquer s'ils sont d'origine animale ou non ?\n\nMerci d'avance pour votre retour.\n\nCordialement,\n{{ USERNAME }}`,
   processProblem: `Bonjour,\n\nJe souhaite savoir si le produit {{ NAME }} (code-barres {{ EAN }}) est adapté à un régime alimentaire végétalien.\nMa question porte sur le procédé utilisé pour {{ PROBLEM_DESCRIPTION }}.\nCe procédé implique-t-il l’utilisation d’animaux ou de sous-produits d’origine animale ?\n\nMerci par avance pour votre retour.\n\nCordialement,\n{{ USERNAME }}`,
 };
 
