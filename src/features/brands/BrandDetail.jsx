@@ -70,6 +70,7 @@ const InfoBox = styled.div`
   }
   & div:nth-child(5) {
     grid-area: bkg;
+    white-space: pre-wrap;
   }
   & div:nth-child(6) {
     grid-area: score;

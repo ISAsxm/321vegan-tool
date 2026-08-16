@@ -57,6 +57,7 @@ const StyledAdmonition = styled.div`
   border-radius: 0.125rem;
   border-left-style: solid;
   padding: 1rem;
+  white-space: pre-wrap;
   ${(props) => variations[props.$variation]}
 `;
 
