@@ -47,9 +47,10 @@ function ProductRegister({ ean, onClose, defaultState }) {
   const finalEan = ean || productEan;
   const { isPending, product } = useProductByEan(finalEan);
   const [isPendingOff, setIsPendingOff] = useState(false);
+  const [isPendingBrand, setIsPendingBrand] = useState(true);
   const [errorOff, setErrorOff] = useState("");
-  const [offProduct, setOffProduct] = useState({});
-  const [brandFromApi, setBrandFromApi] = useState(null);
+  const [offProduct, setOffProduct] = useState(null);
+  const [matchedBrand, setMatchedBrand] = useState(null);
   const [selectedBrand, setSelectedBrand] = useState();
   const goBack = useGoBack();
   const handleClose = onClose || goBack;
@@ -58,31 +59,71 @@ function ProductRegister({ ean, onClose, defaultState }) {
     const fetchProductData = async () => {
       try {
         setIsPendingOff(true);
+        setErrorOff("");
+        setOffProduct(null);
         const data = await getProductData(finalEan);
-        if (data) setOffProduct(data);
-        // Fetch brand from API
-        const brand =
-          data?.brands?.split(",")[0] ||
-          data?.product_name?.split(" - ")[1] ||
-          "";
-        if (brand) {
-          const matchingBrand = await getBrandLookalike(brand);
-          if (matchingBrand)
-            setBrandFromApi({
-              id: matchingBrand.id,
-              name: matchingBrand.name,
-              background: matchingBrand.background,
-            });
-        }
+        setOffProduct(data || {});
       } catch (error) {
         console.error(error);
         setErrorOff(`Ean ${finalEan} inconnu dans Open Food Facts`);
+        setOffProduct({});
       } finally {
         setIsPendingOff(false);
       }
     };
     fetchProductData();
   }, [finalEan]);
+
+  useEffect(() => {
+    const resolveBrand = async () => {
+      if (!product) return;
+
+      if (product.brand) {
+        setMatchedBrand(null);
+        setIsPendingBrand(false);
+        return;
+      }
+
+      if (!offProduct) return;
+
+      setIsPendingBrand(true);
+      setMatchedBrand(null);
+
+      const findBrand = async (name) => {
+        if (!name) return null;
+
+        try {
+          return await getBrandLookalike(name);
+        } catch (error) {
+          console.error(error);
+          return null;
+        }
+      };
+
+      // Prefer the user supplied description over the Open Food Facts brand.
+      const description = product.description?.trim();
+      let matchingBrand = await findBrand(description);
+
+      if (!matchingBrand) {
+        const offBrand =
+          offProduct.brands?.split(",")[0] ||
+          offProduct.product_name?.split(" - ")[1] ||
+          "";
+        matchingBrand = await findBrand(offBrand);
+      }
+
+      if (matchingBrand)
+        setMatchedBrand({
+          id: matchingBrand.id,
+          name: matchingBrand.name,
+          background: matchingBrand.background,
+        });
+
+      setIsPendingBrand(false);
+    };
+
+    resolveBrand();
+  }, [product, offProduct]);
 
   // Check if the product has been verified while we are on validator mode
   // Because we fetched the products at the start of the session
@@ -92,7 +133,8 @@ function ProductRegister({ ean, onClose, defaultState }) {
     if (isAlreadyVerified) onClose();
   }, [isAlreadyVerified, onClose]);
 
-  if (isPending || isPendingOff || isAlreadyVerified) return <Spinner />;
+  if (isPending || isPendingOff || isPendingBrand || isAlreadyVerified)
+    return <Spinner />;
 
   const { created_at, name, status, state, image } = product;
 
@@ -201,7 +243,7 @@ function ProductRegister({ ean, onClose, defaultState }) {
               ...product,
               ...(defaultState && { state: defaultState }),
               name: name || product_name,
-              brand: brandFromApi || product.brand,
+              brand: product.brand || matchedBrand,
               brandName: offBrandName.split(",")[0],
             }}
             onClose={handleClose}
