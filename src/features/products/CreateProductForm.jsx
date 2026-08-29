@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { PRODUCT_STATUSES, PRODUCT_STATES } from "@/utils/constants";
@@ -19,7 +20,8 @@ import CreateBrandForm from "@/features/brands/CreateBrandForm";
 function CreateProductForm({ onCloseModal }) {
   const { isCreating, createProduct } = useCreateProduct();
   const { hasAccess } = useCurrentUserContext();
-  const { register, formState, handleSubmit, reset, control } = useForm();
+  const { register, formState, handleSubmit, reset, control, watch, setValue } =
+    useForm();
   const { errors } = formState;
 
   const { field: brandField } = useController({
@@ -40,6 +42,16 @@ function CreateProductForm({ onCloseModal }) {
     rules: { required: "Ce champ est obligatoire" },
   });
 
+  // "Cosmétique à vérif" is not a vegan verdict - force the status to MAYBE_VEGAN
+  // and lock the field while that state is selected.
+  const isStatusLocked = watch("state") === "TO_INVESTIGATE";
+
+  useEffect(() => {
+    if (isStatusLocked && statusField.value !== "MAYBE_VEGAN") {
+      setValue("status", "MAYBE_VEGAN");
+    }
+  }, [isStatusLocked, statusField.value, setValue]);
+
   const { field: isByodinamicField } = useController({
     name: "biodynamic",
     control,
@@ -56,6 +68,7 @@ function CreateProductForm({ onCloseModal }) {
   });
 
   function onSubmit(data) {
+    if (data.state === "TO_INVESTIGATE") data.status = "MAYBE_VEGAN";
     createProduct(data, {
       onSuccess: () => {
         reset();
@@ -85,15 +98,16 @@ function CreateProductForm({ onCloseModal }) {
       </FormRow>
       <FormRow label="Statut" error={errors.status?.message}>
         <Select
+          key={isStatusLocked ? "status-locked" : "status"}
           name="status"
           onChange={statusField.onChange}
           isSearchable={true}
-          defaultValue={[statusField.value]}
+          defaultValue={[isStatusLocked ? "MAYBE_VEGAN" : statusField.value]}
           defaultOptions={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
           required={true}
-          disabled={isCreating}
+          disabled={isCreating || isStatusLocked}
         />
       </FormRow>
 

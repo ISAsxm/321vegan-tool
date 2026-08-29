@@ -27,6 +27,14 @@ import ImageUploader from "@/ui/ImageUploader";
 import CreateBrandForm from "@/features/brands/CreateBrandForm";
 import ProblemBox from "./ProblemBox";
 
+import styled from "styled-components";
+
+// "Cosmétique à vérif" is set apart from the linear contact workflow.
+const SeparatedState = styled.div`
+  margin-left: auto;
+  display: inline-flex;
+`;
+
 function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
   const { id: checkedId, ...checkedInValues } = productToCheckedIn;
   const [brands, setBrands] = useState(
@@ -100,15 +108,18 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
     watchFields[1],
   );
 
-  // Check if status should be locked when state is NEED_CONTACT
-  const isStatusLocked = watchFields[0] === "NEED_CONTACT";
+  // Status is locked to MAYBE_VEGAN for states that are not a real
+  // "is it vegan" verdict (brand contact, cosmetic to investigate).
+  const isStatusLocked = ["NEED_CONTACT", "TO_INVESTIGATE"].includes(
+    watchFields[0],
+  );
 
-  // Auto-set status to MAYBE_VEGAN when state is NEED_CONTACT
+  // Auto-set status to MAYBE_VEGAN when the state locks it
   useEffect(() => {
-    if (watchFields[0] === "NEED_CONTACT" && watchFields[1] !== "MAYBE_VEGAN") {
+    if (isStatusLocked && watchFields[1] !== "MAYBE_VEGAN") {
       setValue("status", "MAYBE_VEGAN");
     }
-  }, [watchFields, setValue]);
+  }, [isStatusLocked, watchFields, setValue]);
 
   useEffect(() => {
     onSelectBrand(brands.find((b) => b.value === watchFields[3]));
@@ -151,16 +162,29 @@ function RegisterProductForm({ productToCheckedIn, onClose, onSelectBrand }) {
           defaultValue={watchFields[0]}
           required={true}
         >
-          {Object.entries(PRODUCT_STATES).map(([key, o]) => (
+          {Object.entries(PRODUCT_STATES)
+            .filter(([key]) => key !== "TO_INVESTIGATE")
+            .map(([key, o]) => (
+              <Radios.RadioButton
+                key={key}
+                value={key}
+                color={o.color}
+                disabled={isPending || !hasAccess(o.role)}
+              >
+                {o.label}
+              </Radios.RadioButton>
+            ))}
+          <SeparatedState>
             <Radios.RadioButton
-              key={key}
-              value={key}
-              color={o.color}
-              disabled={isPending || !hasAccess(o.role)}
+              value="TO_INVESTIGATE"
+              color={PRODUCT_STATES.TO_INVESTIGATE.color}
+              disabled={
+                isPending || !hasAccess(PRODUCT_STATES.TO_INVESTIGATE.role)
+              }
             >
-              {o.label}
+              {PRODUCT_STATES.TO_INVESTIGATE.label}
             </Radios.RadioButton>
-          ))}
+          </SeparatedState>
         </Radios>
       </FormRow>
 

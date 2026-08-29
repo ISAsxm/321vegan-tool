@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import {
@@ -24,12 +25,13 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
   const { id: updateId, ...updateValues } = productToUpdate;
   const { isUpdating, updateProduct } = useUpdateProduct();
   const { hasAccess } = useCurrentUserContext();
-  const { register, formState, handleSubmit, reset, control } = useForm({
-    defaultValues: {
-      ...updateValues,
-      brand_id: productToUpdate.brand?.id || null,
-    },
-  });
+  const { register, formState, handleSubmit, reset, control, watch, setValue } =
+    useForm({
+      defaultValues: {
+        ...updateValues,
+        brand_id: productToUpdate.brand?.id || null,
+      },
+    });
   const { errors } = formState;
 
   const { field: brandField } = useController({
@@ -47,6 +49,16 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
     control,
     rules: { required: "Ce champ est obligatoire" },
   });
+
+  // "Cosmétique à vérif" is not a vegan verdict - force the status to MAYBE_VEGAN
+  // and lock the field while that state is selected.
+  const isStatusLocked = watch("state") === "TO_INVESTIGATE";
+
+  useEffect(() => {
+    if (isStatusLocked && statusField.value !== "MAYBE_VEGAN") {
+      setValue("status", "MAYBE_VEGAN");
+    }
+  }, [isStatusLocked, statusField.value, setValue]);
   const { field: isByodinamicField } = useController({
     name: "biodynamic",
     control,
@@ -64,6 +76,7 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
   });
 
   function onSubmit(data) {
+    if (data.state === "TO_INVESTIGATE") data.status = "MAYBE_VEGAN";
     updateProduct(
       { newData: data, id: updateId },
       {
@@ -96,15 +109,16 @@ function UpdateProductForm({ productToUpdate, onCloseModal }) {
       </FormRow>
       <FormRow label="Statut" error={errors.status?.message}>
         <Select
+          key={isStatusLocked ? "status-locked" : "status"}
           name="status"
           onChange={statusField.onChange}
           isSearchable={true}
-          defaultValue={[statusField.value]}
+          defaultValue={[isStatusLocked ? "MAYBE_VEGAN" : statusField.value]}
           defaultOptions={Object.entries(PRODUCT_STATUSES).map(([key, o]) => {
             return { value: key, label: o.label };
           })}
           required={true}
-          disabled={isUpdating}
+          disabled={isUpdating || isStatusLocked}
         />
       </FormRow>
       <FormRow label="Marque" error={errors.brand_id?.message}>

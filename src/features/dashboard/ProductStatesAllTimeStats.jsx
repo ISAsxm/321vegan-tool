@@ -11,6 +11,7 @@ import {
   HiOutlineCheck,
   HiOutlineClock,
   HiOutlineSparkles,
+  HiOutlineMagnifyingGlass,
 } from "react-icons/hi2";
 
 import styled from "styled-components";
@@ -24,6 +25,7 @@ const ICON_COMPONENTS = {
   CREATED: <HiOutlineDocumentCheck />,
   NEED_CONTACT: <HiOutlineEnvelope />,
   WAITING_BRAND_REPLY: <HiOutlineClock />,
+  TO_INVESTIGATE: <HiOutlineMagnifyingGlass />,
   WAITING_PUBLISH: <HiOutlineSparkles />,
   PUBLISHED: <HiOutlineCheck />,
 };

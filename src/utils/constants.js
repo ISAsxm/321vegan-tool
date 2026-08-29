@@ -37,6 +37,11 @@ export const PRODUCT_STATES = {
     label: "Contacté",
     role: "contributor",
   },
+  TO_INVESTIGATE: {
+    color: "orange",
+    label: "Cosmétique à vérif",
+    role: "contributor",
+  },
   WAITING_PUBLISH: {
     color: "indigo",
     label: "À publier",
