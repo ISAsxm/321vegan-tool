@@ -17,8 +17,9 @@ import {
 import styled from "styled-components";
 
 const GroupStats = styled.div`
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.6rem;
 `;
 
 const ICON_COMPONENTS = {
